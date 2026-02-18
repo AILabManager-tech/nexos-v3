@@ -1,0 +1,380 @@
+{
+  "meta": {
+    "title": "Vertex PMO — Gestion de projet stratégique | Gatineau-Ottawa",
+    "description": "Firme de gestion de projet spécialisée en consultation PMO, gestion de portefeuille et transformation Agile. Livraisons à temps, dans le budget."
+  },
+  "nav": {
+    "home": "Accueil",
+    "services": "Services",
+    "about": "À propos",
+    "contact": "Contact",
+    "cta": "Consultation gratuite"
+  },
+  "home": {
+    "hero": {
+      "badge": "Firme PMO — Gatineau-Ottawa",
+      "title": "Vos projets, livrés. À temps. Dans le budget.",
+      "subtitle": "Consultation PMO stratégique, gestion de portefeuille et transformation Agile pour organisations ambitieuses.",
+      "cta": "Planifiez votre consultation",
+      "cta_secondary": "Découvrir notre méthode"
+    },
+    "stats": {
+      "projects": "Projets livrés",
+      "ontime": "Livrés à temps",
+      "years": "Ans d'expertise",
+      "managed": "Budgets gérés"
+    },
+    "pain": {
+      "title": "Vos projets déraillent?",
+      "image_caption": "La visibilité change tout.",
+      "scope": {
+        "title": "Portée incontrôlable",
+        "description": "Le scope creep gruge votre budget et vos délais. Chaque demande « urgente » devient prioritaire et rien ne se termine."
+      },
+      "budget": {
+        "title": "Dépassements de coûts",
+        "description": "Les projets finissent toujours plus cher que prévu. Sans suivi rigoureux, les surprises budgétaires deviennent la norme."
+      },
+      "team": {
+        "title": "Équipes surchargées",
+        "description": "Trop de projets, pas assez de monde. Vos ressources clés sont écartelées entre les priorités et s'épuisent."
+      }
+    },
+    "methodology": {
+      "title": "Notre méthode en 6 phases",
+      "subtitle": "Un processus éprouvé qui transforme le chaos en livraisons prévisibles.",
+      "discovery": {
+        "title": "Découverte",
+        "description": "Analyse de votre maturité projet actuelle, identification des enjeux clés et des quick wins.",
+        "duration": "1-2 semaines"
+      },
+      "planning": {
+        "title": "Planification stratégique",
+        "description": "Élaboration du plan projet détaillé : WBS, échéancier, budget, matrice RACI et registre des risques.",
+        "duration": "2-3 semaines"
+      },
+      "execution": {
+        "title": "Exécution pilotée",
+        "description": "Mise en œuvre avec gouvernance serrée : stand-ups, tableaux de bord temps réel et gestion proactive.",
+        "duration": "Variable"
+      },
+      "monitoring": {
+        "title": "Suivi & Contrôle",
+        "description": "KPIs en temps réel, analyse de la valeur acquise (EVM), rapports d'avancement et gestion du changement.",
+        "duration": "Continu"
+      },
+      "delivery": {
+        "title": "Livraison",
+        "description": "Transfert structuré, documentation complète, leçons apprises et validation des critères d'acceptation.",
+        "duration": "1-2 semaines"
+      },
+      "support": {
+        "title": "Support post-projet",
+        "description": "Accompagnement durant la période de transition, optimisation continue et coaching de vos équipes.",
+        "duration": "1-3 mois"
+      }
+    },
+    "testimonials": {
+      "title": "Résultats concrets",
+      "c1": {
+        "industry": "Technologies — 200 employés",
+        "before_title": "Avant",
+        "before": "67% des projets en retard. Aucune visibilité sur le portefeuille. Budgets dépassés de 40% en moyenne.",
+        "after_title": "Après 6 mois",
+        "after": "93% des projets livrés à temps. Dashboard portefeuille temps réel. Dépassements réduits à 8%.",
+        "metric": "+39% livraisons à temps"
+      },
+      "c2": {
+        "industry": "Gouvernement fédéral — Programme TI",
+        "before_title": "Avant",
+        "before": "Méthodologie incohérente entre les équipes. Rapports manuels Excel prenant 2 jours par mois.",
+        "after_title": "Après 4 mois",
+        "after": "Framework PMO standardisé. Rapports automatisés en 2 heures. Adoption Agile à 100%.",
+        "metric": "-95% temps de reporting"
+      },
+      "c3": {
+        "industry": "Construction — Projets majeurs",
+        "before_title": "Avant",
+        "before": "3 projets majeurs en dépassement simultané. Conflits de ressources constants. Aucun registre des risques.",
+        "after_title": "Après 8 mois",
+        "after": "Portefeuille optimisé et priorisé. Allocation des ressources rationalisée. 12 risques majeurs mitigés proactivement.",
+        "metric": "8M$ de dépassements évités"
+      }
+    },
+    "banner": {
+      "line1": "Gérer des projets,",
+      "line2": "c'est notre métier.",
+      "cta": "Discutons de vos défis"
+    },
+    "cta_final": {
+      "title": "Prêt à reprendre le contrôle?",
+      "subtitle": "Pas de jargon. Pas de slides interminables. Juste une discussion franche sur vos enjeux projets.",
+      "button": "Planifiez votre consultation"
+    }
+  },
+  "assessment": {
+    "title": "Évaluez votre maturité projet",
+    "subtitle": "12 questions pour mesurer vos pratiques de gestion de projet sur 6 axes clés.",
+    "back": "Question précédente",
+    "restart": "Recommencer",
+    "axes": {
+      "scope": "Portée",
+      "schedule": "Échéancier",
+      "cost": "Coûts",
+      "quality": "Qualité",
+      "risk": "Risques",
+      "stakeholders": "Parties prenantes"
+    },
+    "q1": {
+      "question": "Comment définissez-vous la portée de vos projets?",
+      "a1": "Pas de documentation formelle",
+      "a2": "Description sommaire par courriel",
+      "a3": "Charte de projet basique",
+      "a4": "WBS et énoncé de portée détaillé",
+      "a5": "Processus formel avec validation et baseline"
+    },
+    "q2": {
+      "question": "Comment gérez-vous les changements de portée?",
+      "a1": "On accepte tout sans analyse",
+      "a2": "Discussion informelle avant d'accepter",
+      "a3": "Formulaire de demande de changement",
+      "a4": "Comité de contrôle des changements",
+      "a5": "Processus formel avec analyse d'impact intégrée"
+    },
+    "q3": {
+      "question": "Comment planifiez-vous les échéanciers?",
+      "a1": "Dates arbitraires du client",
+      "a2": "Estimation globale approximative",
+      "a3": "Jalons principaux identifiés",
+      "a4": "Diagramme de Gantt avec dépendances",
+      "a5": "Chemin critique, buffers et simulation Monte Carlo"
+    },
+    "q4": {
+      "question": "Comment suivez-vous l'avancement?",
+      "a1": "On ne suit pas vraiment",
+      "a2": "Réunions ponctuelles informelles",
+      "a3": "Stand-ups hebdomadaires",
+      "a4": "Tableau de bord avec indicateurs",
+      "a5": "EVM temps réel avec projections automatisées"
+    },
+    "q5": {
+      "question": "Comment estimez-vous les coûts de projet?",
+      "a1": "Montant forfaitaire intuitif",
+      "a2": "Estimation par analogie sommaire",
+      "a3": "Estimation bottom-up par lots",
+      "a4": "Estimation détaillée avec contingences",
+      "a5": "Modèle paramétrique validé historiquement"
+    },
+    "q6": {
+      "question": "Comment contrôlez-vous le budget en cours de projet?",
+      "a1": "On regarde à la fin",
+      "a2": "Vérification mensuelle des factures",
+      "a3": "Suivi régulier vs budget initial",
+      "a4": "Analyse des écarts avec re-prévisions",
+      "a5": "EVM avec CPI/SPI et prévisions à terminaison"
+    },
+    "q7": {
+      "question": "Comment assurez-vous la qualité des livrables?",
+      "a1": "Le client nous dit si c'est correct",
+      "a2": "Revue rapide avant livraison",
+      "a3": "Critères d'acceptation documentés",
+      "a4": "Plan qualité avec revues par les pairs",
+      "a5": "Programme d'assurance qualité intégré avec métriques"
+    },
+    "q8": {
+      "question": "Comment gérez-vous les leçons apprises?",
+      "a1": "On n'en fait pas",
+      "a2": "Discussion informelle en fin de projet",
+      "a3": "Rétrospective documentée",
+      "a4": "Base de connaissances partagée",
+      "a5": "Processus d'amélioration continue intégré"
+    },
+    "q9": {
+      "question": "Comment identifiez-vous les risques?",
+      "a1": "On les découvre quand ils arrivent",
+      "a2": "Discussion en début de projet",
+      "a3": "Registre des risques initial",
+      "a4": "Analyse qualitative et quantitative",
+      "a5": "Revues de risques régulières avec simulations"
+    },
+    "q10": {
+      "question": "Comment répondez-vous aux risques?",
+      "a1": "Gestion de crise réactive",
+      "a2": "Plan B pour les gros risques",
+      "a3": "Stratégies de réponse documentées",
+      "a4": "Propriétaires de risques assignés",
+      "a5": "Plans de mitigation proactifs avec déclencheurs"
+    },
+    "q11": {
+      "question": "Comment gérez-vous les parties prenantes?",
+      "a1": "On parle au client quand il appelle",
+      "a2": "Communications ponctuelles",
+      "a3": "Matrice des parties prenantes basique",
+      "a4": "Plan de communication structuré",
+      "a5": "Stratégie d'engagement avec analyse pouvoir/intérêt"
+    },
+    "q12": {
+      "question": "Comment rapportez-vous aux parties prenantes?",
+      "a1": "Quand on nous le demande",
+      "a2": "Courriels ponctuels au besoin",
+      "a3": "Rapports d'état hebdomadaires",
+      "a4": "Dashboard exécutif avec RAG status",
+      "a5": "Rapports multi-niveaux automatisés avec analytics"
+    },
+    "results": {
+      "low": {
+        "title": "Niveau Initial — Action urgente",
+        "description": "Vos pratiques de gestion de projet sont minimales. Les projets dépendent des individus plutôt que des processus. Un diagnostic PMO pourrait transformer vos résultats rapidement.",
+        "cta": "Réservez votre diagnostic PMO"
+      },
+      "mid": {
+        "title": "Niveau Structuré — Consolidation requise",
+        "description": "Vous avez des fondations, mais elles manquent de cohérence. Standardiser vos processus et outiller vos chefs de projet amènerait un gain significatif.",
+        "cta": "Découvrez notre consultation PMO"
+      },
+      "high": {
+        "title": "Niveau Optimisé — Peaufinage",
+        "description": "Bravo! Vos pratiques sont matures. L'optimisation continue, l'automatisation et le coaching avancé pourraient vous amener à l'excellence.",
+        "cta": "Explorez l'optimisation avancée"
+      }
+    }
+  },
+  "services": {
+    "meta": {
+      "title": "Services — Consultation PMO, Portefeuille et Agile",
+      "description": "Consultation PMO stratégique, gestion de portefeuille de projets et accompagnement en transformation Agile pour organisations de toute taille."
+    },
+    "hero": {
+      "title": "Services",
+      "subtitle": "Trois volets pour structurer, optimiser et transformer votre gestion de projet."
+    },
+    "consulting": {
+      "title": "Consultation PMO stratégique",
+      "description": "Mettre en place un bureau de projet (PMO) adapté à votre réalité.",
+      "includes": "Ce que ça inclut",
+      "item1": "Évaluation de la maturité projet actuelle",
+      "item2": "Design du modèle PMO (supportif, contrôlant ou directif)",
+      "item3": "Développement des processus, templates et outils",
+      "item4": "Formation et coaching des chefs de projet",
+      "duration": "8-16 semaines",
+      "result": "Un PMO opérationnel qui livre de la valeur dès le premier mois."
+    },
+    "portfolio": {
+      "title": "Gestion de portefeuille de projets",
+      "description": "Voir clair dans vos projets. Prioriser ce qui compte. Allouer intelligemment.",
+      "includes": "Ce que ça inclut",
+      "item1": "Inventaire et catégorisation de tous les projets actifs",
+      "item2": "Modèle de priorisation aligné sur la stratégie",
+      "item3": "Dashboard portefeuille temps réel",
+      "item4": "Optimisation de l'allocation des ressources",
+      "duration": "6-12 semaines",
+      "result": "Visibilité complète et décisions basées sur les données."
+    },
+    "agile": {
+      "title": "Transformation Agile",
+      "description": "Passer du waterfall au mode Agile — sans chaos ni résistance.",
+      "includes": "Ce que ça inclut",
+      "item1": "Évaluation de la readiness Agile de l'organisation",
+      "item2": "Design du framework (Scrum, Kanban, SAFe, hybride)",
+      "item3": "Formation pratique des équipes et Product Owners",
+      "item4": "Coaching d'équipes pendant 3-6 sprints",
+      "duration": "3-6 mois",
+      "result": "Des équipes autonomes qui livrent en cycles courts et prévisibles."
+    },
+    "faq": {
+      "title": "Questions fréquentes",
+      "q1": "Combien coûte une consultation PMO?",
+      "a1": "Un diagnostic initial se situe entre 5 000 $ et 10 000 $. L'implantation complète d'un PMO entre 25 000 $ et 75 000 $ selon l'envergure. On établit un budget fixe après la découverte — pas de surprises.",
+      "q2": "On est une PME de 50 personnes, c'est pour nous?",
+      "a2": "Absolument. Nos méthodes s'adaptent. Un PMO léger pour une PME de 50 personnes n'a rien à voir avec celui d'une multinationale. On calibre selon votre réalité.",
+      "q3": "Combien de temps avant de voir des résultats?",
+      "a3": "Les quick wins arrivent en 4-6 semaines. Les résultats structurels (réduction des retards, meilleure visibilité) en 3-6 mois. La transformation culturelle prend 12-18 mois.",
+      "q4": "Travaillez-vous avec des outils spécifiques?",
+      "a4": "On s'adapte à votre stack : MS Project, Jira, Monday.com, Azure DevOps, Smartsheet... L'outil est un moyen, pas une fin. On choisit ce qui convient à votre contexte.",
+      "q5": "Pouvez-vous gérer nos projets en mode impartition?",
+      "a5": "Oui. On offre des chefs de projet seniors en mode impartition pour des mandats de 3 mois et plus. Parfait quand vous avez un projet critique mais pas la ressource interne.",
+      "q6": "Travaillez-vous en anglais?",
+      "a6": "Absolument. Notre équipe est bilingue — documentation, rapports et coaching disponibles en français et en anglais."
+    }
+  },
+  "about": {
+    "meta": {
+      "title": "À propos — Vertex PMO",
+      "description": "15 ans d'expertise en gestion de projet pour des organisations publiques et privées. Découvrez notre approche et notre équipe."
+    },
+    "hero": {
+      "title": "À propos",
+      "subtitle": "15 ans à livrer des projets. Des centaines de mandats. Une obsession : les résultats."
+    },
+    "story": {
+      "title": "Pourquoi Vertex PMO?",
+      "p1": "Après 15 ans à diriger des bureaux de projet dans le secteur public et privé, on a vu le même pattern partout : des organisations brillantes qui perdent le contrôle de leurs projets. Pas par manque de talent — par manque de structure.",
+      "p2": "On a fondé Vertex PMO pour offrir aux organisations de la région Gatineau-Ottawa ce que les grandes firmes facturent le triple — mais avec l'agilité et la proximité d'une équipe locale.",
+      "p3": "Notre philosophie est simple : un bon PMO ne crée pas de bureaucratie, il l'élimine. Chaque processus qu'on met en place doit accélérer vos livraisons, pas les ralentir."
+    },
+    "philosophy": {
+      "title": "Notre philosophie",
+      "p1": "On mesure notre succès par le vôtre. Si vos projets sont livrés à temps, dans le budget et selon les attentes — mission accomplie. Si en plus vos équipes sont autonomes et motivées — c'est la cerise."
+    },
+    "values": {
+      "precision": {
+        "title": "Rigueur",
+        "description": "Chaque décision est basée sur des données. Chaque risque est quantifié. Chaque échéancier est réaliste.",
+        "example": "Quand un client nous dit « on veut ça pour hier », on ne dit pas oui. On montre les options avec leurs impacts réels."
+      },
+      "collaboration": {
+        "title": "Collaboration",
+        "description": "On travaille AVEC vos équipes, pas à côté. Le transfert de compétences est intégré dans chaque mandat.",
+        "example": "Nos chefs de projet coachent les vôtres en parallèle. Quand on part, votre équipe est plus forte qu'avant."
+      },
+      "results": {
+        "title": "Résultats",
+        "description": "Pas de slides PowerPoint de 200 pages. Des livrables concrets, des améliorations mesurables, des projets qui finissent.",
+        "example": "Notre KPI principal : le pourcentage de projets livrés à temps et dans le budget après notre intervention."
+      }
+    }
+  },
+  "contact": {
+    "meta": {
+      "title": "Contact — Planifiez votre consultation",
+      "description": "Contactez Vertex PMO pour une consultation gratuite. Gestion de projet stratégique pour organisations à Gatineau-Ottawa et partout au Canada."
+    },
+    "hero": {
+      "title": "Discutons de vos projets",
+      "subtitle": "Pas de pitch commercial. Une conversation franche sur vos enjeux et comment on peut vous aider."
+    },
+    "form": {
+      "name": "Votre nom",
+      "email": "Courriel",
+      "company": "Organisation",
+      "project_type": "Type de projet",
+      "challenge": "Votre défi principal",
+      "challenge_placeholder": "Décrivez brièvement votre situation de gestion de projet...",
+      "submit": "Envoyer",
+      "sending": "Envoi en cours...",
+      "success": "Message envoyé avec succès!",
+      "error": "Une erreur est survenue. Veuillez réessayer.",
+      "response_time": "On répond sous 24h. Habituellement plus vite.",
+      "consent_notice": "J'accepte que mes données soient utilisées pour traiter ma demande conformément à la politique de confidentialité."
+    },
+    "info": {
+      "title": "Parlons-en",
+      "email_label": "Courriel",
+      "phone_label": "Téléphone",
+      "location_label": "Bureau",
+      "location": "Gatineau, QC — Ottawa, ON",
+      "linkedin": "LinkedIn"
+    }
+  },
+  "footer": {
+    "copyright": "Vertex PMO inc. Tous droits réservés.",
+    "tagline": "Vos projets, livrés.",
+    "cta": "Prêt à reprendre le contrôle de vos projets?",
+    "cta_button": "Consultation gratuite"
+  },
+  "common": {
+    "duration": "Durée",
+    "learn_more": "En savoir plus",
+    "back_home": "Retour à l'accueil"
+  }
+}

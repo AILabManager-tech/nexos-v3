@@ -1,0 +1,202 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "NEXOS v3.0 Brief Client",
+  "description": "Schema de validation du brief client — inclut les exigences Loi 25 du Québec",
+  "type": "object",
+  "required": ["_meta", "client", "legal", "site"],
+  "properties": {
+    "_meta": {
+      "type": "object",
+      "required": ["generator", "mode"],
+      "properties": {
+        "generator": { "type": "string", "const": "nexos-v3.0" },
+        "created_at": { "type": "string", "format": "date-time" },
+        "mode": { "type": "string", "enum": ["create", "audit", "modify", "content", "analyze"] }
+      }
+    },
+    "client": {
+      "type": "object",
+      "required": ["name", "slug"],
+      "properties": {
+        "name": { "type": "string", "minLength": 2 },
+        "slug": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$", "minLength": 3 }
+      }
+    },
+    "legal": {
+      "type": "object",
+      "required": [
+        "company_name", "address", "phone", "email",
+        "rpp_name", "rpp_email", "rpp_title",
+        "data_collected", "purposes", "retention",
+        "transfer_outside_qc", "cookie_consent"
+      ],
+      "properties": {
+        "company_name": {
+          "type": "string",
+          "minLength": 2,
+          "description": "Dénomination sociale complète"
+        },
+        "neq": {
+          "type": "string",
+          "pattern": "^[0-9]{10}$",
+          "description": "Numéro d'entreprise du Québec (10 chiffres)"
+        },
+        "address": {
+          "type": "string",
+          "minLength": 5,
+          "description": "Adresse du siège social"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Téléphone principal"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Courriel principal de l'entreprise"
+        },
+        "rpp_name": {
+          "type": "string",
+          "minLength": 2,
+          "description": "Nom du Responsable de la Protection des Renseignements Personnels (Loi 25, art. 3.1)"
+        },
+        "rpp_email": {
+          "type": "string",
+          "format": "email",
+          "description": "Courriel du RPP"
+        },
+        "rpp_title": {
+          "type": "string",
+          "description": "Titre / Fonction du RPP"
+        },
+        "data_collected": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "nom", "courriel", "telephone", "adresse",
+              "navigation", "paiement", "sensible", "autre"
+            ]
+          },
+          "minItems": 0,
+          "description": "Types de renseignements personnels collectés"
+        },
+        "purposes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "formulaire-contact", "infolettre", "commandes",
+              "rendez-vous", "analytics", "autre"
+            ]
+          },
+          "minItems": 0,
+          "description": "Finalités de la collecte (Loi 25, art. 4)"
+        },
+        "retention": {
+          "type": "string",
+          "minLength": 3,
+          "description": "Durée de conservation prévue (Loi 25, art. 23)"
+        },
+        "transfer_outside_qc": {
+          "type": "boolean",
+          "description": "Les données seront-elles transférées hors Québec ? (Loi 25, art. 17)"
+        },
+        "transfer_countries": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Pays/services vers lesquels les données sont transférées"
+        },
+        "third_parties": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Services tiers qui accèdent aux données (ex: Vercel, Google Analytics, Resend)"
+        },
+        "cookie_consent": {
+          "type": "string",
+          "enum": ["opt-in", "opt-out", "full-management"],
+          "default": "opt-in",
+          "description": "Mécanisme de consentement (Loi 25, art. 8.1)"
+        },
+        "incident_process": {
+          "type": "boolean",
+          "default": false,
+          "description": "Processus de gestion des incidents en place ? (Loi 25, art. 3.5)"
+        },
+        "incident_email": {
+          "type": "string",
+          "format": "email",
+          "description": "Courriel de notification d'incident"
+        }
+      }
+    },
+    "site": {
+      "type": "object",
+      "required": ["type", "pages", "languages"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["vitrine", "ecommerce", "portfolio", "blog", "application"]
+        },
+        "pages": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "languages": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1,
+          "default": ["fr", "en"]
+        },
+        "features": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "hosting": {
+          "type": "string",
+          "default": "vercel"
+        },
+        "domain": {
+          "type": "string"
+        },
+        "existing_url": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "context": {
+      "type": "object",
+      "properties": {
+        "competitors": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "keywords_seo": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "free_text": {
+          "type": "string"
+        }
+      }
+    },
+    "design": {
+      "type": "object",
+      "properties": {
+        "palette": { "type": "string" },
+        "typography": { "type": "string" },
+        "style": {
+          "type": "string",
+          "enum": ["minimaliste", "colore", "corporatif", "creatif", "autre"]
+        },
+        "logo_provided": { "type": "boolean" },
+        "references": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}

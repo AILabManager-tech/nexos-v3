@@ -1,0 +1,64 @@
+{
+  "_meta": {
+    "generator": "nexos-v3.0",
+    "created_at": "2026-02-16T15:00:00Z",
+    "mode": "create"
+  },
+  "client": {
+    "name": "Plomberie Quebec Plus",
+    "slug": "plomberie-quebec-plus"
+  },
+  "legal": {
+    "company_name": "Plomberie Quebec Plus inc.",
+    "neq": "1234567890",
+    "address": "123 rue Test, Quebec QC G1A 1A1",
+    "phone": "418-555-0000",
+    "email": "info@plomberiequebecplus.ca",
+    "rpp_name": "Jean Tremblay",
+    "rpp_email": "privacy@plomberiequebecplus.ca",
+    "rpp_title": "President",
+    "data_collected": ["nom", "courriel", "telephone"],
+    "purposes": ["formulaire-contact"],
+    "retention": "2 ans apres le dernier contact",
+    "third_parties": ["Vercel (hebergement, US)", "Resend (courriel, US)"],
+    "transfer_outside_qc": true,
+    "transfer_countries": ["USA (Vercel)", "USA (Resend)"],
+    "cookie_consent": "opt-in",
+    "incident_process": false,
+    "incident_email": "privacy@plomberiequebecplus.ca"
+  },
+  "site": {
+    "type": "vitrine",
+    "pages": [
+      "accueil",
+      "services",
+      "a-propos",
+      "contact",
+      "politique-confidentialite",
+      "mentions-legales"
+    ],
+    "languages": ["fr", "en"],
+    "features": ["formulaire-contact", "carte-google"],
+    "hosting": "vercel",
+    "domain": "plomberiequebecplus.ca"
+  },
+  "context": {
+    "competitors": [
+      "plomberiebeauport.com",
+      "plombiersquebec.ca",
+      "plombierexpress.ca"
+    ],
+    "keywords_seo": [
+      "plombier quebec",
+      "plomberie urgence",
+      "debouchage",
+      "reparation plomberie"
+    ],
+    "free_text": "Entreprise familiale depuis 30 ans. Specialite : urgences et renovations. Service 24h."
+  },
+  "design": {
+    "style": "corporatif",
+    "logo_provided": true,
+    "references": []
+  }
+}

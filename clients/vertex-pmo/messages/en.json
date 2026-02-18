@@ -1,0 +1,322 @@
+{
+  "meta": {
+    "title": "HR Factory — HR Consultant for Industrial SMBs",
+    "description": "Organizational diagnostics, HR process implementation and management coaching for SMBs of 10 to 50 employees — industrial, manufacturing, construction sectors."
+  },
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "about": "About",
+    "contact": "Contact",
+    "cta": "Book a consultation"
+  },
+  "home": {
+    "hero": {
+      "title": "HR, forged to last.",
+      "subtitle": "I diagnose. I implement. I coach. So your team holds strong.",
+      "cta": "Book a free discovery call",
+      "cta_secondary": "Explore my services"
+    },
+    "stats": {
+      "experience": "Years of experience",
+      "clients": "SMBs supported",
+      "employees": "Employees / company"
+    },
+    "pain": {
+      "title": "Navigating HR alone?",
+      "owner": {
+        "title": "Overwhelmed owner",
+        "description": "You're handling recruitment, conflicts, and evaluations on top of everything else. It works... until it doesn't."
+      },
+      "manager": {
+        "title": "Manager without HR training",
+        "description": "Your managers are winging difficult conversations and performance reviews. Talent is walking out."
+      },
+      "growing": {
+        "title": "Growing SMB",
+        "description": "Your ad-hoc processes can't keep up. What worked at 10 employees breaks at 30."
+      }
+    },
+    "services": {
+      "title": "A three-step approach",
+      "diagnostic": {
+        "title": "Diagnostic",
+        "description": "We take stock. I analyze your current HR situation — processes, challenges, opportunities.",
+        "duration": "2-3 weeks"
+      },
+      "implementation": {
+        "title": "Implementation",
+        "description": "We build together. I put in place lasting HR processes, adapted to your reality.",
+        "duration": "8-12 weeks"
+      },
+      "coaching": {
+        "title": "Coaching",
+        "description": "We ensure the handoff. I train your managers to maintain these gains autonomously.",
+        "duration": "3-6 months"
+      }
+    },
+    "testimonials": {
+      "title": "What my clients say"
+    },
+    "cta_final": {
+      "title": "Ready to structure your HR?",
+      "subtitle": "No sales pitch. Just a straight conversation about what we can do together.",
+      "button": "Book a free discovery call"
+    }
+  },
+  "quiz": {
+    "title": "Assess your HR maturity",
+    "subtitle": "5 quick questions to find out where you stand",
+    "q1": {
+      "question": "How do you handle recruitment?",
+      "a": "By gut feeling, when it's urgent",
+      "b": "We have a process, but informal",
+      "c": "Structured process with interview guide"
+    },
+    "q2": {
+      "question": "How are performance reviews handled?",
+      "a": "We don't really do them",
+      "b": "Once a year, when we remember",
+      "c": "Regular reviews with clear objectives"
+    },
+    "q3": {
+      "question": "Your HR policies are...",
+      "a": "Non-existent or in my head",
+      "b": "Written but outdated",
+      "c": "Documented and communicated"
+    },
+    "q4": {
+      "question": "Conflict management is done...",
+      "a": "In firefighter mode when things blow up",
+      "b": "We try to resolve, but without method",
+      "c": "With a clear resolution process"
+    },
+    "q5": {
+      "question": "New employee onboarding...",
+      "a": "It's 'welcome, here's your desk'",
+      "b": "We have a basic first-week plan",
+      "c": "Structured 90-day program"
+    },
+    "score": "Your score",
+    "next_step": "Recommended next step",
+    "restart": "Start over",
+    "results": {
+      "low": {
+        "title": "Red zone — HR Emergency",
+        "description": "Your HR processes are minimal. That's normal for a growing SMB, but it's costing you in turnover and time. A quick diagnostic could change everything.",
+        "cta": "Book your diagnostic"
+      },
+      "mid": {
+        "title": "Yellow zone — Foundations to strengthen",
+        "description": "You have basics, but they're not solid. A few well-implemented key processes could transform your daily management.",
+        "cta": "Discover implementation"
+      },
+      "high": {
+        "title": "Green zone — Optimization",
+        "description": "Congrats! You have good HR foundations. Management coaching could bring your team to the next level.",
+        "cta": "Explore coaching"
+      }
+    }
+  },
+  "calculator": {
+    "title": "How much is HR chaos costing you?",
+    "subtitle": "Estimate the financial impact of employee turnover",
+    "employees_label": "Number of employees",
+    "salary_label": "Average annual salary",
+    "turnover_label": "Annual turnover rate",
+    "result_title": "Estimated annual turnover cost",
+    "formula": "Turnover costs on average 33% of annual salary per departure",
+    "departures": "estimated departures / year",
+    "cost_per": "cost per departure",
+    "cta": "Let's reduce that number together"
+  },
+  "myths": {
+    "title": "HR Myths — What we often hear",
+    "subtitle": "Click to discover the reality",
+    "m1": {
+      "myth": "HR is only for big companies",
+      "reality": "Starting at 15 employees, HR issues really cost. A flawed recruitment process can cost you $50,000 per bad hire."
+    },
+    "m2": {
+      "myth": "A good salary is enough to retain employees",
+      "reality": "Salary ranks 4th in reasons for leaving. Lack of recognition, development and bad management come first."
+    },
+    "m3": {
+      "myth": "Performance reviews are useless",
+      "reality": "Done badly, yes. Done well, they reduce turnover by 14.9% and boost engagement. It's the most underrated tool."
+    },
+    "m4": {
+      "myth": "I know my people, no need for processes",
+      "reality": "It works at 10 employees. At 30, it's impossible to track everything. Without processes, good intentions become blind spots."
+    }
+  },
+  "testimonials": {
+    "title": "Concrete transformations",
+    "subtitle": "Real results, names changed for confidentiality",
+    "c1": {
+      "industry": "Manufacturing — 35 employees",
+      "before_title": "Before",
+      "before": "40% turnover. No onboarding process. Managers avoided difficult conversations.",
+      "after_title": "After 6 months",
+      "after": "Turnover reduced to 18%. 90-day onboarding program. Managers trained in constructive feedback.",
+      "metric": "-55% turnover"
+    },
+    "c2": {
+      "industry": "Professional services — 22 employees",
+      "before_title": "Before",
+      "before": "Gut-feeling recruitment. 3 months to fill a position. Frequent bad hires.",
+      "after_title": "After 3 months",
+      "after": "Structured process. Fill time reduced to 5 weeks. Standardized interview guide.",
+      "metric": "-60% fill time"
+    },
+    "c3": {
+      "industry": "Construction — 48 employees",
+      "before_title": "Before",
+      "before": "No written policies. Conflicts managed case by case. Owner exhausted by HR emergencies.",
+      "after_title": "After 4 months",
+      "after": "Complete employee handbook. Conflict management process. Managers autonomous for 80% of situations.",
+      "metric": "80% autonomy"
+    }
+  },
+  "services": {
+    "meta": {
+      "title": "Services — Diagnostic, Implementation, HR Coaching",
+      "description": "Discover my three HR support pillars for SMBs: organizational diagnostic, process implementation and management coaching."
+    },
+    "hero": {
+      "title": "Services",
+      "subtitle": "Three pillars to structure, implement and sustain HR that holds up."
+    },
+    "diagnostic": {
+      "title": "Organizational diagnostic",
+      "description": "Understanding where you stand — no judgment.",
+      "includes": "What's included",
+      "item1": "Confidential interviews with key stakeholders",
+      "item2": "Audit of current HR policies, processes and practices",
+      "item3": "Prioritized recommendations report",
+      "duration": "2-3 weeks",
+      "result": "You know exactly what's holding you back — and how to fix it."
+    },
+    "implementation": {
+      "title": "HR process implementation",
+      "description": "Building processes that last — not just a document gathering dust.",
+      "includes": "Process examples",
+      "item1": "Recruitment: from sourcing to 90-day onboarding",
+      "item2": "Performance reviews: goals, feedback, development",
+      "item3": "Retention: compensation, culture, career paths",
+      "item4": "Compliance: labor standards, internal policies",
+      "duration": "8-12 weeks",
+      "result": "Documented processes, your team trained to maintain them."
+    },
+    "coaching": {
+      "title": "Management coaching",
+      "description": "Turning your managers into confident HR leaders.",
+      "includes": "Popular topics",
+      "item1": "Difficult conversations (performance, discipline)",
+      "item2": "Delegation and constructive feedback",
+      "item3": "Team conflict management",
+      "item4": "Leadership and company culture",
+      "duration": "3-6 months",
+      "result": "Autonomous managers who know how to lead their teams."
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "q1": "How much does it cost?",
+      "a1": "A full diagnostic ranges from $2,000 to $4,000. Process implementation from $8,000 to $15,000. I can narrow it down after our first conversation — no pricing surprises.",
+      "q2": "Is my company too small?",
+      "a2": "My sweet spot is SMBs with 10 to 50 employees — industrial, manufacturing, construction and services sectors. Big enough for HR issues to really cost you, not big enough for a full-time HR department.",
+      "q3": "How long does it take?",
+      "a3": "Diagnostic: 2-3 weeks. Implementation: 8-12 weeks. Coaching: 3-6 months. It all depends on scope and your availability.",
+      "q4": "Do you offer support after the engagement?",
+      "a4": "Yes, optionally. Monthly check-ins, ad-hoc support, or quarterly reviews — whatever suits your needs.",
+      "q5": "What's the difference between a coach and an HR consultant?",
+      "a5": "A coach focuses on the leader's personal development. I go further: I diagnose, implement concrete processes, AND coach. It's a complete approach.",
+      "q6": "Do you work in French too?",
+      "a6": "Absolutely. I'm fully bilingual — consultations, coaching and documentation in both French and English."
+    }
+  },
+  "about": {
+    "meta": {
+      "title": "About — HR Factory",
+      "description": "12 years in corporate HR leadership, 3 years as an HR consultant for industrial SMBs in Quebec. Learn about my journey and philosophy."
+    },
+    "hero": {
+      "title": "About",
+      "subtitle": "12 years in HR leadership. 3 years as an HR consultant for industrial SMBs."
+    },
+    "story": {
+      "title": "Why I left the corporate world",
+      "p1": "For 12 years, I was HR Director in the manufacturing sector in Quebec City. I saw firsthand: owners burning out, managers winging it, talent leaving for lack of structure.",
+      "p2": "I was done with corporate. I wanted real impact — not just filling boxes in a system. In an SMB, when you change something, you see the difference the following week.",
+      "p3": "I launched my practice to offer SMBs what big firms charge $50,000 a year for — but in an accessible, concrete and lasting way."
+    },
+    "philosophy": {
+      "title": "My philosophy",
+      "p1": "My goal is to make you autonomous. Not to create dependency. After 6 months, your team knows how to maintain the processes. You don't need me anymore — and that's exactly what I aim for."
+    },
+    "values": {
+      "empathy": {
+        "title": "Pragmatism",
+        "description": "I understand the reality of industrial SMB owners. No theory, just solutions that hold up.",
+        "example": "When an owner tells me they're doing payroll at midnight, I don't judge — I help them break that cycle."
+      },
+      "transparency": {
+        "title": "Transparency",
+        "description": "You know upfront what it costs, how long it takes, and what you'll get.",
+        "example": "My service proposals always include a detailed timeline, fixed budget and clear deliverables. No grey areas."
+      },
+      "autonomy": {
+        "title": "Empowerment",
+        "description": "I leave when you're ready. My success is measured by your autonomy.",
+        "example": "After 6 months, your managers handle performance reviews on their own. You don't need me anymore — mission accomplished."
+      }
+    }
+  },
+  "contact": {
+    "meta": {
+      "title": "Contact — Book a Free Discovery Call",
+      "description": "Contact HR Factory for a free discovery consultation. SMBs of 10 to 50 employees — industrial, manufacturing, construction sectors in Quebec."
+    },
+    "hero": {
+      "title": "Let's talk about your situation",
+      "subtitle": "No sales pitch. Just a straight conversation about what we can do together."
+    },
+    "form": {
+      "name": "Your name",
+      "email": "Email",
+      "company": "Company",
+      "employees": "Number of employees",
+      "challenge": "Your main HR challenge",
+      "challenge_placeholder": "Briefly describe your situation...",
+      "submit": "Send",
+      "response_time": "I respond within 24 hours. Usually sooner."
+    },
+    "info": {
+      "email_label": "Email",
+      "phone_label": "Phone",
+      "location_label": "Location",
+      "location": "Quebec City, QC",
+      "linkedin": "LinkedIn"
+    }
+  },
+  "footer": {
+    "copyright": "HR Factory — Émilie Poirier. All rights reserved.",
+    "tagline": "Forging your HR.",
+    "cta": "Ready to structure your HR?",
+    "cta_button": "Free consultation",
+    "blog": "Blog"
+  },
+  "chatbot": {
+    "toggle": "Open chat",
+    "title": "HR Factory",
+    "subtitle": "Virtual assistant",
+    "close": "Close",
+    "placeholder": "Type your message...",
+    "send": "Send"
+  },
+  "common": {
+    "duration": "Duration",
+    "learn_more": "Learn more",
+    "back_home": "Back to home"
+  }
+}
