@@ -22,29 +22,6 @@ vi.mock("@/i18n/routing", () => ({
   ),
 }));
 
-vi.mock("framer-motion", () => ({
-  motion: {
-    div: ({
-      children,
-      className,
-      ...rest
-    }: React.HTMLAttributes<HTMLDivElement>) => (
-      <div className={className} {...rest}>
-        {children}
-      </div>
-    ),
-    span: ({
-      children,
-      ...rest
-    }: React.HTMLAttributes<HTMLSpanElement>) => (
-      <span {...rest}>{children}</span>
-    ),
-  },
-  AnimatePresence: ({ children }: { children: React.ReactNode }) => (
-    <>{children}</>
-  ),
-}));
-
 vi.mock("next/image", () => ({
   default: (props: { alt: string; src: string }) => (
     <img alt={props.alt} src={props.src} />
@@ -65,6 +42,22 @@ vi.mock("@/components/animations/AuroraBackground", () => ({
 
 vi.mock("@/components/animations/LineReveal", () => ({
   LineReveal: () => <div data-testid="line-reveal" />,
+}));
+
+vi.mock("@/components/animations/FloatingElement", () => ({
+  FloatingElement: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+}));
+
+vi.mock("@/components/animations/MagneticButton", () => ({
+  MagneticButton: ({
+    children,
+    href,
+  }: {
+    children: React.ReactNode;
+    href: string;
+  }) => <a href={href}>{children}</a>,
 }));
 
 vi.mock("@/components/animations/CountUp", () => ({
@@ -110,15 +103,13 @@ describe("AboutContent", () => {
 
   it("renders value cards", () => {
     render(<AboutContent />);
-    expect(screen.getByText("empathy.title")).toBeInTheDocument();
-    expect(screen.getByText("transparency.title")).toBeInTheDocument();
-    expect(screen.getByText("autonomy.title")).toBeInTheDocument();
+    expect(screen.getByText("precision.title")).toBeInTheDocument();
+    expect(screen.getByText("collaboration.title")).toBeInTheDocument();
+    expect(screen.getByText("results.title")).toBeInTheDocument();
   });
 
-  it("renders stats section", () => {
+  it("renders values section title", () => {
     render(<AboutContent />);
-    expect(screen.getByText("12 ans")).toBeInTheDocument();
-    expect(screen.getByText("3 ans")).toBeInTheDocument();
-    expect(screen.getByText("100%")).toBeInTheDocument();
+    expect(screen.getByText("values.title")).toBeInTheDocument();
   });
 });

@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
-import { useRef, type ReactNode } from "react";
+import { useRef, useState, useEffect, type ReactNode } from "react";
+import { useReducedMotion } from "@/hooks/useAnimations";
 
 interface ParallaxSectionProps {
   children: ReactNode;
@@ -9,40 +9,48 @@ interface ParallaxSectionProps {
   speed?: number;
 }
 
-/**
- * ParallaxSection - Wraps children in a scroll-driven parallax effect with opacity fade.
- *
- * @component
- * @example
- * ```tsx
- * <ParallaxSection speed={0.3}>
- *   <p>Parallax content</p>
- * </ParallaxSection>
- * ```
- */
 export function ParallaxSection({
   children,
   className,
   speed = 0.3,
 }: ParallaxSectionProps) {
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
+  const [transform, setTransform] = useState({ y: 0, opacity: 1 });
 
-  const y = useTransform(scrollYProgress, [0, 1], [speed * 100, -speed * 100]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0.4, 1, 1, 0.4]);
+  useEffect(() => {
+    if (shouldReduceMotion) return;
+    const element = ref.current;
+    if (!element) return;
+
+    function onScroll() {
+      const rect = element!.getBoundingClientRect();
+      const viewHeight = window.innerHeight;
+      const progress = (viewHeight - rect.top) / (viewHeight + rect.height);
+      const clamped = Math.max(0, Math.min(1, progress));
+      const y = (1 - clamped * 2) * speed * 100;
+      const opacity =
+        clamped < 0.2
+          ? (clamped / 0.2) * 0.6 + 0.4
+          : clamped > 0.8
+            ? ((1 - clamped) / 0.2) * 0.6 + 0.4
+            : 1;
+      setTransform({ y, opacity });
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [shouldReduceMotion, speed]);
 
   return (
     <div ref={ref} className={`relative overflow-hidden ${className ?? ""}`}>
       {shouldReduceMotion ? (
         <div>{children}</div>
       ) : (
-        <motion.div style={{ y, opacity }}>
+        <div style={{ transform: `translateY(${transform.y}px)`, opacity: transform.opacity }}>
           {children}
-        </motion.div>
+        </div>
       )}
     </div>
   );

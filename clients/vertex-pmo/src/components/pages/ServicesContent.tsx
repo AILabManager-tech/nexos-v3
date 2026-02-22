@@ -71,7 +71,7 @@ export function ServicesContent() {
       </section>
 
       {/* ── Service Offerings ── */}
-      {services.map(({ key, Icon, gradient, iconBg, badgeBg }, index) => {
+      {services.map(({ key, Icon, gradient, iconBg }, index) => {
         const isEven = index % 2 === 0;
         const items = ["item1", "item2", "item3", "item4"] as const;
 
@@ -109,7 +109,7 @@ export function ServicesContent() {
                   </div>
 
                   {/* Description */}
-                  <p className="mb-8 font-body text-lg leading-relaxed text-charcoal/70">
+                  <p className="mb-8 font-body text-lg leading-relaxed text-charcoal-light">
                     {t(`${key}.description`)}
                   </p>
 
@@ -124,7 +124,7 @@ export function ServicesContent() {
                           className="mt-0.5 h-5 w-5 shrink-0 text-success-500 transition-transform group-hover:scale-110"
                           aria-hidden="true"
                         />
-                        <span className="font-body text-charcoal/80">
+                        <span className="font-body text-charcoal-light">
                           {t(`${key}.${item}`)}
                         </span>
                       </li>
@@ -141,7 +141,7 @@ export function ServicesContent() {
                   <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-lg">
                     {/* Duration badge */}
                     <div className="mb-6">
-                      <span className="font-heading text-xs font-semibold uppercase tracking-wider text-charcoal/50">
+                      <span className="font-heading text-xs font-semibold uppercase tracking-wider text-charcoal-light">
                         {t(`${key}.duration`)}
                       </span>
                     </div>

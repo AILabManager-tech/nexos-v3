@@ -1,15 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { TextReveal } from "@/components/animations/TextReveal";
 import { LineReveal } from "@/components/animations/LineReveal";
-import { FloatingElement } from "@/components/animations/FloatingElement";
 import { MagneticButton } from "@/components/animations/MagneticButton";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
-import { AuroraBackground } from "@/components/animations/AuroraBackground";
+import { useInView, useReducedMotion } from "@/hooks/useAnimations";
+
+const AuroraBackground = dynamic(
+  () =>
+    import("@/components/animations/AuroraBackground").then((m) => ({
+      default: m.AuroraBackground,
+    })),
+  { ssr: false, loading: () => null }
+);
+
+const FloatingElement = dynamic(
+  () =>
+    import("@/components/animations/FloatingElement").then((m) => ({
+      default: m.FloatingElement,
+    })),
+  { ssr: false, loading: () => null }
+);
 
 const values = ["precision", "collaboration", "results"] as const;
 
@@ -52,14 +67,21 @@ function ValueCard({
   const t = useTranslations("about.values");
   const [expanded, setExpanded] = useState(false);
   const colors = valueColors[index]!;
+  const ref = useRef<HTMLDivElement>(null);
+  const shouldReduceMotion = useReducedMotion();
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.15 }}
+    <div
+      ref={ref}
       className="group"
+      style={{
+        opacity: shouldReduceMotion || isInView ? 1 : 0,
+        transform: shouldReduceMotion || isInView ? "none" : "translateY(30px)",
+        transition: shouldReduceMotion
+          ? "none"
+          : `opacity 0.5s ease-out ${index * 0.15}s, transform 0.5s ease-out ${index * 0.15}s`,
+      }}
     >
       <button
         onClick={() => setExpanded(!expanded)}
@@ -77,37 +99,35 @@ function ValueCard({
           >
             {t(`${valueKey}.title`)}
           </h3>
-          <motion.span
+          <span
             className="ml-auto text-charcoal-light"
-            animate={{ rotate: expanded ? 180 : 0 }}
-            transition={{ duration: 0.3 }}
+            style={{
+              display: "inline-block",
+              transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
+              transition: "transform 0.3s ease",
+            }}
           >
             ▾
-          </motion.span>
+          </span>
         </div>
         <p className="text-charcoal-light">{t(`${valueKey}.description`)}</p>
 
-        <AnimatePresence>
-          {expanded && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="overflow-hidden"
+        {expanded && (
+          <div
+            className="overflow-hidden"
+            style={{ animation: "fadeInScale 0.3s ease-out" }}
+          >
+            <div
+              className={`mt-4 rounded-xl ${colors.expandBg} p-4 border ${colors.expandBorder}`}
             >
-              <div
-                className={`mt-4 rounded-xl ${colors.expandBg} p-4 border ${colors.expandBorder}`}
-              >
-                <p className={`text-sm italic ${colors.expandText}`}>
-                  {t(`${valueKey}.example`)}
-                </p>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              <p className={`text-sm italic ${colors.expandText}`}>
+                {t(`${valueKey}.example`)}
+              </p>
+            </div>
+          </div>
+        )}
       </button>
-    </motion.div>
+    </div>
   );
 }
 
@@ -125,7 +145,7 @@ export function AboutContent() {
   return (
     <main>
       {/* ── Hero ─────────────────────────────────────────────────── */}
-      <section className="relative min-h-[55vh] flex items-center overflow-hidden">
+      <section className="relative min-h-[55vh] flex items-center overflow-hidden bg-slate-900">
         <Image
           src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1920&q=80&auto=format"
           alt="Rencontre stratégique d'une équipe de gestion de projet"
@@ -182,6 +202,7 @@ export function AboutContent() {
                     width={800}
                     height={600}
                     className="object-cover w-full h-[420px]"
+                    loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-charcoal-dark/40 via-transparent to-transparent" />
                 </div>
@@ -200,10 +221,11 @@ export function AboutContent() {
           <div className="relative min-h-[450px]">
             <Image
               src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80&auto=format"
-              alt="Collaboration d'équipe autour d'un plan de projet"
+              alt="Collaboration d'equipe autour d'un plan de projet"
               fill
               className="object-cover"
               sizes="50vw"
+              loading="lazy"
             />
             <div className="absolute inset-0 bg-cobalt-700/20" />
           </div>

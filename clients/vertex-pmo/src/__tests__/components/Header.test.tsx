@@ -34,7 +34,7 @@ afterEach(cleanup);
 describe("Header", () => {
   it("renders the logo", () => {
     render(<Header />);
-    expect(screen.getByText(/L'Usine/)).toBeInTheDocument();
+    expect(screen.getByText(/Vertex/)).toBeInTheDocument();
   });
 
   it("renders navigation links", () => {

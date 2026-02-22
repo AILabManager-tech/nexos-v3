@@ -2,14 +2,6 @@ interface JsonLdProps {
   data: Record<string, unknown>;
 }
 
-/**
- * Renders a JSON-LD structured data script tag for SEO.
- *
- * @component
- * @param {JsonLdProps} props - The structured data object to serialize.
- * @example
- * <JsonLd data={localBusinessSchema} />
- */
 export function JsonLd({ data }: JsonLdProps) {
   return (
     <script
@@ -21,26 +13,32 @@ export function JsonLd({ data }: JsonLdProps) {
 
 export const localBusinessSchema = {
   "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  name: "L'Usine RH",
+  "@type": "ProfessionalService",
+  name: "Vertex PMO",
   description:
-    "Consultante RH pour PME de 15 à 50 employés au Québec. Diagnostic organisationnel, implantation de processus RH et coaching de gestionnaires.",
-  url: "https://emiliepoirierrh.ca",
+    "Firme de gestion de projet spécialisée en consultation PMO, gestion de portefeuille et transformation Agile. Gatineau-Ottawa.",
+  url: "https://vertex-pmo.vercel.app",
   address: {
     "@type": "PostalAddress",
-    addressLocality: "Québec",
+    addressLocality: "Gatineau",
     addressRegion: "QC",
     addressCountry: "CA",
   },
-  areaServed: {
-    "@type": "AdministrativeArea",
-    name: "Québec",
-  },
-  priceRange: "$$",
+  areaServed: [
+    {
+      "@type": "AdministrativeArea",
+      name: "Québec",
+    },
+    {
+      "@type": "AdministrativeArea",
+      name: "Ontario",
+    },
+  ],
+  priceRange: "$$$",
   serviceType: [
-    "Diagnostic organisationnel",
-    "Implantation de processus RH",
-    "Coaching de gestionnaires",
+    "Consultation PMO stratégique",
+    "Gestion de portefeuille de projets",
+    "Transformation Agile",
   ],
   knowsLanguage: ["fr", "en"],
 };
@@ -51,46 +49,46 @@ export function buildServiceSchema(locale: string) {
     "@context": "https://schema.org",
     "@type": "Service",
     provider: {
-      "@type": "LocalBusiness",
-      name: isFr ? "L'Usine RH" : "HR Factory",
+      "@type": "ProfessionalService",
+      name: "Vertex PMO",
     },
-    serviceType: isFr ? "Consultation RH" : "HR Consulting",
+    serviceType: isFr ? "Gestion de projet" : "Project Management",
     areaServed: {
       "@type": "AdministrativeArea",
-      name: "Québec, Canada",
+      name: "Gatineau-Ottawa, Canada",
     },
     hasOfferCatalog: {
       "@type": "OfferCatalog",
-      name: isFr ? "Services RH" : "HR Services",
+      name: isFr ? "Services PMO" : "PMO Services",
       itemListElement: [
         {
           "@type": "Offer",
           itemOffered: {
             "@type": "Service",
-            name: isFr ? "Diagnostic organisationnel" : "Organizational Diagnostic",
+            name: isFr ? "Consultation PMO stratégique" : "Strategic PMO Consulting",
             description: isFr
-              ? "Analyse complète de la situation RH : entretiens, audit des processus, rapport de recommandations."
-              : "Complete HR situation analysis: interviews, process audit, recommendations report.",
+              ? "Mise en place d'un bureau de projet adapté : évaluation de maturité, design du modèle PMO, processus et outils."
+              : "Setting up a tailored project office: maturity assessment, PMO model design, processes and tools.",
           },
         },
         {
           "@type": "Offer",
           itemOffered: {
             "@type": "Service",
-            name: isFr ? "Implantation de processus RH" : "HR Process Implementation",
+            name: isFr ? "Gestion de portefeuille" : "Portfolio Management",
             description: isFr
-              ? "Mise en place de processus durables : recrutement, évaluation, rétention, conformité."
-              : "Implementation of lasting processes: recruitment, evaluation, retention, compliance.",
+              ? "Visibilité complète sur vos projets : priorisation, dashboard temps réel, allocation des ressources."
+              : "Complete project visibility: prioritization, real-time dashboard, resource allocation.",
           },
         },
         {
           "@type": "Offer",
           itemOffered: {
             "@type": "Service",
-            name: isFr ? "Coaching de gestionnaires" : "Management Coaching",
+            name: isFr ? "Transformation Agile" : "Agile Transformation",
             description: isFr
-              ? "Formation des gestionnaires en conversations difficiles, délégation, leadership."
-              : "Training managers in difficult conversations, delegation, leadership.",
+              ? "Accompagnement du waterfall vers l'Agile : évaluation, framework, formation et coaching d'équipes."
+              : "Guiding the shift from waterfall to Agile: assessment, framework, training and team coaching.",
           },
         },
       ],

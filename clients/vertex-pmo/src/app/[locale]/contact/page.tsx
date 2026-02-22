@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { ContactContent } from "@/components/pages/ContactContent";
+import { LazyContactContent } from "@/components/pages/LazyContactContent";
 import type { Metadata } from "next";
 
 export async function generateMetadata({
@@ -13,15 +13,15 @@ export async function generateMetadata({
     title: t("title"),
     description: t("description"),
     alternates: {
-      canonical: `https://emiliepoirierrh.ca/${locale}/contact`,
+      canonical: `https://vertex-pmo.vercel.app/${locale}/contact`,
       languages: {
-        fr: "https://emiliepoirierrh.ca/fr/contact",
-        en: "https://emiliepoirierrh.ca/en/contact",
+        fr: "https://vertex-pmo.vercel.app/fr/contact",
+        en: "https://vertex-pmo.vercel.app/en/contact",
       },
     },
   };
 }
 
 export default function ContactPage() {
-  return <ContactContent />;
+  return <LazyContactContent />;
 }

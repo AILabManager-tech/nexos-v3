@@ -22,23 +22,6 @@ vi.mock("@/i18n/routing", () => ({
   ),
 }));
 
-vi.mock("framer-motion", () => ({
-  motion: {
-    div: ({
-      children,
-      className,
-      ...rest
-    }: React.HTMLAttributes<HTMLDivElement>) => (
-      <div className={className} {...rest}>
-        {children}
-      </div>
-    ),
-  },
-  AnimatePresence: ({ children }: { children: React.ReactNode }) => (
-    <>{children}</>
-  ),
-}));
-
 vi.mock("next/image", () => ({
   default: (props: { alt: string; src: string }) => (
     <img alt={props.alt} src={props.src} />
@@ -104,9 +87,9 @@ describe("ServicesContent", () => {
 
   it("renders service sections", () => {
     render(<ServicesContent />);
-    expect(screen.getByText("diagnostic.title")).toBeInTheDocument();
-    expect(screen.getByText("implementation.title")).toBeInTheDocument();
-    expect(screen.getByText("coaching.title")).toBeInTheDocument();
+    expect(screen.getByText("consulting.title")).toBeInTheDocument();
+    expect(screen.getByText("portfolio.title")).toBeInTheDocument();
+    expect(screen.getByText("agile.title")).toBeInTheDocument();
   });
 
   it("renders FAQ section", () => {
@@ -115,9 +98,10 @@ describe("ServicesContent", () => {
     expect(screen.getByTestId("faq-accordion")).toBeInTheDocument();
   });
 
-  it("renders service images", () => {
+  it("renders service include lists", () => {
     render(<ServicesContent />);
-    const images = document.querySelectorAll("img");
-    expect(images.length).toBeGreaterThanOrEqual(3);
+    expect(screen.getByText("consulting.item1")).toBeInTheDocument();
+    expect(screen.getByText("portfolio.item1")).toBeInTheDocument();
+    expect(screen.getByText("agile.item1")).toBeInTheDocument();
   });
 });

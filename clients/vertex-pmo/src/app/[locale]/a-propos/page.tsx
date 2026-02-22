@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { AboutContent } from "@/components/pages/AboutContent";
+import { LazyAboutContent } from "@/components/pages/LazyAboutContent";
 import type { Metadata } from "next";
 
 export async function generateMetadata({
@@ -13,15 +13,15 @@ export async function generateMetadata({
     title: t("title"),
     description: t("description"),
     alternates: {
-      canonical: `https://emiliepoirierrh.ca/${locale}/a-propos`,
+      canonical: `https://vertex-pmo.vercel.app/${locale}/a-propos`,
       languages: {
-        fr: "https://emiliepoirierrh.ca/fr/a-propos",
-        en: "https://emiliepoirierrh.ca/en/a-propos",
+        fr: "https://vertex-pmo.vercel.app/fr/a-propos",
+        en: "https://vertex-pmo.vercel.app/en/a-propos",
       },
     },
   };
 }
 
 export default function AboutPage() {
-  return <AboutContent />;
+  return <LazyAboutContent />;
 }

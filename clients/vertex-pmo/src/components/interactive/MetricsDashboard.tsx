@@ -32,7 +32,7 @@ export function MetricsDashboard() {
                   <p className={`font-heading text-3xl font-bold md:text-4xl ${metric.color}`}>
                     <CountUp to={metric.value} suffix={metric.suffix} />
                   </p>
-                  <p className="mt-1 text-sm text-slate-600">{t(metric.labelKey)}</p>
+                  <p className="mt-1 text-sm text-slate-700">{t(metric.labelKey)}</p>
                 </div>
               ))}
             </div>

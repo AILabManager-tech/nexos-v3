@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "L'Usine RH — Consultante en ressources humaines";
+export const alt = "Vertex PMO — Project Management Office";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -29,10 +29,10 @@ export default async function Image() {
           }}
         >
           <div style={{ fontSize: 72, fontWeight: 700, color: "#fff", letterSpacing: "-2px" }}>
-            L&apos;Usine RH
+            Vertex PMO
           </div>
           <div style={{ fontSize: 28, color: "#d4c5a0", fontWeight: 400 }}>
-            Consultante en ressources humaines
+            Project Management Office
           </div>
           <div
             style={{
@@ -44,7 +44,7 @@ export default async function Image() {
             }}
           />
           <div style={{ fontSize: 20, color: "#c9d4cb", marginTop: "8px" }}>
-            emiliepoirierrh.ca
+            vertex-pmo.vercel.app
           </div>
         </div>
       </div>

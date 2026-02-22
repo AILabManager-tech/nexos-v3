@@ -1,51 +1,10 @@
 import { render, screen, cleanup, fireEvent, act } from "@testing-library/react";
 import { describe, it, expect, afterEach, vi, beforeEach } from "vitest";
 
-const motionState = vi.hoisted(() => ({ reducedMotion: false }));
-
-vi.mock("framer-motion", () => {
-  const mc = (Tag: string) => {
-    const FM_PROPS = new Set([
-      "initial", "animate", "exit", "transition", "whileInView",
-      "viewport", "variants", "whileHover", "whileTap", "layout",
-      "layoutId",
-    ]);
-    const C = ({ children, ...props }: Record<string, unknown>) => {
-      const safe: Record<string, unknown> = {};
-      for (const [k, v] of Object.entries(props)) {
-        if (!FM_PROPS.has(k)) {
-          safe[k] = v;
-        }
-      }
-      const El = Tag as unknown as React.ElementType;
-      return <El {...safe}>{children as React.ReactNode}</El>;
-    };
-    C.displayName = `motion.${Tag}`;
-    return C;
-  };
-  return {
-    motion: {
-      div: mc("div"), span: mc("span"), button: mc("button"),
-      section: mc("section"), a: mc("a"), h1: mc("h1"),
-      h2: mc("h2"), h3: mc("h3"), p: mc("p"),
-      create: (tag: string) => mc(tag),
-    },
-    animate: () => ({ stop: () => {} }),
-    useInView: () => true,
-    useScroll: () => ({ scrollYProgress: { get: () => 0.5 } }),
-    useTransform: () => 0,
-    useMotionValue: (v: number = 0) => ({ set: () => {}, get: () => v }),
-    useSpring: () => ({ set: () => {}, get: () => 0 }),
-    useReducedMotion: () => motionState.reducedMotion,
-    AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-  };
-});
-
 import { ScrollToTop } from "@/components/ui/ScrollToTop";
 
 afterEach(() => {
   cleanup();
-  motionState.reducedMotion = false;
 });
 
 describe("ScrollToTop", () => {
@@ -69,6 +28,7 @@ describe("ScrollToTop", () => {
   it("button is not visible when scroll is 0", () => {
     Object.defineProperty(window, "scrollY", { configurable: true, writable: true, value: 0 });
     render(<ScrollToTop />);
+    // Button is in DOM but hidden via aria-hidden="true"
     const btn = screen.queryByRole("button", { name: /retour en haut/i });
     expect(btn).not.toBeInTheDocument();
   });
@@ -157,7 +117,6 @@ describe("ScrollToTop", () => {
   });
 
   it("renders correctly with reduced motion preference", () => {
-    motionState.reducedMotion = true;
     render(<ScrollToTop />);
 
     act(() => {

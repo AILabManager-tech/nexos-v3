@@ -11,13 +11,13 @@ export async function generateMetadata({
     title: locale === "fr" ? "Politique de confidentialité" : "Privacy Policy",
     description:
       locale === "fr"
-        ? "Politique de confidentialité de L'Usine RH — conforme à la Loi 25 du Québec."
-        : "HR Factory privacy policy — compliant with Quebec's Law 25.",
+        ? "Politique de confidentialité de Vertex PMO — conforme à la Loi 25 du Québec."
+        : "Vertex PMO privacy policy — compliant with Quebec's Law 25.",
     alternates: {
-      canonical: `https://emiliepoirierrh.ca/${locale}/politique-confidentialite`,
+      canonical: `https://vertex-pmo.vercel.app/${locale}/politique-confidentialite`,
       languages: {
-        fr: "https://emiliepoirierrh.ca/fr/politique-confidentialite",
-        en: "https://emiliepoirierrh.ca/en/politique-confidentialite",
+        fr: "https://vertex-pmo.vercel.app/fr/politique-confidentialite",
+        en: "https://vertex-pmo.vercel.app/en/politique-confidentialite",
       },
     },
   };
@@ -32,11 +32,11 @@ export default function PrivacyPolicyPage() {
       <h1 className="mb-8 font-heading text-3xl font-bold text-charcoal">
         {isFr ? "Politique de confidentialité" : "Privacy Policy"}
       </h1>
-      <p className="mb-8 text-sm text-charcoal/70">
+      <p className="mb-8 text-sm text-charcoal-light">
         {isFr ? "Dernière mise à jour : février 2026" : "Last updated: February 2026"}
       </p>
 
-      <div className="prose prose-charcoal max-w-none space-y-8 text-charcoal/80">
+      <div className="prose prose-charcoal max-w-none space-y-8 text-charcoal-light">
         {/* 1. Introduction */}
         <section>
           <h2 className="font-heading text-xl font-semibold text-charcoal">
@@ -44,8 +44,8 @@ export default function PrivacyPolicyPage() {
           </h2>
           <p>
             {isFr
-              ? "L'Usine RH (ci-après « nous ») s'engage à protéger les renseignements personnels de ses utilisateurs conformément à la Loi 25 du Québec (Loi modernisant des dispositions législatives en matière de protection des renseignements personnels)."
-              : "HR Factory (hereinafter \"we\") is committed to protecting the personal information of its users in accordance with Quebec's Law 25 (Act to modernize legislative provisions regarding the protection of personal information)."}
+              ? "Vertex PMO (ci-après « nous ») s'engage à protéger les renseignements personnels de ses utilisateurs conformément à la Loi 25 du Québec (Loi modernisant des dispositions législatives en matière de protection des renseignements personnels)."
+              : "Vertex PMO (hereinafter \"we\") is committed to protecting the personal information of its users in accordance with Quebec's Law 25 (Act to modernize legislative provisions regarding the protection of personal information)."}
           </p>
         </section>
 
@@ -58,16 +58,16 @@ export default function PrivacyPolicyPage() {
           </h2>
           <ul className="list-none space-y-1 pl-0">
             <li>
-              <strong>{isFr ? "Nom" : "Name"} :</strong> Émilie Poirier
+              <strong>{isFr ? "Nom" : "Name"} :</strong> Direction, Vertex PMO inc.
             </li>
             <li>
               <strong>{isFr ? "Titre" : "Title"} :</strong>{" "}
-              {isFr ? "Propriétaire et consultante RH" : "Owner and HR Consultant"}
+              {isFr ? "Directeur général" : "Managing Director"}
             </li>
             <li>
               <strong>{isFr ? "Courriel" : "Email"} :</strong>{" "}
-              <a href="mailto:info@emiliepoirierrh.ca" className="text-sage-600 underline">
-                info@emiliepoirierrh.ca
+              <a href="mailto:info@vertex-pmo.ca" className="text-cobalt-600 underline">
+                info@vertex-pmo.ca
               </a>
             </li>
           </ul>
@@ -103,7 +103,7 @@ export default function PrivacyPolicyPage() {
           </h2>
           <ul className="list-disc space-y-1 pl-6">
             <li>{isFr ? "Répondre à vos demandes de consultation" : "Respond to your consultation requests"}</li>
-            <li>{isFr ? "Fournir nos services de consultation RH" : "Provide our HR consulting services"}</li>
+            <li>{isFr ? "Fournir nos services de consultation en gestion de projet" : "Provide our project management consulting services"}</li>
             <li>{isFr ? "Améliorer l'expérience de navigation sur le site" : "Improve the browsing experience on the site"}</li>
             <li>{isFr ? "Communiquer avec vous au sujet de nos services" : "Communicate with you about our services"}</li>
           </ul>
@@ -167,8 +167,8 @@ export default function PrivacyPolicyPage() {
           </ul>
           <p className="mt-2">
             {isFr ? "Pour exercer ces droits : " : "To exercise these rights: "}
-            <a href="mailto:info@emiliepoirierrh.ca" className="text-sage-600 underline">
-              info@emiliepoirierrh.ca
+            <a href="mailto:info@vertex-pmo.ca" className="text-cobalt-600 underline">
+              info@vertex-pmo.ca
             </a>
             {isFr ? ". Nous répondrons dans un délai de 30 jours." : ". We will respond within 30 days."}
           </p>
@@ -184,9 +184,6 @@ export default function PrivacyPolicyPage() {
               <strong>Vercel</strong> — {isFr ? "Hébergement du site" : "Website hosting"} (USA)
             </li>
             <li>
-              <strong>Anthropic (Claude)</strong> — {isFr ? "Clavardage IA" : "AI chatbot"} (USA)
-            </li>
-            <li>
               <strong>Google Analytics</strong> —{" "}
               {isFr ? "Statistiques de navigation (si consentement)" : "Browsing analytics (if consented)"} (USA)
             </li>
@@ -200,8 +197,8 @@ export default function PrivacyPolicyPage() {
           </h2>
           <p>
             {isFr
-              ? "Certains services tiers (Vercel, Anthropic, Google) sont situés aux États-Unis. En utilisant notre site et en consentant aux témoins analytiques, vous acceptez que certaines données puissent être traitées aux États-Unis. Ces fournisseurs s'engagent à protéger vos données conformément à leurs politiques de confidentialité respectives."
-              : "Some third-party services (Vercel, Anthropic, Google) are located in the United States. By using our site and consenting to analytical cookies, you agree that some data may be processed in the United States. These providers are committed to protecting your data in accordance with their respective privacy policies."}
+              ? "Certains services tiers (Vercel, Google) sont situés aux États-Unis. En utilisant notre site et en consentant aux témoins analytiques, vous acceptez que certaines données puissent être traitées aux États-Unis. Ces fournisseurs s'engagent à protéger vos données conformément à leurs politiques de confidentialité respectives."
+              : "Some third-party services (Vercel, Google) are located in the United States. By using our site and consenting to analytical cookies, you agree that some data may be processed in the United States. These providers are committed to protecting your data in accordance with their respective privacy policies."}
           </p>
         </section>
 
@@ -256,8 +253,8 @@ export default function PrivacyPolicyPage() {
           </p>
           <p>
             {isFr ? "Courriel de notification d'incident : " : "Incident notification email: "}
-            <a href="mailto:info@emiliepoirierrh.ca" className="text-sage-600 underline">
-              info@emiliepoirierrh.ca
+            <a href="mailto:info@vertex-pmo.ca" className="text-cobalt-600 underline">
+              info@vertex-pmo.ca
             </a>
           </p>
         </section>
@@ -268,14 +265,14 @@ export default function PrivacyPolicyPage() {
             {isFr ? "13. Contact" : "13. Contact"}
           </h2>
           <p>
-            <strong>{isFr ? "L'Usine RH" : "HR Factory"}</strong>
+            <strong>{isFr ? "Vertex PMO" : "Vertex PMO"}</strong>
             <br />
-            Émilie Poirier
+            Direction, Vertex PMO inc.
             <br />
-            Québec, QC
+            Gatineau, QC
             <br />
-            <a href="mailto:info@emiliepoirierrh.ca" className="text-sage-600 underline">
-              info@emiliepoirierrh.ca
+            <a href="mailto:info@vertex-pmo.ca" className="text-cobalt-600 underline">
+              info@vertex-pmo.ca
             </a>
           </p>
         </section>

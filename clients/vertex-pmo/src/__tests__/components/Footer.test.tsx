@@ -38,7 +38,7 @@ describe("Footer", () => {
 
   it("renders the brand name", () => {
     render(<Footer />);
-    expect(screen.getByText(/L'Usine/)).toBeInTheDocument();
+    expect(screen.getByText(/Vertex/)).toBeInTheDocument();
   });
 
   it("renders navigation links", () => {
@@ -76,7 +76,7 @@ describe("Footer", () => {
 
   it("renders contact info", () => {
     render(<Footer />);
-    expect(screen.getByText("Quebec, QC")).toBeInTheDocument();
+    expect(screen.getByText("Gatineau-Ottawa, QC-ON")).toBeInTheDocument();
     expect(screen.getByText("LinkedIn")).toBeInTheDocument();
   });
 

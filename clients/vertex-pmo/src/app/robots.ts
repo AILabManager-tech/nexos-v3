@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://emiliepoirierrh.ca/sitemap.xml",
+    sitemap: "https://vertex-pmo.vercel.app/sitemap.xml",
   };
 }

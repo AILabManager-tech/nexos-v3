@@ -314,9 +314,11 @@
     },
     "philosophy": {
       "title": "Notre philosophie",
-      "p1": "On mesure notre succès par le vôtre. Si vos projets sont livrés à temps, dans le budget et selon les attentes — mission accomplie. Si en plus vos équipes sont autonomes et motivées — c'est la cerise."
+      "p1": "On mesure notre succès par le vôtre. Si vos projets sont livrés à temps, dans le budget et selon les attentes — mission accomplie. Si en plus vos équipes sont autonomes et motivées — c'est la cerise.",
+      "cta": "Discutons de vos projets"
     },
     "values": {
+      "title": "Nos valeurs",
       "precision": {
         "title": "Rigueur",
         "description": "Chaque décision est basée sur des données. Chaque risque est quantifié. Chaque échéancier est réaliste.",

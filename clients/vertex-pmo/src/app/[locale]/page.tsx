@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { HomeContent } from "@/components/pages/HomeContent";
+import { LazyHomeContent } from "@/components/pages/LazyHomeContent";
 import type { Metadata } from "next";
 
 export async function generateMetadata({
@@ -16,5 +16,5 @@ export async function generateMetadata({
 }
 
 export default function HomePage() {
-  return <HomeContent />;
+  return <LazyHomeContent />;
 }

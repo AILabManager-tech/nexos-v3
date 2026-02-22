@@ -41,7 +41,7 @@ describe("CookieConsent", () => {
 
   it("does not render when consent is already stored", () => {
     localStorage.setItem(
-      "usinerh-cookie-consent",
+      "vertex-pmo-cookie-consent",
       JSON.stringify({
         essential: true,
         analytics: false,
@@ -56,13 +56,13 @@ describe("CookieConsent", () => {
   it("has reject, customize, and accept buttons", () => {
     render(<CookieConsent />);
     expect(
-      screen.getByLabelText("Refuser tous les témoins optionnels")
+      screen.getByRole("button", { name: /tout refuser/i })
     ).toBeInTheDocument();
     expect(
-      screen.getByLabelText("Personnaliser les préférences de témoins")
+      screen.getByRole("button", { name: /personnaliser/i })
     ).toBeInTheDocument();
     expect(
-      screen.getByLabelText("Accepter tous les témoins")
+      screen.getByRole("button", { name: /tout accepter/i })
     ).toBeInTheDocument();
   });
 
@@ -70,7 +70,7 @@ describe("CookieConsent", () => {
     render(<CookieConsent />);
     fireEvent.click(screen.getByText("Tout accepter"));
     const stored = JSON.parse(
-      localStorage.getItem("usinerh-cookie-consent")!
+      localStorage.getItem("vertex-pmo-cookie-consent")!
     );
     expect(stored.analytics).toBe(true);
     expect(stored.marketing).toBe(true);
@@ -81,7 +81,7 @@ describe("CookieConsent", () => {
     render(<CookieConsent />);
     fireEvent.click(screen.getByText("Tout refuser"));
     const stored = JSON.parse(
-      localStorage.getItem("usinerh-cookie-consent")!
+      localStorage.getItem("vertex-pmo-cookie-consent")!
     );
     expect(stored.analytics).toBe(false);
     expect(stored.marketing).toBe(false);
@@ -111,7 +111,7 @@ describe("CookieConsent", () => {
     fireEvent.click(screen.getByLabelText("Témoins analytiques"));
     fireEvent.click(screen.getByText("Sauvegarder mes choix"));
     const stored = JSON.parse(
-      localStorage.getItem("usinerh-cookie-consent")!
+      localStorage.getItem("vertex-pmo-cookie-consent")!
     );
     expect(stored.analytics).toBe(true);
     expect(stored.marketing).toBe(false);

@@ -8,7 +8,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ClientWidgets } from "@/components/layout/ClientWidgets";
 import { JsonLd, localBusinessSchema } from "@/components/seo/JsonLd";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "../globals.css";
 
 const manrope = Manrope({
@@ -55,8 +55,13 @@ export async function generateMetadata({
         en: "https://vertex-pmo.vercel.app/en",
       },
     },
-    themeColor: "#2E5BBA",
     icons: { icon: "/favicon.ico" },
+  };
+}
+
+export async function generateViewport(): Promise<Viewport> {
+  return {
+    themeColor: "#2E5BBA",
   };
 }
 
@@ -78,6 +83,10 @@ export default async function RootLayout({
 
   return (
     <html lang={locale} className={`${manrope.variable} ${sourceSans.variable}`}>
+      <head>
+        <title>Vertex PMO — Gestion de projet stratégique</title>
+        <meta name="description" content={locale === 'fr' ? 'Firme de gestion de projet spécialisée en consultation PMO, gestion de portefeuille et transformation Agile. Livraisons à temps, dans le budget.' : 'Project management firm specializing in PMO consulting, portfolio management and Agile transformation. On time. On budget.'} />
+      </head>
       <body className="font-body bg-slate-100 text-charcoal antialiased">
         <a
           href="#main-content"

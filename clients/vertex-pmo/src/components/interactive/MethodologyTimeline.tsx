@@ -29,7 +29,7 @@ export function MethodologyTimeline() {
         </AnimatedSection>
         <LineReveal className="mx-auto mb-6 w-24" delay={0.3} />
         <AnimatedSection delay={0.2}>
-          <p className="text-center text-slate-600 mb-12 max-w-2xl mx-auto">
+          <p className="text-center text-slate-700 mb-12 max-w-2xl mx-auto">
             {t("subtitle")}
           </p>
         </AnimatedSection>
@@ -53,17 +53,17 @@ export function MethodologyTimeline() {
                     <div className={`flex-1 ${isLeft ? "md:text-right" : "md:text-left"}`}>
                       <div className="card-elevated">
                         <div className="flex items-center gap-3 mb-3">
-                          <span className="text-xs font-bold text-cobalt-400 uppercase tracking-widest">
+                          <span className="text-xs font-bold text-cobalt-600 uppercase tracking-widest">
                             Phase {i + 1}
                           </span>
                         </div>
                         <h3 className="text-lg font-heading font-bold text-charcoal mb-2">
                           {t(`${phase.key}.title`)}
                         </h3>
-                        <p className="text-slate-600 text-sm leading-relaxed">
+                        <p className="text-slate-700 text-sm leading-relaxed">
                           {t(`${phase.key}.description`)}
                         </p>
-                        <p className="mt-3 text-xs font-medium text-orange-500">
+                        <p className="mt-3 text-xs font-medium text-orange-700">
                           {t(`${phase.key}.duration`)}
                         </p>
                       </div>

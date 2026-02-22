@@ -19,16 +19,17 @@ describe("JsonLd", () => {
     const script = container.querySelector('script[type="application/ld+json"]');
     const parsed = JSON.parse(script!.textContent!);
     expect(parsed["@context"]).toBe("https://schema.org");
-    expect(parsed["@type"]).toBe("LocalBusiness");
-    expect(parsed.name).toBe("L'Usine RH");
+    expect(parsed["@type"]).toBe("ProfessionalService");
+    expect(parsed.name).toBe("Vertex PMO");
   });
 });
 
 describe("localBusinessSchema", () => {
   it("has required LocalBusiness fields", () => {
-    expect(localBusinessSchema["@type"]).toBe("LocalBusiness");
+    expect(localBusinessSchema["@type"]).toBe("ProfessionalService");
     expect(localBusinessSchema.name).toBeDefined();
     expect(localBusinessSchema.address).toBeDefined();
+    expect(localBusinessSchema.areaServed).toHaveLength(2);
     expect(localBusinessSchema.serviceType).toHaveLength(3);
     expect(localBusinessSchema.knowsLanguage).toContain("fr");
     expect(localBusinessSchema.knowsLanguage).toContain("en");
@@ -39,13 +40,13 @@ describe("buildServiceSchema", () => {
   it("builds French service schema", () => {
     const schema = buildServiceSchema("fr");
     expect(schema["@type"]).toBe("Service");
-    expect(schema.serviceType).toBe("Consultation RH");
+    expect(schema.serviceType).toBe("Gestion de projet");
     expect(schema.hasOfferCatalog.itemListElement).toHaveLength(3);
   });
 
   it("builds English service schema", () => {
     const schema = buildServiceSchema("en");
-    expect(schema.serviceType).toBe("HR Consulting");
+    expect(schema.serviceType).toBe("Project Management");
   });
 });
 

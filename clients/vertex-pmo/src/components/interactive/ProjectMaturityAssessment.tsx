@@ -2,7 +2,6 @@
 
 import { useState, useMemo } from "react";
 import { useTranslations } from "next-intl";
-import { motion, AnimatePresence } from "framer-motion";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
 import { TextReveal } from "@/components/animations/TextReveal";
 import { LineReveal } from "@/components/animations/LineReveal";
@@ -98,20 +97,17 @@ function RadarChart({ scores }: { scores: Record<Axis, number> }) {
       })}
 
       {/* Data polygon */}
-      <motion.polygon
+      <polygon
         points={polygonPoints}
         fill="rgba(46,91,186,0.15)"
         stroke="#2E5BBA"
         strokeWidth={2}
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        style={{ transformOrigin: `${center}px ${center}px` }}
+        style={{ transition: "opacity 0.6s ease-out", opacity: 1 }}
       />
 
       {/* Data points */}
       {dataPoints.map(([x, y], i) => (
-        <motion.circle
+        <circle
           key={`point-${i}`}
           cx={x}
           cy={y}
@@ -119,9 +115,7 @@ function RadarChart({ scores }: { scores: Record<Axis, number> }) {
           fill="#2E5BBA"
           stroke="white"
           strokeWidth={2}
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.3 + i * 0.1 }}
+          style={{ opacity: 1, transition: `opacity 0.3s ease ${0.3 + i * 0.1}s` }}
         />
       ))}
 
@@ -209,107 +203,94 @@ export function ProjectMaturityAssessment() {
         </AnimatedSection>
         <LineReveal className="mx-auto mb-4 w-24" delay={0.3} />
         <AnimatedSection delay={0.2}>
-          <p className="text-center text-slate-600 mb-10">{t("subtitle")}</p>
+          <p className="text-center text-slate-700 mb-10">{t("subtitle")}</p>
         </AnimatedSection>
 
         <div className="card-elevated max-w-2xl mx-auto">
-          <AnimatePresence mode="wait">
-            {!showResults ? (
-              <motion.div
-                key={`step-${step}`}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                {/* Progress */}
-                <div className="flex items-center justify-between mb-6">
-                  <span className="text-xs font-bold text-cobalt-400 uppercase tracking-widest">
-                    {t(`axes.${questions[step]?.axis}`)}
-                  </span>
-                  <span className="text-sm text-slate-500">
-                    {step + 1} / {questions.length}
-                  </span>
-                </div>
+          {!showResults ? (
+            <div key={step} style={{ animation: "fadeIn 0.3s ease-out" }}>
+              {/* Progress */}
+              <div className="flex items-center justify-between mb-6">
+                <span className="text-xs font-bold text-cobalt-600 uppercase tracking-widest">
+                  {t(`axes.${questions[step]?.axis}`)}
+                </span>
+                <span className="text-sm text-slate-700">
+                  {step + 1} / {questions.length}
+                </span>
+              </div>
 
-                <div className="w-full bg-slate-200 rounded-full h-1.5 mb-8">
-                  <div
-                    className="bg-cobalt-500 h-1.5 rounded-full transition-all duration-500"
-                    style={{ width: `${((step + 1) / questions.length) * 100}%` }}
-                  />
-                </div>
+              <div className="w-full bg-slate-200 rounded-full h-1.5 mb-8">
+                <div
+                  className="bg-cobalt-500 h-1.5 rounded-full transition-all duration-500"
+                  style={{ width: `${((step + 1) / questions.length) * 100}%` }}
+                />
+              </div>
 
-                <h3 className="text-lg font-heading font-bold text-charcoal mb-6">
-                  {t(`${questions[step]?.key}.question`)}
-                </h3>
+              <h3 className="text-lg font-heading font-bold text-charcoal mb-6">
+                {t(`${questions[step]?.key}.question`)}
+              </h3>
 
-                <div className="space-y-3">
-                  {[1, 2, 3, 4, 5].map((value) => (
-                    <button
-                      key={value}
-                      onClick={() => handleAnswer(value)}
-                      className="w-full text-left px-5 py-3 rounded-xl border border-slate-200 bg-white hover:border-cobalt-300 hover:bg-cobalt-50 transition-all text-sm text-charcoal group"
-                    >
-                      <span className="inline-flex items-center gap-3">
-                        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-500 group-hover:bg-cobalt-500 group-hover:text-white transition-colors">
-                          {value}
-                        </span>
-                        {t(`${questions[step]?.key}.a${value}`)}
+              <div className="space-y-3">
+                {[1, 2, 3, 4, 5].map((value) => (
+                  <button
+                    key={value}
+                    onClick={() => handleAnswer(value)}
+                    className="w-full text-left px-5 py-3 rounded-xl border border-slate-200 bg-white hover:border-cobalt-300 hover:bg-cobalt-50 transition-all text-sm text-charcoal group"
+                  >
+                    <span className="inline-flex items-center gap-3">
+                      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-700 group-hover:bg-cobalt-500 group-hover:text-white transition-colors">
+                        {value}
                       </span>
-                    </button>
-                  ))}
-                </div>
-
-                {step > 0 && (
-                  <button
-                    onClick={() => setStep(step - 1)}
-                    className="mt-4 flex items-center gap-1 text-sm text-slate-500 hover:text-cobalt-500 transition-colors"
-                  >
-                    <ChevronLeft className="h-4 w-4" />
-                    {t("back")}
+                      {t(`${questions[step]?.key}.a${value}`)}
+                    </span>
                   </button>
-                )}
-              </motion.div>
-            ) : (
-              <motion.div
-                key="results"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5 }}
-              >
-                <h3 className="text-xl font-heading font-bold text-charcoal text-center mb-2">
-                  {t(`results.${resultLevel}.title`)}
-                </h3>
-                <p className="text-center text-3xl font-bold text-cobalt-500 mb-6">
-                  {avgScore} / 5
-                </p>
+                ))}
+              </div>
 
-                <RadarChart scores={scores} />
+              {step > 0 && (
+                <button
+                  onClick={() => setStep(step - 1)}
+                  className="mt-4 flex items-center gap-1 text-sm text-slate-700 hover:text-cobalt-500 transition-colors"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                  {t("back")}
+                </button>
+              )}
+            </div>
+          ) : (
+            <div style={{ animation: "fadeInScale 0.5s ease-out" }}>
+              <h3 className="text-xl font-heading font-bold text-charcoal text-center mb-2">
+                {t(`results.${resultLevel}.title`)}
+              </h3>
+              <p className="text-center text-3xl font-bold text-cobalt-500 mb-6">
+                {avgScore} / 5
+              </p>
 
-                <p className="mt-6 text-slate-600 text-sm text-center leading-relaxed">
-                  {t(`results.${resultLevel}.description`)}
-                </p>
+              <RadarChart scores={scores} />
 
-                <div className="flex flex-col sm:flex-row gap-3 mt-8 justify-center">
-                  <MagneticButton
-                    href="/contact"
-                    className="inline-flex items-center justify-center rounded-xl bg-cobalt-500 px-6 py-3 text-sm font-medium text-white hover:bg-cobalt-600 transition-colors"
-                    strength={0.3}
-                  >
-                    {t(`results.${resultLevel}.cta`)}
-                    <ChevronRight className="h-4 w-4 ml-1" />
-                  </MagneticButton>
-                  <button
-                    onClick={reset}
-                    className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 px-6 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50 transition-colors"
-                  >
-                    <RotateCcw className="h-4 w-4" />
-                    {t("restart")}
-                  </button>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+              <p className="mt-6 text-slate-700 text-sm text-center leading-relaxed">
+                {t(`results.${resultLevel}.description`)}
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-3 mt-8 justify-center">
+                <MagneticButton
+                  href="/contact"
+                  className="inline-flex items-center justify-center rounded-xl bg-cobalt-500 px-6 py-3 text-sm font-medium text-white hover:bg-cobalt-600 transition-colors"
+                  strength={0.3}
+                >
+                  {t(`results.${resultLevel}.cta`)}
+                  <ChevronRight className="h-4 w-4 ml-1" />
+                </MagneticButton>
+                <button
+                  onClick={reset}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 px-6 py-3 text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+                >
+                  <RotateCcw className="h-4 w-4" />
+                  {t("restart")}
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </section>

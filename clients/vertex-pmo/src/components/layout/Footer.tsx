@@ -37,9 +37,9 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-500">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-500">
               Navigation
-            </h4>
+            </p>
             <div className="flex flex-col gap-2">
               <Link href="/" className="text-sm text-slate-500 transition-colors hover:text-slate-200">{nav("home")}</Link>
               <Link href="/services" className="text-sm text-slate-500 transition-colors hover:text-slate-200">{nav("services")}</Link>
@@ -49,9 +49,9 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-500">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-slate-500">
               Contact
-            </h4>
+            </p>
             <div className="flex flex-col gap-2 text-sm text-slate-500">
               <p>Gatineau-Ottawa, QC-ON</p>
               <a

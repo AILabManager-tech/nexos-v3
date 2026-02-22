@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 
 interface GanttBar {
   label: string;
@@ -30,7 +29,7 @@ export function GanttHero() {
 
   return (
     <div className="relative w-full max-w-lg" aria-hidden="true">
-      <svg viewBox="0 0 400 240" className="w-full h-auto" role="img">
+      <svg viewBox="0 0 400 240" className="w-full h-auto" role="presentation" aria-hidden="true">
         {/* Grid lines */}
         {[0, 1, 2, 3, 4].map((i) => (
           <line
@@ -104,22 +103,23 @@ export function GanttHero() {
 
             {/* Progress diamond */}
             {visible && (
-              <motion.circle
+              <circle
                 cx={80 + ((bar.start + bar.width * 0.8) / 100) * 310}
                 cy={29 + i * 36}
-                r={4}
+                r={0}
                 fill="white"
-                initial={{ opacity: 0, scale: 0 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: bar.delay + 0.5, duration: 0.3 }}
-              />
+                opacity={0}
+              >
+                <animate attributeName="opacity" from="0" to="1" dur="0.3s" begin={`${bar.delay + 0.5}s`} fill="freeze" />
+                <animate attributeName="r" from="0" to="4" dur="0.3s" begin={`${bar.delay + 0.5}s`} fill="freeze" />
+              </circle>
             )}
           </g>
         ))}
 
         {/* Today line */}
         {visible && (
-          <motion.line
+          <line
             x1={260}
             y1={5}
             x2={260}
@@ -127,23 +127,22 @@ export function GanttHero() {
             stroke="#E8732A"
             strokeWidth={2}
             strokeDasharray="6 3"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.8 }}
-            transition={{ delay: 1.5, duration: 0.5 }}
-          />
+            opacity={0}
+          >
+            <animate attributeName="opacity" from="0" to="0.8" dur="0.5s" begin="1.5s" fill="freeze" />
+          </line>
         )}
         {visible && (
-          <motion.text
+          <text
             x={262}
             y={240}
             fill="#E8732A"
             fontSize="9"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.7 }}
+            opacity={0}
           >
             Aujourd&apos;hui
-          </motion.text>
+            <animate attributeName="opacity" from="0" to="1" dur="0.3s" begin="1.7s" fill="freeze" />
+          </text>
         )}
       </svg>
     </div>

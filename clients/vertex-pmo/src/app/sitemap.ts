@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const BASE_URL = "https://emiliepoirierrh.ca";
+const BASE_URL = "https://vertex-pmo.vercel.app";
 
 const routes = ["", "/services", "/a-propos", "/contact", "/politique-confidentialite", "/mentions-legales"];
 const locales = ["fr", "en"];

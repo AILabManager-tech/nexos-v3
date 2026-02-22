@@ -1,19 +1,56 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { TextReveal } from "@/components/animations/TextReveal";
 import { MagneticButton } from "@/components/animations/MagneticButton";
-import { AuroraBackground } from "@/components/animations/AuroraBackground";
 import { LineReveal } from "@/components/animations/LineReveal";
-import { FloatingElement } from "@/components/animations/FloatingElement";
+
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
 import { StaggerGrid } from "@/components/animations/StaggerGrid";
-import { GanttHero } from "@/components/interactive/GanttHero";
-import { MetricsDashboard } from "@/components/interactive/MetricsDashboard";
-import { MethodologyTimeline } from "@/components/interactive/MethodologyTimeline";
-import { ProjectMaturityAssessment } from "@/components/interactive/ProjectMaturityAssessment";
 import { Target, BarChart3, Users, TrendingUp } from "lucide-react";
+
+/* ── Dynamic imports for heavy below-fold components ── */
+const AuroraBackground = dynamic(
+  () =>
+    import("@/components/animations/AuroraBackground").then((m) => ({
+      default: m.AuroraBackground,
+    })),
+  { ssr: false, loading: () => null }
+);
+
+const GanttHero = dynamic(
+  () =>
+    import("@/components/interactive/GanttHero").then((m) => ({
+      default: m.GanttHero,
+    })),
+  { ssr: false, loading: () => <div className="w-full max-w-lg h-60" /> }
+);
+
+const MetricsDashboard = dynamic(
+  () =>
+    import("@/components/interactive/MetricsDashboard").then((m) => ({
+      default: m.MetricsDashboard,
+    })),
+  { ssr: false, loading: () => <div className="h-32" /> }
+);
+
+const MethodologyTimeline = dynamic(
+  () =>
+    import("@/components/interactive/MethodologyTimeline").then((m) => ({
+      default: m.MethodologyTimeline,
+    })),
+  { ssr: false, loading: () => <div className="h-96" /> }
+);
+
+const ProjectMaturityAssessment = dynamic(
+  () =>
+    import("@/components/interactive/ProjectMaturityAssessment").then((m) => ({
+      default: m.ProjectMaturityAssessment,
+    })),
+  { ssr: false, loading: () => <div className="h-96" /> }
+);
 
 const painIcons = [
   <Target key="scope" className="h-8 w-8" />,
@@ -27,10 +64,10 @@ export function HomeContent() {
   return (
     <main>
       {/* Hero — full screen with Gantt chart */}
-      <section className="relative flex min-h-screen items-center overflow-hidden">
+      <section className="relative flex min-h-screen items-center overflow-hidden bg-slate-900">
         <Image
           src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1920&q=80&auto=format"
-          alt="Équipe de gestion de projet en réunion stratégique"
+          alt="Equipe de gestion de projet en reunion strategique"
           fill
           priority
           className="object-cover"
@@ -63,7 +100,7 @@ export function HomeContent() {
                 <div className="flex flex-col gap-4 sm:flex-row">
                   <MagneticButton
                     href="/contact"
-                    className="inline-flex items-center justify-center rounded-xl bg-orange-500 px-8 py-4 text-lg font-medium text-white transition-all hover:bg-orange-600 hover:shadow-xl hover:shadow-orange-500/25"
+                    className="inline-flex items-center justify-center rounded-xl bg-orange-700 px-8 py-4 text-lg font-medium text-white transition-all hover:bg-orange-800 hover:shadow-xl hover:shadow-orange-700/25"
                     strength={0.35}
                   >
                     {t("hero.cta")}
@@ -116,7 +153,7 @@ export function HomeContent() {
                       <h3 className="text-lg mb-1 text-cobalt-700 transition-colors group-hover:text-orange-500">
                         {t(`pain.${key}.title`)}
                       </h3>
-                      <p className="text-slate-600 text-sm leading-relaxed">{t(`pain.${key}.description`)}</p>
+                      <p className="text-slate-700 text-sm leading-relaxed">{t(`pain.${key}.description`)}</p>
                     </div>
                   </div>
                 </div>
@@ -127,10 +164,11 @@ export function HomeContent() {
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                 <Image
                   src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80&auto=format"
-                  alt="Tableau de bord de gestion de projet avec métriques"
+                  alt="Tableau de bord de gestion de projet avec metriques"
                   width={800}
                   height={600}
                   className="object-cover w-full h-[400px]"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-charcoal-dark/60 via-transparent to-transparent" />
                 <div className="absolute bottom-6 left-6 right-6">
@@ -151,13 +189,14 @@ export function HomeContent() {
       <ProjectMaturityAssessment />
 
       {/* Image banner */}
-      <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
+      <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden bg-slate-900">
         <Image
           src="https://images.unsplash.com/photo-1531973576160-7125cd663d86?w=1920&q=80&auto=format"
-          alt="Équipe de projet célébrant une livraison réussie"
+          alt="Equipe de projet celebrant une livraison reussie"
           fill
           className="object-cover"
           sizes="100vw"
+          loading="lazy"
         />
         <div className="absolute inset-0 bg-charcoal-dark/50 backdrop-blur-[2px]" />
         <div className="relative z-10 text-center px-6">
@@ -168,7 +207,7 @@ export function HomeContent() {
             </h2>
             <MagneticButton
               href="/contact"
-              className="inline-flex items-center justify-center mt-4 rounded-xl bg-orange-500 px-8 py-4 text-lg font-medium text-white transition-all hover:bg-orange-600 hover:shadow-xl hover:shadow-orange-500/25"
+              className="inline-flex items-center justify-center mt-4 rounded-xl bg-orange-700 px-8 py-4 text-lg font-medium text-white transition-all hover:bg-orange-800 hover:shadow-xl hover:shadow-orange-700/25"
               strength={0.3}
             >
               {t("banner.cta")}
@@ -192,20 +231,20 @@ export function HomeContent() {
               <div key={key} className="card-elevated">
                 <div className="flex items-center gap-2 mb-4">
                   <TrendingUp className="h-5 w-5 text-success-500" />
-                  <span className="text-sm font-bold text-success-600">
+                  <span className="text-sm font-bold text-success-700">
                     {t(`testimonials.${key}.metric`)}
                   </span>
                 </div>
-                <p className="text-xs font-medium text-cobalt-400 uppercase tracking-wider mb-3">
+                <p className="text-xs font-medium text-cobalt-600 uppercase tracking-wider mb-3">
                   {t(`testimonials.${key}.industry`)}
                 </p>
                 <div className="space-y-3">
                   <div className="rounded-lg bg-slate-50 p-3">
-                    <p className="text-xs font-semibold text-slate-500 mb-1">{t(`testimonials.${key}.before_title`)}</p>
-                    <p className="text-sm text-slate-600">{t(`testimonials.${key}.before`)}</p>
+                    <p className="text-xs font-semibold text-slate-700 mb-1">{t(`testimonials.${key}.before_title`)}</p>
+                    <p className="text-sm text-slate-700">{t(`testimonials.${key}.before`)}</p>
                   </div>
                   <div className="rounded-lg bg-cobalt-50 p-3">
-                    <p className="text-xs font-semibold text-cobalt-500 mb-1">{t(`testimonials.${key}.after_title`)}</p>
+                    <p className="text-xs font-semibold text-cobalt-700 mb-1">{t(`testimonials.${key}.after_title`)}</p>
                     <p className="text-sm text-charcoal">{t(`testimonials.${key}.after`)}</p>
                   </div>
                 </div>
@@ -216,13 +255,14 @@ export function HomeContent() {
       </section>
 
       {/* Final CTA */}
-      <section id="contact" className="relative overflow-hidden min-h-[60vh] flex items-center">
+      <section id="contact" className="relative overflow-hidden min-h-[60vh] flex items-center bg-slate-900">
         <Image
           src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1920&q=80&auto=format"
-          alt="Équipe de projet collaborant autour d'un plan"
+          alt="Equipe de projet collaborant autour d'un plan"
           fill
           className="object-cover"
           sizes="100vw"
+          loading="lazy"
         />
         <div className="absolute inset-0 hero-image-overlay" />
         <div className="absolute inset-0 grid-overlay opacity-20" />
@@ -239,7 +279,7 @@ export function HomeContent() {
           <AnimatedSection delay={0.5}>
             <MagneticButton
               href="/contact"
-              className="inline-flex items-center justify-center rounded-xl bg-orange-500 px-10 py-5 text-lg font-medium text-white transition-all hover:bg-orange-600 hover:shadow-xl hover:shadow-orange-500/25"
+              className="inline-flex items-center justify-center rounded-xl bg-orange-700 px-10 py-5 text-lg font-medium text-white transition-all hover:bg-orange-800 hover:shadow-xl hover:shadow-orange-700/25"
               strength={0.4}
             >
               {t("cta_final.button")}
