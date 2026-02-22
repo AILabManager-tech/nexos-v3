@@ -13,3 +13,9 @@ node_modules/
 .env.*
 logs/
 *.zip
+
+# Client templates (separate repos)
+clients/beaumont-avocats/
+clients/clinique-aura/
+clients/collectif-nova/
+clients/table-de-marguerite/
