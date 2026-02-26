@@ -1,0 +1,73 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    NEXOS v3.0 — OG Image Template (1200×630)
+
+    Instructions pour seo-asset-generator :
+    1. Remplacer {{PRIMARY_COLOR}} par la couleur principale du design-tokens.json
+    2. Remplacer {{ACCENT_COLOR}} par la couleur accent
+    3. Remplacer {{SITE_NAME}} par le nom du site/entreprise
+    4. Remplacer {{TAGLINE}} par le slogan ou description courte
+    5. Remplacer {{FEATURES}} par 2-3 features clés (badges)
+    6. Convertir en PNG: npx sharp-cli ou ImageMagick convert
+    7. Vérifier: taille < 300KB, dimensions exactes 1200×630
+  -->
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="{{PRIMARY_COLOR}}" />
+      <stop offset="100%" stop-color="{{ACCENT_COLOR}}" />
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-opacity="0.15" />
+    </filter>
+  </defs>
+
+  <!-- Background gradient -->
+  <rect width="1200" height="630" fill="url(#bg)" rx="0" />
+
+  <!-- Subtle pattern overlay -->
+  <rect width="1200" height="630" fill="white" opacity="0.03" />
+
+  <!-- White card -->
+  <rect x="60" y="60" width="1080" height="510" rx="24" fill="white" filter="url(#shadow)" opacity="0.95" />
+
+  <!-- Site name -->
+  <text x="120" y="180" font-family="Inter, system-ui, sans-serif" font-size="56" font-weight="800" fill="#1a1a2e">
+    {{SITE_NAME}}
+  </text>
+
+  <!-- Tagline -->
+  <text x="120" y="250" font-family="Inter, system-ui, sans-serif" font-size="28" font-weight="400" fill="#6b7280">
+    {{TAGLINE}}
+  </text>
+
+  <!-- Divider -->
+  <rect x="120" y="290" width="120" height="4" rx="2" fill="{{ACCENT_COLOR}}" />
+
+  <!-- Feature badges -->
+  <!-- Badge 1 -->
+  <rect x="120" y="330" width="auto" height="44" rx="22" fill="{{PRIMARY_COLOR}}" opacity="0.1" />
+  <text x="140" y="358" font-family="Inter, system-ui, sans-serif" font-size="18" font-weight="600" fill="{{PRIMARY_COLOR}}">
+    {{FEATURE_1}}
+  </text>
+
+  <!-- Badge 2 -->
+  <rect x="340" y="330" width="auto" height="44" rx="22" fill="{{PRIMARY_COLOR}}" opacity="0.1" />
+  <text x="360" y="358" font-family="Inter, system-ui, sans-serif" font-size="18" font-weight="600" fill="{{PRIMARY_COLOR}}">
+    {{FEATURE_2}}
+  </text>
+
+  <!-- Badge 3 -->
+  <rect x="560" y="330" width="auto" height="44" rx="22" fill="{{PRIMARY_COLOR}}" opacity="0.1" />
+  <text x="580" y="358" font-family="Inter, system-ui, sans-serif" font-size="18" font-weight="600" fill="{{PRIMARY_COLOR}}">
+    {{FEATURE_3}}
+  </text>
+
+  <!-- Domain URL -->
+  <text x="120" y="510" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="500" fill="{{ACCENT_COLOR}}">
+    {{BASE_URL}}
+  </text>
+
+  <!-- Decorative accent circle -->
+  <circle cx="1060" y="160" r="80" fill="{{ACCENT_COLOR}}" opacity="0.15" />
+  <circle cx="1020" y="440" r="40" fill="{{PRIMARY_COLOR}}" opacity="0.1" />
+</svg>

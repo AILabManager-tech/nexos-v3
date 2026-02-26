@@ -15,7 +15,7 @@ NEXOS v3.0 = Multi-phase × Quality Gates × Tooling Réel
 - **6 phases séquentielles** (ph0→ph5), chacune = 1 appel CLI dédié
 - **Quality gates SOIC** entre chaque phase (μ ≥ 8.0 pour avancer)
 - **Tooling CLI réel** (Lighthouse, pa11y, curl, npm audit) AVANT les agents LLM
-- **44 agents spécialisés** (1 agent = 1 domaine)
+- **46 agents spécialisés** (1 agent = 1 domaine)
 
 ## MODES D'OPÉRATION
 
@@ -139,6 +139,10 @@ Tout nouveau projet utilise les templates dans `templates/` :
 - `legal-mentions-template.md` — Mentions legales avec placeholders
 - `brief-intake.md` — Formulaire brief client (inclut Loi 25)
 - `brief-schema.json` — Schema JSON de validation du brief
+- `sitemap.template.xml` — Sitemap multilingue avec placeholders hreflang
+- `robots.template.txt` — Robots.txt avec crawlers IA autorisés
+- `og-image.template.svg` — Image OG 1200×630 personnalisable
+- `ad-unit-component.tsx` — Composant AdSense réutilisable
 
 ## SYMLINKS
 

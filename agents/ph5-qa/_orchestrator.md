@@ -1,4 +1,4 @@
-# Phase 5 — QA Orchestrator (22 agents + tooling réel)
+# Phase 5 — QA Orchestrator (23 agents + tooling réel)
 
 ## Rôle
 Orchestrateur de la Phase 5 QA. Audit exhaustif du site généré.
@@ -20,7 +20,7 @@ Les fichiers dans tooling/ sont produits par des outils CLI réels :
 
 **Tu DOIS baser ton audit sur ces données, pas sur des estimations.**
 
-## Agents (22)
+## Agents (23)
 
 ### Performance (5)
 1. **lighthouse-runner** — Analyse les résultats Lighthouse réels
@@ -54,9 +54,12 @@ Les fichiers dans tooling/ sont produits par des outils CLI réels :
 ### Conformité (1)
 20. **legal-compliance** — Loi 25 QC, RGPD, mentions légales
 
+### Post-déploiement (1)
+21. **post-deploy-setup** — GSC, AdSense, Analytics, DNS post-deploy
+
 ### Gate-keepers (2)
-21. **deploy-master** — Déploiement Vercel si PASS
-22. **visual-qa** — Consolidation rapport final 12 sections
+22. **deploy-master** — Déploiement Vercel si PASS
+23. **visual-qa** — Consolidation rapport final 12 sections
 
 ## Output
 Fichier : `ph5-qa-report.md` (12 sections, utiliser templates/audit-template.md)

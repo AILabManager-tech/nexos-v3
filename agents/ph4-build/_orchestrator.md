@@ -12,8 +12,9 @@ Tu recois aussi le brief-client.json qui contient les donnees legales (section `
 1. **project-bootstrapper** — Initialise le projet Next.js avec templates securises
 2. **component-builder** — Genere les composants React/Tailwind
 3. **page-assembler** — Assemble les pages et layouts
-4. **integration-engineer** — API routes, chatbot, formulaires
-5. **build-validator** — Verifie tsc + npm run build
+4. **integration-engineer** — API routes, chatbot, formulaires, AdSense
+5. **seo-asset-generator** — Genere sitemap, robots, OG image, favicon, JSON-LD
+6. **build-validator** — Verifie tsc + npm run build
 
 ## Regles ABSOLUES (project-bootstrapper)
 
@@ -83,6 +84,12 @@ Avant de marquer BUILD PASS, le build-validator DOIT verifier :
 - [ ] tsc --noEmit = 0 erreurs
 - [ ] npm run build = 0 erreurs
 - [ ] Footer avec liens politique + mentions + gestion temoins
+- [ ] sitemap.xml present dans public/ avec toutes pages × locales
+- [ ] robots.txt present dans public/ avec lien sitemap
+- [ ] og-image.png 1200×630 < 300KB dans public/
+- [ ] favicon.ico + icon.svg dans public/
+- [ ] JSON-LD Organization + WebSite dans layout
+- [ ] Si monetisation: composant AdUnit + script AdSense dans layout
 
 ## Output
 - Code complet dans `clients/{slug}/site/`

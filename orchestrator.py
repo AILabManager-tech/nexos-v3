@@ -207,12 +207,18 @@ def run_soic_gate(phase: str, client_dir: Path) -> tuple[bool, float]:
         passed = mu >= threshold
         return passed, mu
     except Exception as e:
-        console.print(f"[yellow]⚠ SOIC gate error: {e} — PASS par défaut[/]")
-        return True, 0.0
+        console.print(f"[yellow]⚠ SOIC gate error: {e} — FAIL (score inconnu)[/]")
+        return False, 0.0
+
+
+_CLAUDE_CLI_TIMEOUT = 1800  # 30 minutes par phase
 
 
 def run_claude_cli(prompt: str, cwd: str, log_path: Path) -> int:
-    """Lance claude CLI avec le prompt et capture la sortie."""
+    """Lance claude CLI avec le prompt et capture la sortie.
+
+    Timeout: 30 minutes par défaut pour éviter un blocage indéfini.
+    """
     cmd = ["claude", "--dangerously-skip-permissions", "-p", prompt]
 
     log_path.parent.mkdir(parents=True, exist_ok=True)
@@ -230,6 +236,8 @@ def run_claude_cli(prompt: str, cwd: str, log_path: Path) -> int:
             text=True, bufsize=1,
         )
 
+        deadline = time.monotonic() + _CLAUDE_CLI_TIMEOUT
+
         with open(log_path, "w", encoding="utf-8") as log:
             log.write(f"# NEXOS v3.0 Log\n")
             log.write(f"# Date: {datetime.now().isoformat()}\n")
@@ -239,8 +247,19 @@ def run_claude_cli(prompt: str, cwd: str, log_path: Path) -> int:
                 sys.stdout.write(line)
                 sys.stdout.flush()
                 log.write(line)
+                # Check timeout between lines
+                if time.monotonic() > deadline:
+                    console.print(
+                        f"\n[red]⚠ Claude CLI timeout ({_CLAUDE_CLI_TIMEOUT // 60}min) — interruption[/]"
+                    )
+                    process.terminate()
+                    try:
+                        process.wait(timeout=10)
+                    except subprocess.TimeoutExpired:
+                        process.kill()
+                    return 124  # Standard timeout exit code
 
-        process.wait()
+        process.wait(timeout=30)
         return process.returncode
 
     except FileNotFoundError:
@@ -254,6 +273,11 @@ def run_claude_cli(prompt: str, cwd: str, log_path: Path) -> int:
         if process:
             process.terminate()
         return 130
+    except subprocess.TimeoutExpired:
+        console.print("\n[red]⚠ Claude CLI process.wait() timeout — kill[/]")
+        if process:
+            process.kill()
+        return 124
 
 
 # ── Preflight scan config ────────────────────────────────────────────────────
@@ -313,7 +337,7 @@ def run_preflight(site_dir: Path, client_dir: Path) -> dict[str, Path]:
         server_proc = subprocess.Popen(
             ["npx", "next", "start", "-p", str(port)],
             cwd=str(site_dir),
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
             preexec_fn=os.setsid,
         )
         # Wait for server to be ready
@@ -428,6 +452,8 @@ class RerunContext:
         return run_claude_cli(rerun_prompt, str(NEXOS_ROOT), rerun_log) == 0
 
 
+KNOWLEDGE_DIR = NEXOS_ROOT / "output" / "knowledge"
+
 OUTPUT_MAP = {
     "ph0-discovery": "ph0-discovery-report.md",
     "ph1-strategy":  "ph1-strategy-report.md",
@@ -438,16 +464,47 @@ OUTPUT_MAP = {
 }
 
 
+_ERROR_PATTERNS = re.compile(
+    r"(?i)(^error:|^fatal:|traceback \(most recent|"
+    r"command not found|permission denied|ENOENT|EACCES|"
+    r"^✗ .*(échoué|failed|erreur))",
+    re.MULTILINE,
+)
+
+
 def verify_phase_output(phase: str, client_dir: Path) -> bool:
-    """Vérifie que la phase a produit un output valide (≥500 chars)."""
-    output_file = client_dir / OUTPUT_MAP.get(phase, f"{phase}-report.md")
+    """Vérifie que la phase a produit un output valide.
+
+    Checks:
+    - Le fichier existe
+    - Taille >= 500 octets
+    - Le contenu ne contient pas de patterns d'erreur critiques
+    """
+    if phase not in OUTPUT_MAP:
+        console.print(f"[yellow]⚠ Phase {phase} non reconnue dans OUTPUT_MAP — skip validation[/]")
+        return True
+
+    output_file = client_dir / OUTPUT_MAP[phase]
     if not output_file.exists():
         console.print(f"[red]✗ Phase {phase} n'a pas produit de rapport ({output_file.name})[/]")
         return False
-    size = output_file.stat().st_size
+
+    content = output_file.read_text(encoding="utf-8", errors="replace")
+    size = len(content.encode("utf-8"))
+
     if size < 500:
         console.print(f"[red]✗ Phase {phase} rapport trop court ({size} octets < 500)[/]")
         return False
+
+    # Check for error patterns in the first 2000 chars
+    head = content[:2000]
+    match = _ERROR_PATTERNS.search(head)
+    if match:
+        console.print(
+            f"[red]✗ Phase {phase} rapport contient une erreur : {match.group()!r}[/]"
+        )
+        return False
+
     console.print(f"[green]✓ Phase {phase} rapport valide ({size} octets)[/]")
     return True
 
@@ -776,6 +833,138 @@ def run_converge(
     _PHASE_THRESHOLDS[phase] = original_threshold
 
 
+# ── Knowledge agents ─────────────────────────────────────────────────────────
+
+VALID_TYPES = ("dev-perso", "technique", "fiction", "academique", "business", "philosophie")
+VALID_OBJECTIFS = ("appliquer", "partager", "memoriser", "decider")
+VALID_NIVEAUX = ("express", "complet", "approfondi")
+
+
+def run_knowledge_agent(
+    agent_id: str,
+    source: str,
+    content_type: str = "technique",
+    objectif: str = "appliquer",
+    niveau: str = "complet",
+    score_only: Optional[Path] = None,
+) -> None:
+    """Execute a knowledge agent (HexaBrief, etc.)."""
+
+    if agent_id != "hexabrief":
+        console.print(f"[red]Agent knowledge inconnu: {agent_id}[/]")
+        console.print("[dim]Agents disponibles: hexabrief[/]")
+        return
+
+    # ── Score-only mode: évaluer un résumé existant ──
+    if score_only is not None:
+        console.print(f"\n[bold cyan]📊 HexaBrief SCORING — {score_only.name}[/]\n")
+        try:
+            from soic.knowledge_scoring import evaluate_hexabrief
+            result = evaluate_hexabrief(score_only)
+
+            table = Table(title="HexaBrief Scoring", border_style="cyan")
+            table.add_column("Dimension", style="bold")
+            table.add_column("Poids", justify="center")
+            table.add_column("Score", justify="center")
+            table.add_row("S1 Fidélité", "×1.2", f"{result.s1_fidelite:.1f}/10")
+            table.add_row("S2 Densité", "×1.0", f"{result.s2_densite:.1f}/10")
+            table.add_row("S3 Actionnabilité", "×1.1", f"{result.s3_actionnabilite:.1f}/10")
+            table.add_row("S4 Esprit critique", "×1.1", f"{result.s4_esprit_critique:.1f}/10")
+            table.add_row("S5 Mémorisabilité", "×1.0", f"{result.s5_memorisabilite:.1f}/10")
+            table.add_row("", "", "")
+            verdict_style = "green" if result.mu >= 7.5 else ("yellow" if result.mu >= 6.0 else "red")
+            table.add_row("[bold]μ pondéré[/]", "", f"[bold {verdict_style}]{result.mu:.2f}/10 — {result.verdict}[/]")
+            console.print(table)
+        except FileNotFoundError as e:
+            console.print(f"[red]✗ {e}[/]")
+        except Exception as e:
+            console.print(f"[red]✗ Erreur scoring: {e}[/]")
+        return
+
+    # ── Generation mode: produire un résumé via Claude CLI ──
+    KNOWLEDGE_DIR.mkdir(parents=True, exist_ok=True)
+    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
+    source_slug = slugify(source)[:60]
+    output_path = KNOWLEDGE_DIR / f"{source_slug}-summary.md"
+
+    # Lire le template de l'agent
+    agent_path = AGENTS_DIR / "knowledge" / "hexabrief.md"
+    if not agent_path.exists():
+        console.print(f"[red]✗ Agent introuvable: {agent_path}[/]")
+        return
+
+    # Construire le prompt
+    prompt_parts = [
+        f"Lis {agent_path} et adopte le rôle décrit.",
+        f"",
+        f"PARAMETRES:",
+        f"  TEXTE_OU_REFERENCE: {source}",
+        f"  TYPE: {content_type}",
+        f"  OBJECTIF: {objectif}",
+        f"  NIVEAU: {niveau}",
+        f"",
+        f"TEMPLATE DE SORTIE: Lis {NEXOS_ROOT / 'templates' / 'book-summary-template.md'}",
+        f"Remplis TOUS les placeholders {{{{...}}}} avec du contenu réel.",
+        f"Ne laisse AUCUN placeholder non rempli.",
+        f"",
+        f"Écris le résumé complet dans {output_path}",
+    ]
+    prompt = "\n".join(prompt_parts)
+
+    console.print(Panel(
+        f"[bold]Agent:[/] HexaBrief Book Summarizer\n"
+        f"[bold]Source:[/] {source}\n"
+        f"[bold]Type:[/] {content_type} | [bold]Objectif:[/] {objectif} | [bold]Niveau:[/] {niveau}\n"
+        f"[bold]Output:[/] {output_path}",
+        title="[bold cyan]📚 NEXOS Knowledge — HexaBrief[/]",
+        border_style="cyan",
+    ))
+
+    # Exécuter Claude CLI
+    log_path = LOGS_DIR / f"{timestamp}_hexabrief_{source_slug}.log"
+    returncode = run_claude_cli(prompt, str(NEXOS_ROOT), log_path)
+
+    if returncode != 0:
+        console.print(f"[red]✗ HexaBrief échoué (code {returncode})[/]")
+        return
+
+    # Vérifier l'output
+    if not output_path.exists() or output_path.stat().st_size < 200:
+        console.print(f"[red]✗ Résumé non généré ou trop court[/]")
+        return
+
+    console.print(f"[green]✓ Résumé généré: {output_path}[/]")
+
+    # Auto-scoring
+    console.print(f"\n[bold cyan]📊 Auto-scoring HexaBrief...[/]\n")
+    try:
+        from soic.knowledge_scoring import evaluate_hexabrief
+        result = evaluate_hexabrief(output_path)
+
+        table = Table(title="HexaBrief Scoring", border_style="cyan")
+        table.add_column("Dimension", style="bold")
+        table.add_column("Poids", justify="center")
+        table.add_column("Score", justify="center")
+        table.add_row("S1 Fidélité", "×1.2", f"{result.s1_fidelite:.1f}/10")
+        table.add_row("S2 Densité", "×1.0", f"{result.s2_densite:.1f}/10")
+        table.add_row("S3 Actionnabilité", "×1.1", f"{result.s3_actionnabilite:.1f}/10")
+        table.add_row("S4 Esprit critique", "×1.1", f"{result.s4_esprit_critique:.1f}/10")
+        table.add_row("S5 Mémorisabilité", "×1.0", f"{result.s5_memorisabilite:.1f}/10")
+        table.add_row("", "", "")
+        verdict_style = "green" if result.mu >= 7.5 else ("yellow" if result.mu >= 6.0 else "red")
+        table.add_row("[bold]μ pondéré[/]", "", f"[bold {verdict_style}]{result.mu:.2f}/10 — {result.verdict}[/]")
+        console.print(table)
+
+        if result.verdict == "REJECT":
+            console.print("[red]⚠ Le résumé ne passe pas le seuil minimum. Relancer avec un niveau plus élevé.[/]")
+        elif result.verdict == "REVISE":
+            console.print("[yellow]⚠ Le résumé nécessite des corrections. Vérifier les sections faibles.[/]")
+    except ImportError:
+        console.print("[yellow]⚠ Module scoring non disponible — skip auto-scoring[/]")
+    except Exception as e:
+        console.print(f"[yellow]⚠ Scoring error: {e}[/]")
+
+
 # ── Entry point ──────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     import argparse
@@ -801,6 +990,27 @@ if __name__ == "__main__":
         sp.add_argument("--url", type=str, help="URL du site (pour audit/preflight)")
         sp.add_argument("--brief", type=str, help="Chemin vers brief-client.json")
 
+    # Knowledge mode
+    sp_know = subparsers.add_parser(
+        "knowledge",
+        help="Agents cognitifs (résumé, analyse, synthèse)",
+        description="Exécute un agent knowledge NEXOS (hors pipeline web).",
+    )
+    sp_know.add_argument("agent", type=str, help="ID de l'agent (ex: hexabrief)")
+    sp_know.add_argument("--source", type=str, required=True,
+                         help="Texte source ou 'Titre — Auteur'")
+    sp_know.add_argument("--type", type=str, default="technique",
+                         choices=VALID_TYPES, dest="content_type",
+                         help="Type de contenu (défaut: technique)")
+    sp_know.add_argument("--objectif", type=str, default="appliquer",
+                         choices=VALID_OBJECTIFS,
+                         help="Objectif de lecture (défaut: appliquer)")
+    sp_know.add_argument("--niveau", type=str, default="complet",
+                         choices=VALID_NIVEAUX,
+                         help="Profondeur du résumé (défaut: complet)")
+    sp_know.add_argument("--score-only", type=Path, default=None,
+                         help="Évaluer un résumé existant (path vers .md)")
+
     # Converge mode
     sp_conv = subparsers.add_parser(
         "converge",
@@ -820,7 +1030,16 @@ if __name__ == "__main__":
         parser.print_help()
         sys.exit(1)
 
-    if args.mode == "converge":
+    if args.mode == "knowledge":
+        run_knowledge_agent(
+            agent_id=args.agent,
+            source=args.source,
+            content_type=args.content_type,
+            objectif=args.objectif,
+            niveau=args.niveau,
+            score_only=args.score_only,
+        )
+    elif args.mode == "converge":
         run_converge(
             client_dir=args.client_dir,
             target=args.target,

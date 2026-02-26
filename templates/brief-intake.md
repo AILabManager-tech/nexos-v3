@@ -131,7 +131,48 @@
 
 ---
 
-## 5. Budget & Délai
+## 5. Monétisation & Analytics
+
+> Ces informations permettent de configurer automatiquement AdSense, Google Analytics,
+> et Google Search Console lors du post-déploiement.
+
+### 5.1 Monétisation publicitaire
+
+- **Souhaitez-vous monétiser le site avec des publicités ?** [ ] Oui [ ] Non
+- **Si oui, avez-vous un compte Google AdSense ?** [ ] Oui [ ] Non [ ] À créer
+- **Publisher ID AdSense** (si existant) : ___
+  (Format: ca-pub-XXXXXXXXXXXXXXXX)
+- **Emplacements publicitaires souhaités** :
+  [ ] Après le hero (bannière horizontale)
+  [ ] Entre les sections
+  [ ] Sidebar (si applicable)
+  [ ] Annonces automatiques (Google décide)
+  [ ] Autre : ___
+- **IMPORTANT** : AdSense requiert un domaine de premier niveau (pas de sous-domaine Vercel)
+
+### 5.2 Analytics & Suivi
+
+- **Souhaitez-vous Google Analytics ?** [ ] Oui [ ] Non
+- **ID de mesure GA4** (si existant) : ___
+  (Format: G-XXXXXXXXXX)
+- **Autres outils de suivi** :
+  [ ] Google Search Console
+  [ ] Facebook Pixel
+  [ ] LinkedIn Insight Tag
+  [ ] Hotjar / Clarity
+  [ ] Autre : ___
+- **RAPPEL Loi 25** : Tous les trackers non-essentiels doivent être activés
+  APRÈS le consentement explicite de l'utilisateur (via bandeau cookies)
+
+### 5.3 Code de vérification
+
+- **Code Google Search Console** : ___
+  (Balise meta, format: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX)
+  (Sera ajouté automatiquement dans le `<head>` du site)
+
+---
+
+## 6. Budget & Délai
 
 - **Budget** : ___
 - **Délai souhaité** : ___

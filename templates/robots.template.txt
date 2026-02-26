@@ -1,0 +1,27 @@
+# NEXOS v3.0 — robots.txt Template
+#
+# Instructions pour seo-asset-generator :
+# 1. Remplacer {{BASE_URL}} par le domaine du brief
+# 2. Remplacer {{SITEMAP_URL}} par {{BASE_URL}}/sitemap.xml
+# 3. Ajouter des Disallow si le site a /api/ ou /admin/
+# 4. Destination : site/public/robots.txt
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+
+# Crawlers IA — autoriser pour visibilité maximale
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+Sitemap: {{SITEMAP_URL}}

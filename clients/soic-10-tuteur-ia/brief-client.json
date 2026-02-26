@@ -1,0 +1,129 @@
+{
+  "meta": {
+    "nexos_version": "3.0",
+    "created": "2026-02-24",
+    "mode": "create"
+  },
+  "legal": {
+    "denomination": "Mark Systems inc.",
+    "neq": "—",
+    "adresse": "—",
+    "telephone": "—",
+    "courriel": "info@marksystems.ca"
+  },
+  "project": {
+    "client": "Mark Systems (produit interne)",
+    "slug": "soic-10-tuteur-ia",
+    "secteur": "EdTech / Intelligence Artificielle / Tutorat personnalisé",
+    "url_existante": null,
+    "domaine_cible": "TBD (deploy Vercel .vercel.app initialement)",
+    "type": "application",
+    "pages": [
+      "landing (marketing)",
+      "login / signup",
+      "dashboard apprenant",
+      "session tuteur (chat IA)",
+      "historique sessions",
+      "profil apprenant",
+      "admin / analytics",
+      "politique confidentialité",
+      "mentions légales"
+    ],
+    "langues": ["fr", "en"],
+    "charte_graphique": "À créer (Mark Systems branding)",
+    "references_visuelles": [],
+    "hebergement": "Vercel",
+    "fonctionnalites": [
+      "Chat IA conversationnel (tuteur personnalisé)",
+      "Profil apprenant (âge, niveau, matière, style, objectif)",
+      "Diagnostic adaptatif (2-3 questions calibrage)",
+      "Sessions interactives avec feedback en temps réel",
+      "Historique de sessions et suivi de progression",
+      "Multi-matières (maths, sciences, français, etc.)",
+      "Mode Socratique (guidage, jamais réponse directe)",
+      "Dashboard analytics (progression, temps, matières)",
+      "Authentification (email + OAuth)",
+      "Responsive mobile-first"
+    ],
+    "concurrents": [
+      "https://www.khanacademy.org/khan-labs",
+      "https://www.synthesis.com/tutor",
+      "https://www.duolingo.com",
+      "https://www.socratic.org",
+      "https://www.adaptemy.com"
+    ],
+    "mots_cles_seo": [
+      "tuteur IA personnalisé",
+      "tutorat intelligent",
+      "aide scolaire IA",
+      "apprentissage adaptatif",
+      "tuteur en ligne Québec",
+      "AI tutor",
+      "personalized learning"
+    ],
+    "contexte_libre": "Application SaaS de tutorat IA personnalisé. Le tuteur s'adapte au profil unique de chaque apprenant (âge, niveau, matière, style d'apprentissage, objectif). Workflow pédagogique: diagnostic → explication avec analogies → vérification compréhension → exercice pratique → correction guidée. Mode interactif obligatoire — jamais de réponse directe sur les exercices, toujours du guidage. Le backend IA est à déterminer (Claude API, OpenAI, multi-provider)."
+  },
+  "ai_spec": {
+    "system_prompt_version": "SOIC-10",
+    "pedagogical_workflow": [
+      "1. Évaluer le niveau réel par 2-3 questions diagnostiques",
+      "2. Expliquer le concept cible avec analogies adaptées au profil",
+      "3. Vérifier la compréhension par question intermédiaire",
+      "4. Corriger et approfondir selon la réponse",
+      "5. Proposer un exercice pratique + corriger avec explication"
+    ],
+    "learner_profile_fields": [
+      "nom", "age_niveau", "matiere", "sujet_precis",
+      "objectif", "style_prefere", "niveau_matiere"
+    ],
+    "constraints": [
+      "Jamais donner la réponse directement sur exercice — guider",
+      "Adapter vocabulaire: enfant = analogies quotidien, adulte = exemples pro",
+      "Si blocage: reformuler (3 angles max)",
+      "Célébrer progrès, corriger sans jugement"
+    ],
+    "output_format": ["DIAGNOSTIC", "EXPLICATION", "CHECK", "EXERCICE"],
+    "backend_candidates": ["Claude API (Anthropic)", "OpenAI GPT-4o", "Multi-provider (OpenRouter/LiteLLM)"]
+  },
+  "loi25": {
+    "rpp_nom": "Marc (Mark Systems)",
+    "rpp_courriel": "info@marksystems.ca",
+    "rpp_titre": "Fondateur / Dirigeant",
+    "collecte_rp": true,
+    "types_donnees": [
+      "Nom / Prénom",
+      "Courriel",
+      "Données de navigation (cookies, analytics)",
+      "Données d'apprentissage (profil, historique sessions, progression)"
+    ],
+    "finalites": [
+      "Authentification",
+      "Personnalisation du tutorat IA",
+      "Suivi de progression",
+      "Analyse de trafic"
+    ],
+    "duree_conservation": "Tant que le compte est actif + 12 mois après suppression",
+    "transfert_hors_qc": true,
+    "transfert_details": "Vercel (US), API LLM provider (US), analytics",
+    "services_tiers": [
+      "Vercel (hébergement, US)",
+      "LLM API provider (TBD, US)",
+      "Analytics (TBD)"
+    ],
+    "consentement": "Bandeau cookies opt-in (conforme Loi 25)",
+    "incident_process": false,
+    "incident_courriel": "info@marksystems.ca"
+  },
+  "design": {
+    "palette": "À créer — tons éducation (bleu confiance + accents dynamiques)",
+    "typographies": "Moderne, lisible (Inter / Plus Jakarta Sans)",
+    "style_visuel": "Minimaliste + Créatif (approchable, pas corporatif froid)",
+    "audience_cible": "Étudiants secondaire/cégep, adultes autodidactes, parents",
+    "zone_geographique": "Québec → Canada → International"
+  },
+  "budget": {
+    "budget": "Produit interne — développement Mark Systems",
+    "delai": "MVP 4-6 semaines",
+    "priorite": "Qualité"
+  }
+}
