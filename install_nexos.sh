@@ -2,24 +2,30 @@
 # Install NEXOS CLI as a system command
 # Run: bash install.sh
 
-NEXOS_ROOT="$HOME/___00___MARK_SYSTEMS_BIZ___/NEXOS/nexos_v.3.0"
+# Auto-detect NEXOS root from script location
+NEXOS_ROOT="$(cd "$(dirname "$0")" && pwd)"
 CLI_PATH="$NEXOS_ROOT/nexos_cli.py"
 LINK_PATH="$HOME/.local/bin/nexos"
 
-# Copy CLI to NEXOS root
-cp nexos_cli.py "$CLI_PATH" 2>/dev/null || true
+if [ ! -f "$CLI_PATH" ]; then
+    echo "ERREUR: nexos_cli.py introuvable dans $NEXOS_ROOT"
+    exit 1
+fi
+
 chmod +x "$CLI_PATH"
 
 # Create symlink
 mkdir -p "$HOME/.local/bin"
 ln -sf "$CLI_PATH" "$LINK_PATH"
 
-# Make sure ~/.local/bin is in PATH
-if ! echo "$PATH" | grep -q "$HOME/.local/bin"; then
-    echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
-    echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.zshrc" 2>/dev/null
-    export PATH="$HOME/.local/bin:$PATH"
-fi
+# Make sure ~/.local/bin is in PATH for bash and zsh
+EXPORT_LINE='export PATH="$HOME/.local/bin:$PATH"'
+for rcfile in "$HOME/.bashrc" "$HOME/.zshrc"; do
+    if [ -f "$rcfile" ] && ! grep -qF '.local/bin' "$rcfile"; then
+        echo "$EXPORT_LINE" >> "$rcfile"
+    fi
+done
+export PATH="$HOME/.local/bin:$PATH"
 
 echo "✅ NEXOS v4.0 CLI installé"
 echo ""
