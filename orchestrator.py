@@ -1008,7 +1008,7 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="NEXOS v3.0 Orchestrator",
+        description="NEXOS v4.0 Orchestrator",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""modes:
   create    Création complète d'un site (ph0 → ph5)
@@ -1016,7 +1016,10 @@ if __name__ == "__main__":
   modify    Modification ciblée
   content   Rédaction/traduction seule (ph3)
   analyze   Discovery seule (ph0)
-  converge  Boucle de convergence SOIC sur un client existant""",
+  converge  Boucle de convergence SOIC sur un client existant
+  doctor    Diagnostic système (outils, templates, SOIC)
+  fix       Auto-correction D4/D8 sur un client
+  report    Rapport agrégé d'un client""",
     )
 
     subparsers = parser.add_subparsers(dest="mode", help="Mode d'opération")
@@ -1062,11 +1065,46 @@ if __name__ == "__main__":
     sp_conv.add_argument("--url", type=str, help="URL du site (pour preflight)")
     sp_conv.add_argument("--dry-run", action="store_true", help="Évaluer sans corriger (rapport uniquement)")
 
+    # NEXOS v4.0 — Doctor
+    subparsers.add_parser("doctor", help="Diagnostic système (outils, templates, SOIC)")
+
+    # NEXOS v4.0 — Fix
+    sp_fix = subparsers.add_parser("fix", help="Auto-correction D4/D8 sur un client")
+    sp_fix.add_argument("client_dir", type=Path, help="Dossier client à corriger")
+    sp_fix.add_argument("--dry-run", action="store_true", help="Analyser sans appliquer")
+
+    # NEXOS v4.0 — Report
+    sp_report = subparsers.add_parser("report", help="Rapport agrégé d'un client")
+    sp_report.add_argument("client_dir", type=Path, help="Dossier client à analyser")
+
     args = parser.parse_args()
 
     if not args.mode:
         parser.print_help()
         sys.exit(1)
+
+    # NEXOS v4.0 — commandes standalone
+    if args.mode == "doctor":
+        if _NEXOS_V4:
+            from nexos.cli_commands import run_doctor
+            run_doctor()
+        else:
+            console.print("[red]nexos doctor requiert les modules v4.0 (nexos/)[/]")
+        sys.exit(0)
+    elif args.mode == "fix":
+        if _NEXOS_V4:
+            from nexos.cli_commands import run_fix
+            run_fix(args.client_dir, dry_run=args.dry_run)
+        else:
+            console.print("[red]nexos fix requiert les modules v4.0 (nexos/)[/]")
+        sys.exit(0)
+    elif args.mode == "report":
+        if _NEXOS_V4:
+            from nexos.cli_commands import run_report
+            run_report(args.client_dir)
+        else:
+            console.print("[red]nexos report requiert les modules v4.0 (nexos/)[/]")
+        sys.exit(0)
 
     if args.mode == "knowledge":
         run_knowledge_agent(

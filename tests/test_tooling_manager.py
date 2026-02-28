@@ -99,4 +99,17 @@ class TestDoctorReport:
         report = doctor_report()
         assert "NEXOS v4.0" in report
         assert "node" in report
-        assert "TOUS LES OUTILS OK" in report
+        assert "OUTILS CLI" in report
+
+    def test_report_includes_templates(self):
+        report = doctor_report()
+        assert "TEMPLATES" in report
+        assert "cookie-consent-component.tsx" in report
+
+    def test_report_includes_soic(self):
+        report = doctor_report()
+        assert "SOIC ENGINE" in report
+
+    def test_report_includes_clients(self):
+        report = doctor_report()
+        assert "CLIENTS" in report
