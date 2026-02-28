@@ -16,6 +16,15 @@ from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
+# NEXOS v4.0 augmentation modules
+try:
+    from nexos.tooling_manager import ensure_tooling
+    from nexos.build_validator import validate_build
+    from nexos.auto_fixer import auto_fix
+    _NEXOS_V4 = True
+except ImportError:
+    _NEXOS_V4 = False
+
 try:
     from rich.console import Console
     from rich.panel import Panel
@@ -516,6 +525,10 @@ def run_pipeline(mode: str, client_dir: Path, url: Optional[str] = None):
 
     gate_history = []
 
+    # NEXOS v4.0 — Vérification tooling au démarrage
+    if _NEXOS_V4:
+        ensure_tooling(interactive=False)
+
     console.print(Panel(
         f"[bold]Mode:[/] {mode}\n"
         f"[bold]Client:[/] {client_dir.name}\n"
@@ -533,6 +546,14 @@ def run_pipeline(mode: str, client_dir: Path, url: Optional[str] = None):
         site_dir = client_dir / "site"
         if not (site_dir / "package.json").exists():
             site_dir = None
+
+        # NEXOS v4.0 — Auto-fix D4/D8 avant QA (garantir compliance)
+        if phase == "ph5-qa" and _NEXOS_V4 and site_dir:
+            brief_path = client_dir / "brief-client.json"
+            brief = json.loads(brief_path.read_text()) if brief_path.exists() else None
+            fix_report = auto_fix(site_dir, client_dir, brief)
+            if fix_report.total_fixes > 0:
+                console.print(f"[cyan]  Auto-fix: {fix_report.total_fixes} corrections appliquées[/]")
 
         # Preflight tooling avant ph5
         if phase == "ph5-qa":
@@ -567,12 +588,29 @@ def run_pipeline(mode: str, client_dir: Path, url: Optional[str] = None):
 
             # Phase 4 = BUILD PASS (binary check, no convergence)
             if threshold is None:
-                build_log = client_dir / "ph4-build-log.md"
-                if build_log.exists():
-                    content = build_log.read_text()
-                    build_ok = "BUILD PASS" in content or "build réussi" in content.lower()
+                if _NEXOS_V4 and site_dir:
+                    # NEXOS v4.0 — Validation build réelle
+                    from nexos.build_validator import format_build_report
+                    build_result = validate_build(site_dir)
+                    build_ok = build_result.overall_pass
+                    if not build_ok:
+                        # Tenter auto-fix puis re-valider
+                        console.print("[cyan]  Build FAIL — tentative auto-fix...[/]")
+                        brief_path = client_dir / "brief-client.json"
+                        brief = json.loads(brief_path.read_text()) if brief_path.exists() else None
+                        fix_report = auto_fix(site_dir, client_dir, brief)
+                        console.print(f"[cyan]  Auto-fix: {fix_report.total_fixes} corrections[/]")
+                        build_result = validate_build(site_dir)
+                        build_ok = build_result.overall_pass
+                    console.print(format_build_report(build_result))
                 else:
-                    build_ok = True
+                    # Fallback v3.0 — vérification textuelle
+                    build_log = client_dir / "ph4-build-log.md"
+                    if build_log.exists():
+                        content = build_log.read_text()
+                        build_ok = "BUILD PASS" in content or "build réussi" in content.lower()
+                    else:
+                        build_ok = True
                 gate_history.append({
                     "phase": phase, "mu": 10.0 if build_ok else 0.0,
                     "threshold": "BUILD_PASS", "converged": build_ok,
