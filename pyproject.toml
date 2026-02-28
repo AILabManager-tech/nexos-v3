@@ -1,0 +1,9 @@
+[project]
+name = "nexos"
+version = "4.0.0"
+description = "NEXOS — Pipeline web autonome avec quality gates SOIC"
+requires-python = ">=3.10"
+dependencies = ["rich>=13.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]

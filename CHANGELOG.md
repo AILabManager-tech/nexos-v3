@@ -1,4 +1,43 @@
-# NEXOS v3.0 — CHANGELOG
+# NEXOS — CHANGELOG
+
+## [4.0.0] - 2026-02-28 — Pipeline Augmentation (Sprint 1 + 2)
+
+### Nouveau package `nexos/`
+
+Trois modules d'augmentation qui se branchent sur `orchestrator.py` via le flag `_NEXOS_V4`.
+Retrocompatibilite totale : si `nexos/` est absent, l'orchestrateur fonctionne en mode v3.0.
+
+#### Sprint 1 — Modules de base
+- **A01** : `nexos/tooling_manager.py` — Verification des outils CLI (node, npm, claude, lighthouse, pa11y) avec degradation gracieuse pour les optionnels
+- **A02** : `nexos/build_validator.py` — Remplace la validation superficielle "BUILD PASS" par des verifications reelles (npm install, tsc, build, audit, fichiers critiques, headers)
+- **A03** : `nexos/auto_fixer.py` — Auto-correction D4/D8 : injection cookie consent, npm audit fix, vercel headers, next.config, generation pages legales
+
+#### Sprint 2 — Commandes CLI
+- **A04** : `nexos/cli_commands.py` — Nouvelles commandes standalone
+- **CMD** : `nexos doctor` — Diagnostic systeme complet (outils, templates, SOIC engine, clients)
+- **CMD** : `nexos fix <client_dir> [--dry-run]` — Auto-correction D4/D8 sans lancer le pipeline
+- **CMD** : `nexos report <client_dir>` — Rapport agrege (phases, SOIC gates, tooling, brief)
+
+### Fichiers modifies
+- `orchestrator.py` — Imports v4.0 conditionnels, tooling check au demarrage, auto-fix avant ph5, validation build reelle a ph4, 3 nouvelles commandes CLI (doctor/fix/report)
+- `nexos/tooling_manager.py:doctor_report()` — Enrichi avec sections templates, SOIC engine, clients
+
+### Fichiers crees
+- `nexos/__init__.py` — Package v4.0.0
+- `nexos/tooling_manager.py` — 230 lignes
+- `nexos/build_validator.py` — 238 lignes
+- `nexos/auto_fixer.py` — 478 lignes
+- `nexos/cli_commands.py` — 260 lignes
+- `pyproject.toml` — Config projet Python (rich>=13.0, pytest>=8.0)
+
+### Tests
+- `tests/test_tooling_manager.py` — 16 tests (check_tool, ensure_tooling, doctor_report)
+- `tests/test_build_validator.py` — 13 tests (BuildResult, fichiers critiques, headers, audit)
+- `tests/test_auto_fixer.py` — 17 tests (FixReport, vercel headers, next.config, cookie consent, pages legales)
+- `tests/test_cli_commands.py` — 11 tests (doctor, fix, fix --dry-run, report)
+- **Total : 57 tests, tous passent**
+
+---
 
 ## [3.0.1] - 2026-02-16 — Stabilisation Loi 25
 

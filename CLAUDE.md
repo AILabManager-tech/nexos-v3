@@ -1,4 +1,4 @@
-# NEXOS v3.0 — Web Builder Autonome Premium
+# NEXOS v4.0 — Web Builder Autonome Premium
 
 ## IDENTITÉ
 
@@ -9,13 +9,15 @@ Ton objectif : **qualité premium dès la première génération** (score ≥ 85
 ## ARCHITECTURE
 
 ```
-NEXOS v3.0 = Multi-phase × Quality Gates × Tooling Réel
+NEXOS v4.0 = Multi-phase × Quality Gates × Tooling Réel × Auto-Fix
 ```
 
 - **6 phases séquentielles** (ph0→ph5), chacune = 1 appel CLI dédié
 - **Quality gates SOIC** entre chaque phase (μ ≥ 8.0 pour avancer)
 - **Tooling CLI réel** (Lighthouse, pa11y, curl, npm audit) AVANT les agents LLM
+- **Auto-fix D4/D8** : correction automatique sécurité + Loi 25 entre les phases
 - **46 agents spécialisés** (1 agent = 1 domaine)
+- **Package `nexos/`** : modules d'augmentation (tooling_manager, build_validator, auto_fixer, cli_commands)
 
 ## MODES D'OPÉRATION
 
@@ -25,6 +27,9 @@ NEXOS v3.0 = Multi-phase × Quality Gates × Tooling Réel
 | `audit` | Audit d'un site existant | tooling → ph5-qa |
 | `modify` | Modification ciblée | site-update pipeline |
 | `content` | Rédaction/traduction seule | ph3 |
+| `doctor` | Diagnostic système | outils + templates + SOIC + clients |
+| `fix` | Auto-correction D4/D8 standalone | validate → fix → re-validate |
+| `report` | Rapport agrégé d'un client | phases + gates + tooling + brief |
 
 ## RÈGLES ABSOLUES
 
@@ -128,6 +133,32 @@ tools/preflight.sh <URL> <CLIENT_DIR>
 | ph3→ph4 | μ ≥ 8.0 |
 | ph4→tooling | BUILD PASS |
 | ph5→deploy | μ ≥ 8.5 |
+
+## NEXOS v4.0 — MODULES D'AUGMENTATION
+
+Le package `nexos/` contient 4 modules qui se branchent sur `orchestrator.py` :
+
+### `nexos/tooling_manager.py`
+- Verifie les outils CLI requis au demarrage du pipeline
+- Outils critiques (erreur si absent) : node ≥20, npm, claude
+- Outils optionnels (warning) : lighthouse, pa11y
+- `nexos doctor` pour diagnostic complet
+
+### `nexos/build_validator.py`
+- Remplace la validation superficielle "BUILD PASS" de Ph4
+- Checks reels : npm install → tsc → npm run build → npm audit → fichiers critiques → headers vercel.json
+- TSC non-bloquant si build passe (erreurs dans les tests ignorees)
+
+### `nexos/auto_fixer.py`
+- Auto-correction D4 (Securite) et D8 (Loi 25)
+- 6 fixes : cookie consent, npm audit fix, vercel headers, next.config, politique-confidentialite, mentions-legales
+- Se declenche automatiquement avant Ph5 et apres echec Ph4
+- Pattern try-fix-retry : validate → auto_fix → re-validate (1 tentative max)
+
+### `nexos/cli_commands.py`
+- `nexos doctor` : diagnostic outils + templates + SOIC + clients
+- `nexos fix <client> [--dry-run]` : auto-fix standalone
+- `nexos report <client>` : rapport agrege (phases, gates, tooling, brief)
 
 ## TEMPLATES SECURISES
 
