@@ -132,6 +132,22 @@ class TestValidateBuild:
         result = validate_build(tmp_path)
         assert result.overall_pass is True
 
+    @patch("nexos.build_validator._check_audit", return_value=(0, 0))
+    @patch("nexos.build_validator._check_build", return_value=(True, ""))
+    @patch("nexos.build_validator._check_tsc", return_value=(False, ["error TS2345 in test file"]))
+    @patch("nexos.build_validator._check_npm_install", return_value=True)
+    def test_tsc_fail_but_build_ok_passes(self, mock_npm, mock_tsc, mock_build, mock_audit, tmp_path):
+        """TSC errors in test files should not block if build passes."""
+        (tmp_path / "vercel.json").write_text(json.dumps({
+            "headers": [{"source": "/(.*)", "headers": [
+                {"key": h, "value": "v"} for h in REQUIRED_HEADERS
+            ]}]
+        }))
+        result = validate_build(tmp_path)
+        assert result.tsc_ok is False
+        assert result.build_ok is True
+        assert result.overall_pass is True
+
     @patch("nexos.build_validator._check_npm_install", return_value=False)
     def test_npm_fail_short_circuits(self, mock_npm, tmp_path):
         result = validate_build(tmp_path)

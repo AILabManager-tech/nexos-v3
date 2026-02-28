@@ -56,8 +56,15 @@ def run_fix(client_dir: Path, dry_run: bool = False):
     result_before = validate_build(site_dir)
     console.print(format_build_report(result_before))
 
-    if result_before.overall_pass and not dry_run:
-        console.print("\n[green]Le build passe déjà — aucun fix nécessaire.[/]")
+    # Même si overall_pass, on applique les fixes pour les problèmes non-bloquants
+    # (fichiers manquants, vulns npm HIGH, erreurs TSC dans les tests)
+    has_issues = (
+        result_before.missing_files
+        or result_before.audit_highs > 0
+        or not result_before.tsc_ok
+    )
+    if result_before.overall_pass and not has_issues and not dry_run:
+        console.print("\n[green]Le build passe et aucun problème détecté — rien à corriger.[/]")
         return
 
     if dry_run:

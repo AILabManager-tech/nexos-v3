@@ -79,22 +79,22 @@ def _fix_cookie_consent(site_dir: Path, report: FixReport):
     """
     components_dir = site_dir / "src" / "components"
 
-    # 1. Chercher un fichier cookie consent existant
-    has_consent = False
+    # 1. Chercher un fichier cookie consent existant et résoudre son import path
+    consent_file: Path | None = None
     if components_dir.exists():
         for f in components_dir.rglob("*"):
             if f.is_file() and "cookie" in f.name.lower() and "consent" in f.name.lower():
-                has_consent = True
+                consent_file = f
                 break
 
     # 2. Copier le template si absent
-    if not has_consent:
+    if consent_file is None:
         template_src = TEMPLATES_DIR / "cookie-consent-component.tsx"
         if not template_src.exists():
             return
         components_dir.mkdir(parents=True, exist_ok=True)
-        dest = components_dir / "cookie-consent.tsx"
-        shutil.copy2(template_src, dest)
+        consent_file = components_dir / "cookie-consent.tsx"
+        shutil.copy2(template_src, consent_file)
         console.print("[dim]    cookie-consent.tsx copié dans src/components/[/]")
 
     # 3. Trouver le layout.tsx principal
@@ -117,8 +117,11 @@ def _fix_cookie_consent(site_dir: Path, report: FixReport):
     if "<CookieConsent" in layout_content:
         return
 
-    # 5. Ajouter l'import — utiliser @/ (alias absolu Next.js standard)
-    import_line = 'import { CookieConsent } from "@/components/cookie-consent";\n'
+    # 5. Construire l'import path basé sur le fichier réel trouvé
+    # Ex: src/components/legal/CookieConsent.tsx → @/components/legal/CookieConsent
+    relative = consent_file.relative_to(site_dir / "src")
+    import_path = "@/" + str(relative).replace(".tsx", "").replace(".ts", "")
+    import_line = f'import {{ CookieConsent }} from "{import_path}";\n'
 
     # Insérer l'import après le dernier import existant
     last_import_idx = -1

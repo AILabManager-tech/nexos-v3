@@ -27,7 +27,29 @@ class TestRunFix:
         assert any("package.json" in c for c in calls)
 
     @patch("nexos.cli_commands.console")
-    def test_fix_with_passing_build(self, mock_console, tmp_path):
+    def test_fix_with_clean_build(self, mock_console, tmp_path):
+        """Build passes and no issues → exits early, validate called once."""
+        from nexos.build_validator import BuildResult
+
+        client_dir = tmp_path / "client"
+        client_dir.mkdir()
+        site_dir = client_dir / "site"
+        site_dir.mkdir()
+        (site_dir / "package.json").write_text("{}")
+
+        with patch("nexos.cli_commands.validate_build") as mock_validate, \
+             patch("nexos.cli_commands.auto_fix"):
+            # No issues at all → should exit early
+            mock_validate.return_value = BuildResult(
+                npm_install_ok=True, tsc_ok=True, build_ok=True,
+                headers_ok=True, overall_pass=True,
+            )
+            run_fix(client_dir)
+            mock_validate.assert_called_once()
+
+    @patch("nexos.cli_commands.console")
+    def test_fix_with_issues_runs_twice(self, mock_console, tmp_path):
+        """Build passes but has issues → applies fix, validates twice."""
         from nexos.build_validator import BuildResult
         from nexos.auto_fixer import FixReport
 
@@ -39,10 +61,14 @@ class TestRunFix:
 
         with patch("nexos.cli_commands.validate_build") as mock_validate, \
              patch("nexos.cli_commands.auto_fix") as mock_fix:
-            mock_validate.return_value = BuildResult(overall_pass=True)
+            mock_validate.return_value = BuildResult(
+                npm_install_ok=True, tsc_ok=False, build_ok=True,
+                headers_ok=True, overall_pass=True, audit_highs=2,
+            )
             mock_fix.return_value = FixReport()
             run_fix(client_dir)
-            mock_validate.assert_called_once()
+            assert mock_validate.call_count == 2
+            mock_fix.assert_called_once()
 
     @patch("nexos.cli_commands.console")
     def test_dry_run_analysis(self, mock_console, tmp_path):
