@@ -21,6 +21,7 @@ try:
     from nexos.tooling_manager import ensure_tooling
     from nexos.build_validator import validate_build
     from nexos.auto_fixer import auto_fix
+    from nexos.brief_wizard import interactive_brief
     _NEXOS_V4 = True
 except ImportError:
     _NEXOS_V4 = False
@@ -108,6 +109,29 @@ def generate_brief(mode: str, answers: dict, free_text: str = "") -> Path:
     brief_path.write_text(json.dumps(brief, ensure_ascii=False, indent=2), encoding="utf-8")
 
     console.print(f"[green]✓[/] Brief généré : {brief_path}")
+    return client_dir
+
+
+def generate_brief_from_wizard(mode: str, brief_data: dict) -> Path:
+    """Crée le dossier client et écrit le brief généré par le wizard interactif."""
+    slug = brief_data["client"]["slug"]
+    client_dir = CLIENTS_DIR / slug
+    client_dir.mkdir(parents=True, exist_ok=True)
+    (client_dir / "tooling").mkdir(exist_ok=True)
+    (client_dir / "site").mkdir(exist_ok=True)
+
+    # Ajouter la mission au brief
+    brief_data["mission"] = {
+        "mode": mode,
+        "phases": PHASES_MAP[mode],
+    }
+
+    brief_path = client_dir / "brief-client.json"
+    brief_path.write_text(
+        json.dumps(brief_data, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+
+    console.print(f"[green]✓[/] Brief wizard généré : {brief_path}")
     return client_dir
 
 
@@ -1030,6 +1054,8 @@ if __name__ == "__main__":
         sp.add_argument("--client-dir", type=Path, help="Dossier client existant")
         sp.add_argument("--url", type=str, help="URL du site (pour audit/preflight)")
         sp.add_argument("--brief", type=str, help="Chemin vers brief-client.json")
+        sp.add_argument("-i", "--interactive", action="store_true",
+                        help="Lancer le wizard interactif pour générer le brief")
 
     # Knowledge mode
     sp_know = subparsers.add_parser(
@@ -1127,11 +1153,15 @@ if __name__ == "__main__":
     else:
         if hasattr(args, "client_dir") and args.client_dir:
             client_dir = args.client_dir
-        elif hasattr(args, "brief") and args.brief:
+        elif hasattr(args, "brief") and args.brief and not getattr(args, "interactive", False):
             brief_data = json.loads(Path(args.brief).read_text())
             client_dir = generate_brief(args.mode, brief_data.get("inputs", {}))
+        elif _NEXOS_V4 and (getattr(args, "interactive", False) or sys.stdin.isatty()):
+            brief_data = interactive_brief(args.mode)
+            client_dir = generate_brief_from_wizard(args.mode, brief_data)
         else:
             console.print("[red]Erreur: --client-dir ou --brief requis[/]")
+            console.print("[dim]Astuce : lancez nexos create en terminal pour le wizard interactif[/]")
             sys.exit(1)
 
         run_pipeline(args.mode, client_dir, url=getattr(args, "url", None))

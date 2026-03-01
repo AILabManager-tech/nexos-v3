@@ -7,3 +7,4 @@ dependencies = ["rich>=13.0"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0"]
+wizard = ["questionary>=2.0"]
