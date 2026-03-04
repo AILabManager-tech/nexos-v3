@@ -1,3 +1,12 @@
+---
+id: scaffold-planner
+phase: ph1-strategy
+tags: [strategy, scaffold, D1]
+stack: [nextjs]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: Project Scaffold Architect (NEXOS Phase 1)
 # CONTEXT: Generation de l'arbre de fichiers complet pour un projet Next.js 15.
 # INPUT: site-map-logic.json + brand-identity.json + seo-strategy.json
@@ -71,6 +80,55 @@ Produire l'arbre de fichiers complet et detaille du projet. Chaque fichier doit 
   }
 }
 ```
+
+## [SECTION MANIFEST: section-manifest.json]
+
+En plus du `scaffold-plan.json`, tu DOIS generer un fichier `section-manifest.json` qui assigne un ID unique a chaque section du site.
+
+### Format des IDs
+- Pattern : `S-NNN` (sequentiel global, 3 chiffres)
+- Commencer a `S-001`, incrementer pour chaque section de chaque page
+- L'ID est **immutable** — il ne change jamais meme si la section change de page
+
+### Procedure
+1. Enumerer TOUTES les sections de TOUTES les pages du scaffold-plan
+2. Assigner S-001, S-002... sequentiellement (dans l'ordre des pages puis des sections)
+3. Remplir chaque champ : `component_name`, `i18n_namespace`, `dimensions`, `priority`
+4. Le statut initial est toujours `"planned"`
+5. Les timestamps `lifecycle.ph1_planned` = date courante, les autres = `null`
+
+### Structure de chaque entree
+```json
+{
+  "id": "S-001",
+  "page": "home",
+  "page_route": "/[locale]",
+  "name": "Hero",
+  "component_name": "HeroSection",
+  "i18n_namespace": "home.hero",
+  "order": 1,
+  "status": "planned",
+  "description": "Hero pleine largeur H1 + sous-titre + double CTA",
+  "dimensions": ["D1", "D5", "D6", "D7"],
+  "priority": "critical",
+  "lifecycle": {
+    "ph1_planned": "2026-03-04T10:00:00Z",
+    "ph2_designed": null,
+    "ph3_content_ready": null,
+    "ph4_built": null,
+    "ph5_audited": null
+  }
+}
+```
+
+### Checklist manifest
+- [ ] Chaque section de chaque page a un ID unique S-NNN
+- [ ] Les IDs sont sequentiels sans trou
+- [ ] `component_name` correspond au nom du composant dans scaffold-plan
+- [ ] `i18n_namespace` suit le pattern `{page}.{section}` en camelCase
+- [ ] `dimensions` liste les dimensions SOIC pertinentes
+- [ ] `priority` est coherent avec le scaffold-plan (critical/high/medium/low)
+- [ ] Le champ `total_sections` correspond au nombre reel de sections
 
 ## [FICHIERS OBLIGATOIRES (NON-NEGOTIABLE)]
 

@@ -61,6 +61,27 @@ Les fichiers dans tooling/ sont produits par des outils CLI réels :
 22. **deploy-master** — Déploiement Vercel si PASS
 23. **visual-qa** — Consolidation rapport final 12 sections
 
+## Section Manifest Coverage
+
+Si un fichier `section-manifest.json` existe dans le dossier client :
+
+1. **Audit de completude** : Pour chaque section du manifest, verifier :
+   - Le fichier composant (`component_name`) existe dans `components/sections/`
+   - Le namespace i18n (`i18n_namespace`) est present dans `messages/fr.json`
+   - Le composant est importe dans le `page.tsx` de la page correspondante
+2. **Mise a jour du manifest** :
+   - `status` → `"audited"` pour chaque section qui passe l'audit
+   - `lifecycle.ph5_audited` → timestamp ISO courant
+3. **Reporter** : Ajouter une section "Section Manifest Coverage" dans `ph5-qa-report.md` :
+   ```markdown
+   ## Section Manifest Coverage
+   | ID | Page | Section | Composant | i18n | Statut |
+   |----|------|---------|-----------|------|--------|
+   | S-001 | home | Hero | ✅ | ✅ | audited |
+   | S-002 | home | ServicesGrid | ✅ | ✅ | audited |
+   ```
+4. **Score** : Si des sections sont manquantes (composant absent, i18n absent), cela impacte D1 (Architecture) et D5 (i18n)
+
 ## Output
 Fichier : `ph5-qa-report.md` (12 sections, utiliser templates/audit-template.md)
 

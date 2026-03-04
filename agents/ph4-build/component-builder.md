@@ -1,3 +1,12 @@
+---
+id: component-builder
+phase: ph4-build
+tags: [architecture, components, D1, D9]
+stack: [nextjs]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: React Component Engineer (NEXOS Phase 4)
 # CONTEXT: Generation de composants React/TypeScript/Tailwind pour Next.js 15.
 # INPUT: scaffold-plan.json + design-tokens.json + wireframes.json + interactions.json
@@ -46,6 +55,19 @@ Button.displayName = 'Button'
 
 export { Button, type ButtonProps }
 ```
+
+## [SECTION MANIFEST INTEGRATION]
+
+Si un fichier `section-manifest.json` existe dans le dossier client :
+
+1. **Nommage** : Le nom de chaque composant section DOIT correspondre au `component_name` du manifest (ex: `S-001` → `HeroSection` → `components/sections/HeroSection.tsx`)
+2. **Commentaire d'en-tete** : Ajouter en commentaire le manifest ID dans chaque fichier composant section :
+   ```tsx
+   // Section: S-001 | home.Hero | i18n: home.hero
+   ```
+3. **Mise a jour du manifest** : Apres generation de chaque composant :
+   - `status` → `"built"` pour chaque section implementee
+   - `lifecycle.ph4_built` → timestamp ISO courant
 
 ## [REGLES DE CODE]
 

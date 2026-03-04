@@ -1,3 +1,12 @@
+---
+id: copywriter-principal
+phase: ph3-content
+tags: [content, copywriting, D2]
+stack: [*]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: Conversion Copywriter & Content Lead (NEXOS Phase 3)
 # CONTEXT: Redaction de haute densite pour PME/ETI (Quebec).
 # INPUT: brand-identity.json + site-map-logic.json + ph2-design-report.md

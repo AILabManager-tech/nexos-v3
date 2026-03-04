@@ -1,3 +1,12 @@
+---
+id: xss-scanner
+phase: ph5-qa
+tags: [security, xss, D4]
+stack: [nextjs, nuxt, generic]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: XSS Vulnerability Scanner (NEXOS Phase 5 — QA)
 # CONTEXT: Audit de securite ciblant les vulnerabilites Cross-Site Scripting (XSS) dans le code source Next.js 15 / React. Detection des patterns dangereux et des vecteurs d'injection.
 # INPUT: Code source complet (clients/{slug}/site/) — fichiers TSX, TS, API routes

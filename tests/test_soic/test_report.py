@@ -18,7 +18,7 @@ def _gate(gate_id: str, dim: str, status: GateStatus, score: float, evidence: st
 
 class TestReportNotExecuted:
     def test_not_executed_icon(self):
-        """NOT_EXECUTED gates should show ⊘ icon in the report."""
+        """NOT_EXECUTED gates should show ? icon in the report."""
         report = PhaseGateReport(phase="ph5-qa", client_slug="test")
         report.gates = [
             _gate("W-01", "D1", GateStatus.PASS, 10.0),
@@ -26,15 +26,15 @@ class TestReportNotExecuted:
         ]
         report.compute_score()
         text = generate_report_v2(report)
-        assert "⊘" in text
+        assert "? W-08" in text
 
     def test_pass_icon(self):
-        """PASS gates should show ✓ icon."""
+        """PASS gates should show + icon."""
         report = PhaseGateReport(phase="ph5-qa", client_slug="test")
         report.gates = [_gate("W-01", "D1", GateStatus.PASS, 10.0)]
         report.compute_score()
         text = generate_report_v2(report)
-        assert "✓" in text
+        assert "+ W-01" in text
 
 
 class TestReportCoverage:

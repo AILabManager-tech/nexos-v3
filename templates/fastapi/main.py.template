@@ -1,0 +1,33 @@
+# NEXOS v4.0 — FastAPI App Sécurisée
+# Client: {{client_slug}}
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
+
+app = FastAPI(
+    title="{{client_slug}} API",
+    docs_url="/docs",
+    redoc_url="/redoc",
+)
+
+# ── Sécurité ──
+app.add_middleware(
+    TrustedHostMiddleware,
+    allowed_hosts=["{{client_slug}}.com", "localhost"],
+)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://{{client_slug}}.com"],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["*"],
+)
+
+
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
+
+
+# ── Routes ──
+# Ajouter les routes de l'application ici

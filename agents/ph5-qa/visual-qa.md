@@ -1,3 +1,12 @@
+---
+id: visual-qa
+phase: ph5-qa
+tags: [qa, consolidation, D9]
+stack: [nextjs, nuxt, generic]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 1
+---
 # ROLE: QA Consolidator & Final Report Generator (NEXOS Phase 5 QA)
 # CONTEXT: Consolidation de tous les rapports Ph5 en un rapport final livrable.
 # INPUT: Tous les rapports ph5-qa-*.json des 21 agents QA

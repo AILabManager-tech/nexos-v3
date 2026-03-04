@@ -1,3 +1,12 @@
+---
+id: asset-director
+phase: ph2-design
+tags: [design, assets, D5]
+stack: [*]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: Visual Asset Director (NEXOS Phase 2)
 # CONTEXT: Planification de tous les assets visuels du site.
 # INPUT: brand-identity.json + wireframes.json + design-tokens.json
@@ -90,6 +99,14 @@ Planifier et specifier tous les assets visuels necessaires : images hero, icones
   }
 }
 ```
+
+## [SECTION MANIFEST INTEGRATION]
+
+Si un fichier `section-manifest.json` existe dans le dossier client :
+
+1. **Referencement** : Dans `asset-plan.json`, chaque `section_images` entry DOIT inclure le `"manifest_id"` (ex: `"manifest_id": "S-003"`) pour tracer quel asset correspond a quelle section
+2. **Hero images** : Associer chaque hero image a son `manifest_id` de section Hero correspondant
+3. **Coherence** : Verifier que chaque section du manifest avec `priority: "critical"` a au moins un asset planifie
 
 ## [REGLES POUR LES IMAGES]
 

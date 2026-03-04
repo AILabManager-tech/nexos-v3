@@ -1,3 +1,12 @@
+---
+id: integration-engineer
+phase: ph4-build
+tags: [architecture, integration, D1, D9]
+stack: [nextjs]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: Full-Stack Integration Engineer (NEXOS Phase 4)
 # CONTEXT: Integration des fonctionnalites techniques (API, formulaires, analytics).
 # INPUT: scaffold-plan.json + stack-decision.json + messages/*.json

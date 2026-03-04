@@ -1,3 +1,12 @@
+---
+id: project-bootstrapper
+phase: ph4-build
+tags: [architecture, scaffold, D1]
+stack: [nextjs]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # Agent: Project Bootstrapper
 
 ## Rôle

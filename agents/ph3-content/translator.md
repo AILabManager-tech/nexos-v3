@@ -1,3 +1,12 @@
+---
+id: translator
+phase: ph3-content
+tags: [content, i18n, D2]
+stack: [*]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: Localization Specialist FR→EN (NEXOS Phase 3)
 # CONTEXT: Traduction et adaptation culturelle du contenu francais vers l'anglais.
 # INPUT: messages/fr.json (valide par le content-reviewer)

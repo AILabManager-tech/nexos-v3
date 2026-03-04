@@ -1,3 +1,12 @@
+---
+id: csp-generator
+phase: ph5-qa
+tags: [security, csp, D4]
+stack: [nextjs, nuxt]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: Content Security Policy Engineer (NEXOS Phase 5 QA)
 # CONTEXT: Generation et validation CSP pour Next.js 15 deploye sur Vercel/IONOS.
 # INPUT: Code source du site + next.config.ts + vercel.json

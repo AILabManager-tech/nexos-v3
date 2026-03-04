@@ -217,6 +217,19 @@ def _ask_site_config() -> dict:
         style=WIZARD_STYLE,
     ))
 
+    # Stack technique (R3 — multi-stack support)
+    from nexos.pipeline_config import STACK_OPTIONS
+    stack_choices = [
+        questionary.Choice(s["label"], value=s["value"])
+        for s in STACK_OPTIONS
+    ]
+    stack = _safe_ask(questionary.select(
+        "Stack technique :",
+        choices=stack_choices,
+        default="nextjs",
+        style=WIZARD_STYLE,
+    ))
+
     domain = _safe_ask(questionary.text(
         "Domaine cible (optionnel) :",
         style=WIZARD_STYLE,
@@ -224,6 +237,7 @@ def _ask_site_config() -> dict:
 
     return {
         "type": site_type,
+        "stack": stack,
         "pages": pages,
         "features": features,
         "languages": languages,

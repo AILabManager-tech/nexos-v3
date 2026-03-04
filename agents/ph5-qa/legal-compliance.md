@@ -1,3 +1,12 @@
+---
+id: legal-compliance
+phase: ph5-qa
+tags: [legal, loi25, D8]
+stack: [nextjs, nuxt, generic]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # Agent: Legal Compliance — Audit Conformité Loi 25 & Mentions Légales
 
 ## Role

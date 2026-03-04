@@ -1,3 +1,12 @@
+---
+id: content-architect
+phase: ph3-content
+tags: [content, i18n, D1]
+stack: [nextjs]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: i18n Systems Architect (NEXOS Phase 3)
 # CONTEXT: Structuration durable des assets de traduction next-intl.
 # INPUT: messages/fr.json (brut du copywriter) + site-map-logic.json
@@ -80,6 +89,16 @@ Le dictionnaire doit etre :
 - **Profondeur max** : 4 niveaux (`page.section.subsection.key`)
 - **Pluriel** : Utiliser la syntaxe next-intl ICU (`{count, plural, one {# item} other {# items}}`)
 - **Variables** : Accolades simples `{variableName}` — jamais de double accolades
+
+## [SECTION MANIFEST INTEGRATION]
+
+Si un fichier `section-manifest.json` existe dans le dossier client :
+
+1. **Validation i18n** : Chaque section du manifest a un champ `i18n_namespace` (ex: `"home.hero"`). Verifier que CHAQUE namespace reference dans le manifest a un namespace correspondant dans le dictionnaire i18n genere
+2. **Sections manquantes** : Si un namespace du manifest n'a pas de contenu i18n, le signaler comme erreur
+3. **Mise a jour du manifest** : Apres generation du dictionnaire i18n :
+   - `status` → `"content-ready"` pour chaque section dont le namespace est complet
+   - `lifecycle.ph3_content_ready` → timestamp ISO courant
 
 ## [REGLES DE MODULARITE]
 

@@ -44,17 +44,30 @@ AGENTS_DIR = NEXOS_ROOT / "agents"
 TOOLS_DIR = NEXOS_ROOT / "tools"
 LOGS_DIR = NEXOS_ROOT / "logs"
 
-# ── Quality gate thresholds ──────────────────────────────────────────────────
-GATE_THRESHOLDS = {
-    "ph0-discovery": 7.0,
-    "ph1-strategy":  8.0,
-    "ph2-design":    8.0,
-    "ph3-content":   8.0,
-    "ph4-build":     None,   # BUILD PASS (binaire)
-    "ph5-qa":        8.5,
+# ── Quality gate thresholds (resolved from SOICProfile) ──────────────────────
+# GATE_THRESHOLDS dict removed in R2 refactor — thresholds now live in
+# SOICProfile.config.phase_thresholds. Use _get_default_profile() to access.
+def _get_default_profile():
+    """Lazy-load the default SOICProfile to avoid import-time side effects."""
+    from soic.profile import get_profile
+    return get_profile("web-nextjs")
+
+_STACK_PROFILE_MAP = {
+    "nextjs": "web-nextjs", "nuxt": "web-generic",
+    "astro": "web-generic", "fastapi": "api-fastapi",
+    "generic": "web-generic",
 }
 
-# ── Phase sequence ───────────────────────────────────────────────────────────
+def _resolve_profile(stack=None, profile_name=None):
+    """Resolve a SOICProfile from --stack or --profile CLI args."""
+    from soic.profile import get_profile
+    if profile_name:
+        return get_profile(profile_name)
+    if stack:
+        return get_profile(_STACK_PROFILE_MAP.get(stack, "web-generic"))
+    return None
+
+# ── Phase sequence (legacy fallback — prefer PipelineConfig.from_brief()) ────
 PHASES_CREATE = [
     "ph0-discovery", "ph1-strategy", "ph2-design",
     "ph3-content", "ph4-build", "ph5-qa"
@@ -135,7 +148,7 @@ def generate_brief_from_wizard(mode: str, brief_data: dict) -> Path:
     return client_dir
 
 
-def build_phase_prompt(phase: str, client_dir: Path) -> str:
+def build_phase_prompt(phase: str, client_dir: Path, stack: str = "nextjs", site_type: str = "vitrine") -> str:
     """Construit le prompt pour une phase avec contexte cumulatif."""
     parts = []
 
@@ -144,6 +157,46 @@ def build_phase_prompt(phase: str, client_dir: Path) -> str:
     if phase == "site-update":
         agent_path = AGENTS_DIR / "site-update" / "_pipeline.md"
     parts.append(f"Lis {agent_path} et adopte le rôle décrit.")
+
+    # 1b. Agent filtering (v4.0) — inject filtered agent list into prompt
+    if _NEXOS_V4 and phase not in ("site-update",):
+        try:
+            from nexos.agent_registry import AgentRegistry
+            registry = AgentRegistry(AGENTS_DIR)
+            agents = registry.get_agents_for_phase(phase, site_type=site_type, stack=stack)
+            if agents:
+                agent_list = "\n".join(
+                    f"  - {a.id} ({a.path.name}) [priority={a.priority}]"
+                    for a in agents
+                )
+                parts.append(
+                    f"\n# Agents filtrés (stack={stack}, type={site_type}) :\n{agent_list}\n"
+                    f"Exécute CHAQUE agent listé ci-dessus."
+                )
+        except Exception:
+            pass  # Fallback silencieux
+
+    # 1c. Section manifest — inject section context into prompt
+    manifest_path = client_dir / "section-manifest.json"
+    if manifest_path.exists():
+        try:
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            section_count = manifest.get("total_sections", 0)
+            sections_summary = []
+            for s in manifest.get("sections", []):
+                sections_summary.append(
+                    f"  {s['id']} | {s['page']}.{s['name']} | {s['status']} | {s.get('component_name', '?')}"
+                )
+            if sections_summary:
+                parts.append(
+                    f"\n# Section Manifest ({section_count} sections) :\n"
+                    f"Le fichier section-manifest.json dans {client_dir} contient le registre "
+                    f"de toutes les sections. Lis-le.\nResume :\n"
+                    + "\n".join(sections_summary[:30])
+                    + "\n"
+                )
+        except (json.JSONDecodeError, KeyError):
+            pass
 
     # 2. Brief client
     brief_path = client_dir / "brief-client.json"
@@ -221,11 +274,12 @@ def run_preflight_tooling(client_dir: Path, url: str) -> bool:
         return True  # Non-bloquant
 
 
-def run_soic_gate(phase: str, client_dir: Path) -> tuple[bool, float]:
+def run_soic_gate(phase: str, client_dir: Path, profile=None) -> tuple[bool, float]:
     """Exécute le quality gate SOIC pour une phase."""
     from soic.gate import evaluate_gate
 
-    threshold = GATE_THRESHOLDS.get(phase)
+    p = profile or _get_default_profile()
+    threshold = p.config.phase_thresholds.get(phase)
     if threshold is None:
         # Phase 4 = BUILD PASS (binaire)
         build_log = client_dir / "ph4-build-log.md"
@@ -467,6 +521,8 @@ class RerunContext:
     site_dir: Optional[Path]
     url: Optional[str]
     timestamp: str
+    stack: str = "nextjs"
+    site_type: str = "vitrine"
 
     def rerun(self, phase: str, feedback: str, iteration: int) -> bool:
         """Re-execute the phase with SOIC feedback injected.
@@ -479,7 +535,7 @@ class RerunContext:
         elif phase == "ph5-qa" and self.url:
             run_preflight_tooling(self.client_dir, self.url)
 
-        rerun_prompt = build_phase_prompt(phase, self.client_dir)
+        rerun_prompt = build_phase_prompt(phase, self.client_dir, stack=self.stack, site_type=self.site_type)
         rerun_prompt += f"\n\n# SOIC FEEDBACK — Iteration {iteration + 1}\n{feedback}"
         rerun_log = LOGS_DIR / f"{self.timestamp}_{phase}_iter{iteration + 1}.log"
         return run_claude_cli(rerun_prompt, str(NEXOS_ROOT), rerun_log) == 0
@@ -542,9 +598,28 @@ def verify_phase_output(phase: str, client_dir: Path) -> bool:
     return True
 
 
-def run_pipeline(mode: str, client_dir: Path, url: Optional[str] = None):
+def run_pipeline(mode: str, client_dir: Path, url: Optional[str] = None, profile=None):
     """Exécute le pipeline complet pour un mode donné."""
-    phases = PHASES_MAP[mode]
+    # Resolve phases via PipelineConfig (dynamic) or PHASES_MAP (fallback)
+    brief_path = client_dir / "brief-client.json"
+    brief = None
+    if brief_path.exists():
+        brief = json.loads(brief_path.read_text())
+
+    try:
+        from nexos.pipeline_config import PipelineConfig
+        pipeline_cfg = PipelineConfig.from_brief(brief, mode, nexos_root=NEXOS_ROOT)
+        phases = pipeline_cfg.phases
+    except Exception:
+        pipeline_cfg = None
+        phases = PHASES_MAP[mode]
+
+    # Auto-resolve profile from pipeline stack if not provided
+    if profile is None and pipeline_cfg is not None and pipeline_cfg.stack != "nextjs":
+        profile = _resolve_profile(stack=pipeline_cfg.stack) or _get_default_profile()
+    if profile is None:
+        profile = _get_default_profile()
+
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
 
     gate_history = []
@@ -557,7 +632,7 @@ def run_pipeline(mode: str, client_dir: Path, url: Optional[str] = None):
         f"[bold]Mode:[/] {mode}\n"
         f"[bold]Client:[/] {client_dir.name}\n"
         f"[bold]Phases:[/] {' → '.join(phases)}",
-        title="[bold cyan]⚡ NEXOS v3.0[/]",
+        title="[bold cyan]⚡ NEXOS v4.0[/]",
         border_style="cyan",
     ))
 
@@ -589,8 +664,12 @@ def run_pipeline(mode: str, client_dir: Path, url: Optional[str] = None):
             else:
                 console.print("[yellow]⚠ Pas de site_dir ni URL — preflight skip[/]")
 
+        # Resolve stack/site_type from pipeline config
+        _stack = pipeline_cfg.stack if pipeline_cfg else "nextjs"
+        _site_type = pipeline_cfg.site_type if pipeline_cfg else "vitrine"
+
         # Construire le prompt
-        prompt = build_phase_prompt(phase, client_dir)
+        prompt = build_phase_prompt(phase, client_dir, stack=_stack, site_type=_site_type)
         log_path = LOGS_DIR / f"{timestamp}_{phase}.log"
 
         # Exécuter Claude CLI
@@ -607,8 +686,9 @@ def run_pipeline(mode: str, client_dir: Path, url: Optional[str] = None):
                 break
 
         # Quality gate with convergence loop
-        if phase in GATE_THRESHOLDS:
-            threshold = GATE_THRESHOLDS[phase]
+        phase_thresholds = profile.config.phase_thresholds
+        if phase in phase_thresholds or phase == "ph4-build":
+            threshold = phase_thresholds.get(phase)
 
             # Phase 4 = BUILD PASS (binary check, no convergence)
             if threshold is None:
@@ -655,6 +735,7 @@ def run_pipeline(mode: str, client_dir: Path, url: Optional[str] = None):
             iterator = PhaseIterator(
                 phase=phase, client_dir=str(client_dir),
                 max_iter=4, store=store, site_dir=str(site_dir) if site_dir else None,
+                profile=profile,
             )
 
             ctx = RerunContext(
@@ -663,6 +744,8 @@ def run_pipeline(mode: str, client_dir: Path, url: Optional[str] = None):
                 site_dir=site_dir,
                 url=url,
                 timestamp=timestamp,
+                stack=_stack,
+                site_type=_site_type,
             )
 
             def _on_iteration(iteration: int, result) -> None:
@@ -725,6 +808,7 @@ def run_converge(
     timeout_minutes: int = 15,
     url: Optional[str] = None,
     dry_run: bool = False,
+    profile=None,
 ) -> None:
     """Run the SOIC convergence loop on an existing client directory.
 
@@ -732,16 +816,21 @@ def run_converge(
     With --dry-run: evaluate once, produce report + corrective plan, touch nothing.
     """
     from soic import GateEngine, PhaseIterator, Converger, FeedbackRouter
-    from soic.converger import _PHASE_THRESHOLDS
     from soic.persistence import RunStore
     from soic.report import generate_report_v2
+
+    if profile is None:
+        profile = _get_default_profile()
 
     phase = "ph5-qa"
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
 
-    # Override the phase threshold with the user target
-    original_threshold = _PHASE_THRESHOLDS.get(phase, 8.5)
-    _PHASE_THRESHOLDS[phase] = target
+    # Create a profile copy with overridden threshold (immutable)
+    converge_profile = type(profile)(
+        name=f"{profile.name}@converge",
+        config=profile.config.with_threshold(phase, target),
+        parent=profile,
+    )
 
     # Detect site directory
     site_dir = client_dir
@@ -777,11 +866,12 @@ def run_converge(
             phase=phase,
             client_dir=str(client_dir),
             site_dir=str(site_dir) if site_dir else str(client_dir),
+            profile=converge_profile,
         )
         report = engine.run_all_gates(iteration=1)
 
         # Report
-        report_txt = generate_report_v2(report)
+        report_txt = generate_report_v2(report, config=converge_profile.config)
         console.print(report_txt)
 
         # Save report
@@ -789,7 +879,7 @@ def run_converge(
         report_path.write_text(report_txt, encoding="utf-8")
 
         # Feedback
-        router = FeedbackRouter()
+        router = FeedbackRouter(config=converge_profile.config)
         if report.fail_count > 0:
             feedback = router.generate(report)
             console.print(f"\n[bold yellow]{'━'*60}[/]")
@@ -803,8 +893,7 @@ def run_converge(
             console.print(f"\n[dim]Feedback complet sauvegardé: {feedback_path}[/]")
 
         # Convergence assessment
-        converger = Converger(phase=phase, max_iter=max_iter)
-        converger.threshold = target
+        converger = Converger(phase=phase, max_iter=max_iter, config=converge_profile.config)
         decision = converger.decide(report, iteration=1)
         summary = converger.get_summary(decision, iteration=1)
 
@@ -841,9 +930,8 @@ def run_converge(
             store=store,
             site_dir=str(site_dir) if site_dir else None,
             timeout_minutes=timeout_minutes,
+            profile=converge_profile,
         )
-        # Override converger threshold
-        iterator.converger.threshold = target
 
         ctx = RerunContext(
             phase=phase,
@@ -873,7 +961,7 @@ def run_converge(
         # Final report
         if loop.iterations:
             last_report = loop.iterations[-1].report
-            report_txt = generate_report_v2(last_report)
+            report_txt = generate_report_v2(last_report, config=converge_profile.config)
             report_path = client_dir / "soic-converge-report.txt"
             report_path.write_text(report_txt, encoding="utf-8")
 
@@ -891,8 +979,7 @@ def run_converge(
             )
         console.print(f"[bold]{'━'*60}[/]")
 
-    # Restore threshold
-    _PHASE_THRESHOLDS[phase] = original_threshold
+    # No threshold restore needed — converge_profile is an immutable copy
 
 
 # ── Knowledge agents ─────────────────────────────────────────────────────────
@@ -1056,6 +1143,9 @@ if __name__ == "__main__":
         sp.add_argument("--brief", type=str, help="Chemin vers brief-client.json")
         sp.add_argument("-i", "--interactive", action="store_true",
                         help="Lancer le wizard interactif pour générer le brief")
+        sp.add_argument("--stack", choices=["nextjs", "nuxt", "astro", "fastapi", "generic"],
+                        help="Stack technique (résout le profil SOIC automatiquement)")
+        sp.add_argument("--profile", type=str, help="Profil SOIC (ex: web-nextjs, api-fastapi)")
 
     # Knowledge mode
     sp_know = subparsers.add_parser(
@@ -1090,6 +1180,9 @@ if __name__ == "__main__":
     sp_conv.add_argument("--timeout", type=int, default=15, help="Timeout global en minutes (défaut: 15)")
     sp_conv.add_argument("--url", type=str, help="URL du site (pour preflight)")
     sp_conv.add_argument("--dry-run", action="store_true", help="Évaluer sans corriger (rapport uniquement)")
+    sp_conv.add_argument("--stack", choices=["nextjs", "nuxt", "astro", "fastapi", "generic"],
+                         help="Stack technique (résout le profil SOIC automatiquement)")
+    sp_conv.add_argument("--profile", type=str, help="Profil SOIC (ex: web-nextjs, api-fastapi)")
 
     # NEXOS v4.0 — Doctor
     subparsers.add_parser("doctor", help="Diagnostic système (outils, templates, SOIC)")
@@ -1164,4 +1257,17 @@ if __name__ == "__main__":
             console.print("[dim]Astuce : lancez nexos create en terminal pour le wizard interactif[/]")
             sys.exit(1)
 
-        run_pipeline(args.mode, client_dir, url=getattr(args, "url", None))
+        # Resolve SOIC profile: --profile > --stack > brief > default
+        cli_profile = _resolve_profile(
+            stack=getattr(args, "stack", None),
+            profile_name=getattr(args, "profile", None),
+        )
+        if cli_profile is None:
+            brief_path = client_dir / "brief-client.json"
+            if brief_path.exists():
+                brief_data = json.loads(brief_path.read_text())
+                brief_stack = brief_data.get("stack") or brief_data.get("site", {}).get("stack")
+                if brief_stack:
+                    cli_profile = _resolve_profile(stack=brief_stack)
+
+        run_pipeline(args.mode, client_dir, url=getattr(args, "url", None), profile=cli_profile)

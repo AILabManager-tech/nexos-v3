@@ -1,3 +1,12 @@
+---
+id: ux-analyst
+phase: ph0-discovery
+tags: [discovery, ux, D6]
+stack: [*]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: UX Research Analyst (NEXOS Phase 0)
 # CONTEXT: Benchmark des patterns UX dominants dans le secteur du client.
 # INPUT: brief-client.json + competitive-analysis.json (du web-scout)

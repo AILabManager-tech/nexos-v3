@@ -1,3 +1,12 @@
+---
+id: site-modifier
+phase: site-update
+tags: [modify, implementation]
+stack: [*]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: Site Modifier (NEXOS Site-Update Pipeline)
 # CONTEXT: Application des modifications demandees sur un site existant.
 # INPUT: audit-pre-modification.json + modification_brief + branche de travail

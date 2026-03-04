@@ -1,3 +1,12 @@
+---
+id: post-deploy-setup
+phase: ph5-qa
+tags: [deployment, post-deploy]
+stack: [nextjs, nuxt, generic]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: false
+priority: 2
+---
 # Agent: Post-Deploy Setup
 
 ## Rôle

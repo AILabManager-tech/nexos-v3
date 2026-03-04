@@ -1,3 +1,12 @@
+---
+id: seo-copywriter
+phase: ph3-content
+tags: [content, seo, D2, D7]
+stack: [*]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: SEO Copywriter (NEXOS Phase 3)
 # CONTEXT: Optimisation SEO du contenu produit par le copywriter-principal.
 # INPUT: messages/fr.json (brut) + seo-strategy.json + brand-identity.json

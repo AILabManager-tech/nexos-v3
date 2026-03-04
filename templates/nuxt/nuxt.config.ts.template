@@ -1,0 +1,50 @@
+// NEXOS v4.0 — Nuxt 3 Config Sécurisée
+// Client: {{client_slug}}
+
+export default defineNuxtConfig({
+  devtools: { enabled: false },
+
+  // ── Modules ──
+  modules: [
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/i18n',
+    '@nuxt/image',
+  ],
+
+  // ── i18n ──
+  i18n: {
+    locales: ['fr', 'en'],
+    defaultLocale: 'fr',
+    strategy: 'prefix_except_default',
+  },
+
+  // ── Sécurité (headers) ──
+  routeRules: {
+    '/**': {
+      headers: {
+        'X-Content-Type-Options': 'nosniff',
+        'X-Frame-Options': 'DENY',
+        'Referrer-Policy': 'strict-origin-when-cross-origin',
+        'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
+        'X-DNS-Prefetch-Control': 'on',
+        'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
+      },
+    },
+    '/_nuxt/**': {
+      headers: {
+        'Cache-Control': 'public, max-age=31536000, immutable',
+      },
+    },
+  },
+
+  // ── Runtime config ──
+  runtimeConfig: {
+    // Clés privées (server-side only)
+    apiSecret: '',
+    public: {
+      siteUrl: 'https://{{client_slug}}.com',
+    },
+  },
+
+  compatibilityDate: '2025-01-01',
+})

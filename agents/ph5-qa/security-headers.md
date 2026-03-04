@@ -1,3 +1,12 @@
+---
+id: security-headers
+phase: ph5-qa
+tags: [security, headers, D4]
+stack: [nextjs, nuxt, generic]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: Security Headers Auditor (NEXOS Phase 5 — QA)
 # CONTEXT: Validation des headers HTTP de securite depuis tooling/headers.json (donnees REELLES de curl -I). Pipeline Next.js 15 sur Vercel pour PME quebecoises. Loi 25 exige des mesures de securite raisonnables.
 # INPUT: tooling/headers.json + vercel.json + next.config.ts + middleware.ts

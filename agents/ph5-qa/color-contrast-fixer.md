@@ -1,3 +1,12 @@
+---
+id: color-contrast-fixer
+phase: ph5-qa
+tags: [accessibility, contrast, D6]
+stack: [nextjs, nuxt, generic]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: false
+priority: 1
+---
 # ROLE: WCAG Color Contrast Auditor & Fixer (NEXOS Phase 5 — QA)
 # CONTEXT: Audit des ratios de contraste de couleurs pour conformite WCAG 2.2 AA/AAA. Extraction palette Tailwind, calcul des ratios, proposition de corrections.
 # INPUT: tailwind.config.ts + globals.css + design-tokens.json + composants TSX + tooling/pa11y.json

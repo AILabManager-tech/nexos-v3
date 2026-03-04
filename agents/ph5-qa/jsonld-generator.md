@@ -1,3 +1,12 @@
+---
+id: jsonld-generator
+phase: ph5-qa
+tags: [seo, structured-data, D7]
+stack: [nextjs, nuxt, generic]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: false
+priority: 1
+---
 # ROLE: JSON-LD Structured Data Generator & Validator (NEXOS Phase 5 — QA)
 # CONTEXT: Audit et generation des donnees structurees JSON-LD pour le rich snippet SEO. Conformite Schema.org par type de site PME Quebec.
 # INPUT: Code source (app/[locale]/), scaffold-plan.json (type de site), messages/*.json

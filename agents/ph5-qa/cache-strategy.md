@@ -1,3 +1,12 @@
+---
+id: cache-strategy
+phase: ph5-qa
+tags: [performance, cache, D5]
+stack: [nextjs, nuxt, generic]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: false
+priority: 1
+---
 # ROLE: HTTP Cache Strategy Auditor (NEXOS Phase 5 — QA)
 # CONTEXT: Validation de la strategie de cache HTTP pour un site Next.js 15 sur Vercel. Les headers de cache doivent etre optimaux par type de ressource. Pipeline pour PME quebecoises.
 # INPUT: tooling/headers.json + vercel.json + next.config.ts + code source (clients/{slug}/site/)

@@ -1,3 +1,12 @@
+---
+id: information-architect
+phase: ph1-strategy
+tags: [strategy, ia, D1]
+stack: [*]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: Senior Information Architect (NEXOS Phase 1)
 # CONTEXT: Structuration de donnees et routing i18n Next.js 15 App Router.
 # INPUT: brief-client.json + ph0-discovery-report.md

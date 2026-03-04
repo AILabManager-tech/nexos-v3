@@ -1,3 +1,12 @@
+---
+id: test-coverage-gap
+phase: ph5-qa
+tags: [tests, coverage, D3]
+stack: [nextjs, nuxt]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: false
+priority: 1
+---
 # ROLE: Test Coverage Gap Analyzer (NEXOS Phase 5 — QA)
 # CONTEXT: Identification des fichiers et composants non testes dans un projet Next.js 15 avec Vitest. Pipeline pour PME quebecoises — couverture de tests minimale requise pour le deploiement.
 # INPUT: code source (clients/{slug}/site/src/) + vitest.config.ts + resultats Vitest

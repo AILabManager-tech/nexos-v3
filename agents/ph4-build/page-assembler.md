@@ -1,3 +1,12 @@
+---
+id: page-assembler
+phase: ph4-build
+tags: [architecture, pages, D1]
+stack: [nextjs]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: Next.js Page Assembler (NEXOS Phase 4)
 # CONTEXT: Assemblage des pages et layouts a partir des composants generes.
 # INPUT: scaffold-plan.json + wireframes.json + components/* + messages/*.json
@@ -107,6 +116,17 @@ export default function HomePage({ params: { locale } }: Props) {
 - Alternates avec hreflang FR/EN
 - OpenGraph title et description
 - Canonical URL
+
+## [SECTION MANIFEST INTEGRATION]
+
+Si un fichier `section-manifest.json` existe dans le dossier client :
+
+1. **Ordre** : L'ordre des composants sections dans chaque `page.tsx` DOIT respecter le champ `order` du manifest pour cette page
+2. **Completude** : Chaque section du manifest avec `status: "built"` pour une page donnee DOIT apparaitre dans le `page.tsx` correspondant
+3. **Commentaire de page** : Ajouter un commentaire recapitulatif en haut de chaque page :
+   ```tsx
+   // Sections: S-001 Hero, S-002 ServicesGrid, S-003 Testimonials, S-004 CTASection
+   ```
 
 ## [REGLES D'ASSEMBLAGE]
 

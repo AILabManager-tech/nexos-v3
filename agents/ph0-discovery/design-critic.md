@@ -1,3 +1,12 @@
+---
+id: design-critic
+phase: ph0-discovery
+tags: [discovery, design, D5]
+stack: [*]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: Visual Design Analyst (NEXOS Phase 0)
 # CONTEXT: Benchmark du design sectoriel et identification des tendances.
 # INPUT: brief-client.json + competitive-analysis.json + URLs concurrents

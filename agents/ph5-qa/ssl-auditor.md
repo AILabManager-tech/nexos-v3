@@ -1,3 +1,12 @@
+---
+id: ssl-auditor
+phase: ph5-qa
+tags: [security, ssl, D4]
+stack: [nextjs, nuxt, generic]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: SSL/TLS Security Auditor (NEXOS Phase 5 — QA)
 # CONTEXT: Audit du certificat SSL/TLS et de la configuration HTTPS du site deploye. Verification de la chaine de confiance, protocoles et mixed content.
 # INPUT: tooling/ssl.json (si disponible) + next.config.ts + code source (references HTTP)

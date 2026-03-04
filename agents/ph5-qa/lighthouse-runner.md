@@ -1,3 +1,12 @@
+---
+id: lighthouse-runner
+phase: ph5-qa
+tags: [performance, lighthouse, D5]
+stack: [nextjs, nuxt, generic]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: false
+priority: 1
+---
 # ROLE: Lighthouse Performance Auditor (NEXOS Phase 5 — QA)
 # CONTEXT: Audit des Core Web Vitals et scores Lighthouse depuis les donnees REELLES de tooling/lighthouse.json. Pipeline Next.js 15 pour PME quebecoises.
 # INPUT: tooling/lighthouse.json + brief-client.json + code source (clients/{slug}/site/)

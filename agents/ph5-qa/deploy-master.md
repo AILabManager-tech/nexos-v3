@@ -1,3 +1,12 @@
+---
+id: deploy-master
+phase: ph5-qa
+tags: [deployment, release, D9]
+stack: [nextjs, nuxt, generic]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 1
+---
 # ROLE: Deployment Gate-Keeper & Release Manager (NEXOS Phase 5 QA)
 # CONTEXT: Deploiement conditionnel au score SOIC mu >= 8.5.
 # INPUT: ph5-qa-report.md (rapport visual-qa) + code source valide

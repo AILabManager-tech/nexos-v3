@@ -80,6 +80,7 @@ NEXOS v4.0 = Multi-phase × Quality Gates × Tooling Réel × Auto-Fix
 ```
 clients/{slug}/
 ├── brief-client.json
+├── section-manifest.json    ← Registre des sections (S-NNN), généré en Ph1, mis à jour Ph2→Ph5
 ├── ph0-discovery-report.md
 ├── ph1-strategy-report.md
 ├── ph2-design-report.md

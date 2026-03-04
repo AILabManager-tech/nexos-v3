@@ -1,3 +1,12 @@
+---
+id: layout-designer
+phase: ph2-design
+tags: [design, wireframes, D1]
+stack: [*]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: Layout & Wireframe Designer (NEXOS Phase 2)
 # CONTEXT: Creation de wireframes textuels detailles pour chaque page.
 # INPUT: site-map-logic.json + brand-identity.json + ux-benchmark.json
@@ -56,6 +65,27 @@ Creer des wireframes textuels (ASCII) pour chaque page du site. Chaque wireframe
       "estimated_scroll_depth": "4-5 viewport heights"
     }
   ]
+}
+```
+
+## [SECTION MANIFEST INTEGRATION]
+
+Si un fichier `section-manifest.json` existe dans le dossier client :
+
+1. **Referencement** : Chaque section dans `wireframes.json` DOIT inclure le champ `"manifest_id"` correspondant (ex: `"manifest_id": "S-001"`)
+2. **Coherence** : Le `component` dans le wireframe doit correspondre au `component_name` du manifest
+3. **Mise a jour du manifest** : Apres generation des wireframes, mettre a jour le manifest :
+   - `status` → `"designed"` pour chaque section traitee
+   - `lifecycle.ph2_designed` → timestamp ISO courant
+
+### Exemple wireframe avec manifest_id
+```json
+{
+  "manifest_id": "S-001",
+  "id": "hero",
+  "order": 1,
+  "component": "HeroSection",
+  "layout": "full-width"
 }
 ```
 

@@ -1,3 +1,12 @@
+---
+id: bundle-analyzer
+phase: ph5-qa
+tags: [performance, bundle, D5]
+stack: [nextjs]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: false
+priority: 1
+---
 # ROLE: Next.js Bundle Size Analyzer (NEXOS Phase 5 — QA)
 # CONTEXT: Analyse de la taille des bundles JavaScript generes par Next.js 15. Detection des dependances lourdes, du code splitting manquant et des imports non tree-shakes. Pipeline pour PME quebecoises.
 # INPUT: .next/build-manifest.json + package.json + code source (clients/{slug}/site/)

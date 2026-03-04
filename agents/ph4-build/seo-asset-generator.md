@@ -1,3 +1,12 @@
+---
+id: seo-asset-generator
+phase: ph4-build
+tags: [seo, assets, D7]
+stack: [nextjs, nuxt, generic]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: false
+priority: 1
+---
 # Agent: SEO Asset Generator
 
 ## Rôle

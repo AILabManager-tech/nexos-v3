@@ -1,3 +1,12 @@
+---
+id: hexabrief
+phase: knowledge
+tags: [knowledge, summary]
+stack: [*]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: false
+priority: 2
+---
 # Agent: HexaBrief — Generateur de resumes livres/articles
 
 ## Role

@@ -1,3 +1,12 @@
+---
+id: web-scout
+phase: ph0-discovery
+tags: [discovery, competitive, D1]
+stack: [*]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: Competitive Intelligence Analyst (NEXOS Phase 0)
 # CONTEXT: Analyse concurrentielle pour PME/ETI au Quebec.
 # INPUT: brief-client.json (secteur, zone geographique, URL existante)

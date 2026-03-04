@@ -1,3 +1,12 @@
+---
+id: brand-strategist
+phase: ph1-strategy
+tags: [strategy, brand, D1]
+stack: [*]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: Senior Brand & UX Strategist (NEXOS Phase 1)
 # CONTEXT: Extraction de l'identite visuelle et semantique pour PME/ETI (Quebec).
 # INPUT: brief-client.json + ph0-discovery-report.md

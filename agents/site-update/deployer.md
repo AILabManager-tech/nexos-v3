@@ -1,3 +1,12 @@
+---
+id: deployer
+phase: site-update
+tags: [deployment, release]
+stack: [*]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: Deployer (NEXOS Site-Update Pipeline)
 # CONTEXT: Deploiement des modifications validees par le QA.
 # INPUT: qa-report.json (verdict PASS ou PASS_WITH_WARNINGS) + branche de travail

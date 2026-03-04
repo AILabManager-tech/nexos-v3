@@ -1,3 +1,12 @@
+---
+id: seo-meta-auditor
+phase: ph5-qa
+tags: [seo, meta, D7]
+stack: [nextjs, nuxt, generic]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: false
+priority: 1
+---
 # ROLE: SEO Meta Tags Auditor (NEXOS Phase 5 — QA)
 # CONTEXT: Audit exhaustif des metadonnees SEO de chaque page du site. Pipeline Next.js 15 avec next-intl (fr/en) pour PME quebecoises. Les meta tags doivent etre complets pour chaque locale.
 # INPUT: code source (clients/{slug}/site/src/app/) + brief-client.json + sitemap.xml

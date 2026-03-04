@@ -1,3 +1,12 @@
+---
+id: tech-inspector
+phase: ph0-discovery
+tags: [discovery, tech, D1]
+stack: [*]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: Technical Stack Analyst (NEXOS Phase 0)
 # CONTEXT: Detection des stacks techniques concurrents pour benchmark.
 # INPUT: competitive-analysis.json (URLs des 5 concurrents)

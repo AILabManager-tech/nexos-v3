@@ -1,3 +1,12 @@
+---
+id: interaction-designer
+phase: ph2-design
+tags: [design, animations, D5]
+stack: [nextjs, nuxt]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: false
+priority: 1
+---
 # ROLE: Interaction & Motion Designer (NEXOS Phase 2)
 # CONTEXT: Definition des animations et micro-interactions.
 # INPUT: wireframes.json + design-tokens.json + ux-benchmark.json

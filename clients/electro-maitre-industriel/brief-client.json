@@ -1,0 +1,80 @@
+{
+  "_meta": {
+    "generator": "nexos-v3.0",
+    "created_at": "2026-03-02T00:00:00Z",
+    "mode": "create"
+  },
+  "client": {
+    "name": "Électro-Maître",
+    "slug": "electro-maitre-industriel"
+  },
+  "legal": {
+    "company_name": "Les Services Électriques Électro-Maître Inc.",
+    "neq": "1178945623",
+    "address": "1250 Rue de l'Industrie, Boucherville, QC, J4B 5X4",
+    "phone": "450-555-0199",
+    "email": "admin@electromaitre.ca",
+    "rpp_name": "Jean-François Fortin",
+    "rpp_email": "jf.fortin@electromaitre.ca",
+    "rpp_title": "Directeur des opérations",
+    "data_collected": ["nom", "courriel", "telephone", "adresse", "navigation", "autre"],
+    "data_collected_details": "Plans techniques (PDF) via formulaire de soumission, adresses IP via cookies",
+    "purposes": ["formulaire-contact", "commandes", "analytics"],
+    "purposes_details": "Gestion des soumissions, exécution des contrats, analyse de trafic web",
+    "retention": "7 ans pour données contractuelles ; 13 mois pour cookies analytics",
+    "transfer_outside_qc": true,
+    "transfer_countries": ["États-Unis (Google Analytics, hébergement Cloud)"],
+    "third_parties": ["Google Analytics (GA4)", "Google Workspace", "Google Maps", "HubSpot", "Vercel"],
+    "cookie_consent": "opt-in",
+    "incident_process": true,
+    "incident_email": "jf.fortin@electromaitre.ca"
+  },
+  "site": {
+    "type": "vitrine",
+    "pages": [
+      "accueil",
+      "services",
+      "services/automation",
+      "services/maintenance",
+      "services/thermographie",
+      "projets-realises",
+      "carriere",
+      "contact"
+    ],
+    "languages": ["fr", "en"],
+    "features": [
+      "formulaire-soumission-upload-pdf",
+      "google-maps-zone-service",
+      "urgence-24-7-bouton-appel",
+      "hubspot-crm-integration"
+    ],
+    "hosting": "vercel",
+    "domain": "electromaitre.ca"
+  },
+  "context": {
+    "competitors": [],
+    "keywords_seo": [
+      "automation industrielle Québec",
+      "maintenance électrique haute tension",
+      "thermographie infrarouge industrielle",
+      "électricien industriel Montérégie",
+      "services électriques usine Montréal"
+    ],
+    "free_text": "Vitrine corporative haute performance pour entreprise d'automation industrielle et maintenance électrique haute tension. Section Urgence 24/7 avec bouton d'appel direct. Formulaire de soumission avec téléversement de plans PDF. Zone de service : Grand Montréal et Montérégie. Mise en ligne sous 6 semaines pour foire commerciale."
+  },
+  "design": {
+    "palette": "#1A2B3C (bleu marine), #B2B2B2 (gris acier), #FFD700 (jaune sécurité)",
+    "typography": "Montserrat ou Roboto (sans-serif robuste)",
+    "style": "corporatif",
+    "logo_provided": true,
+    "references": [],
+    "audience": "Gestionnaires d'usines, directeurs de maintenance, promoteurs immobiliers industriels",
+    "geo_zone": "Québec"
+  },
+  "budget": {
+    "range": "5000-7500",
+    "currency": "CAD",
+    "deadline": "6 semaines",
+    "priority": "qualite"
+  }
+}

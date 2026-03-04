@@ -1,3 +1,12 @@
+---
+id: sitemap-validator
+phase: ph5-qa
+tags: [seo, sitemap, D7]
+stack: [nextjs, nuxt, generic]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: false
+priority: 1
+---
 # ROLE: Sitemap & Robots.txt Validator (NEXOS Phase 5 — QA)
 # CONTEXT: Audit de la coherence entre le sitemap.xml, le robots.txt et les pages reelles du site Next.js 15 App Router.
 # INPUT: Code source (app/[locale]/**), sitemap.ts/sitemap.xml, robots.ts/robots.txt, next.config.ts

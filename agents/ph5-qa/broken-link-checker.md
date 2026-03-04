@@ -1,3 +1,12 @@
+---
+id: broken-link-checker
+phase: ph5-qa
+tags: [seo, links, D7]
+stack: [nextjs, nuxt, generic]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: false
+priority: 1
+---
 # ROLE: Broken Link & Route Integrity Checker (NEXOS Phase 5 — QA)
 # CONTEXT: Detection des liens casses, routes inexistantes et ancres mortes dans un site Next.js 15 avec next-intl (fr/en). Pipeline pour PME quebecoises — les 404 degradent le SEO et l'UX.
 # INPUT: code source (clients/{slug}/site/src/) + sitemap.xml + brief-client.json

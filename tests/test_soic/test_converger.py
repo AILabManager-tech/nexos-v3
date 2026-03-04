@@ -81,27 +81,43 @@ class TestConvergerBlocking:
 
 
 class TestConvergerCoverage:
-    def test_low_coverage_aborts(self):
-        """Coverage < 0.7 → ABORT_LOW_COVERAGE."""
+    def test_low_coverage_iterates_first_then_aborts(self):
+        """Coverage < 0.7 on first iter → ITERATE (allow preflight).
+
+        Two consecutive low-coverage iterations → ABORT_LOW_COVERAGE.
+        """
         conv = Converger(phase="ph5-qa", max_iter=4)
         # 1 PASS + 3 NOT_EXECUTED → coverage = 1/4 = 0.25
-        report = _make_report([
+        report1 = _make_report([
             _gate("W-01", "D1", GateStatus.PASS, 10.0),
             _gate("W-08", "D5", GateStatus.NOT_EXECUTED, 0.0),
             _gate("W-10", "D6", GateStatus.NOT_EXECUTED, 0.0),
             _gate("W-11", "D6", GateStatus.NOT_EXECUTED, 0.0),
         ])
-        assert report.coverage < 0.7
-        decision = conv.decide(report, iteration=1)
-        assert decision == Decision.ABORT_LOW_COVERAGE
+        assert report1.coverage < 0.7
+        decision1 = conv.decide(report1, iteration=1)
+        assert decision1 == Decision.ITERATE  # First iter: allow retry
+
+        # Same low coverage on second iter → ABORT
+        report2 = _make_report([
+            _gate("W-01", "D1", GateStatus.PASS, 10.0),
+            _gate("W-08", "D5", GateStatus.NOT_EXECUTED, 0.0),
+            _gate("W-10", "D6", GateStatus.NOT_EXECUTED, 0.0),
+            _gate("W-11", "D6", GateStatus.NOT_EXECUTED, 0.0),
+        ])
+        decision2 = conv.decide(report2, iteration=2)
+        assert decision2 == Decision.ABORT_LOW_COVERAGE
 
 
 class TestConvergerPlateau:
     def test_plateau_detected(self):
-        """mu stagnant + same fail count → ABORT_PLATEAU."""
-        conv = Converger(phase="ph5-qa", max_iter=4)
+        """mu stagnant over 3 iterations + same fail count → ABORT_PLATEAU.
 
-        # Iteration 1: mu=5.0, 1 fail
+        Plateau requires 3 data points (2 consecutive non-positive deltas).
+        """
+        conv = Converger(phase="ph5-qa", max_iter=5)
+
+        # Iteration 1: stagnant mu, 1 fail
         report1 = _make_report([
             _gate("W-01", "D1", GateStatus.PASS, 10.0),
             _gate("W-05", "D4", GateStatus.FAIL, 0.0),
@@ -109,13 +125,21 @@ class TestConvergerPlateau:
         decision1 = conv.decide(report1, iteration=1)
         assert decision1 == Decision.ITERATE
 
-        # Iteration 2: same mu, same fail count → plateau
+        # Iteration 2: same mu, same fail count
         report2 = _make_report([
             _gate("W-01", "D1", GateStatus.PASS, 10.0),
             _gate("W-05", "D4", GateStatus.FAIL, 0.0),
         ])
         decision2 = conv.decide(report2, iteration=2)
-        assert decision2 == Decision.ABORT_PLATEAU
+        assert decision2 == Decision.ITERATE  # Only 2 data points, no plateau yet
+
+        # Iteration 3: still same → 3 data points, plateau detected
+        report3 = _make_report([
+            _gate("W-01", "D1", GateStatus.PASS, 10.0),
+            _gate("W-05", "D4", GateStatus.FAIL, 0.0),
+        ])
+        decision3 = conv.decide(report3, iteration=3)
+        assert decision3 == Decision.ABORT_PLATEAU
 
     def test_stagnant_mu_fewer_fails_continues(self):
         """mu stagnant but fewer failures → NOT plateau (qualitative progress)."""
@@ -162,7 +186,7 @@ class TestConvergerMaxIter:
 
 class TestConvergerSummary:
     def test_summary_not_empty(self):
-        """get_summary should return a non-empty string."""
+        """get_summary should return a non-empty string with mu info."""
         conv = Converger(phase="ph5-qa")
         report = _make_report([
             _gate("W-01", "D1", GateStatus.PASS, 10.0),
@@ -170,4 +194,4 @@ class TestConvergerSummary:
         decision = conv.decide(report, iteration=1)
         summary = conv.get_summary(decision, iteration=1)
         assert len(summary) > 0
-        assert "μ=" in summary or "coverage" in summary.lower()
+        assert "mu=" in summary or "coverage" in summary.lower()

@@ -1,3 +1,12 @@
+---
+id: typo-fixer
+phase: ph5-qa
+tags: [content, typography, D2]
+stack: [nextjs, nuxt, generic]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: false
+priority: 2
+---
 # ROLE: Typographic & Orthographic Auditor (NEXOS Phase 5 — QA)
 # CONTEXT: Audit orthographique et typographique de tous les contenus i18n (FR Quebec + EN) du site Next.js 15.
 # INPUT: messages/fr.json + messages/en.json + composants TSX (textes en dur residuels)

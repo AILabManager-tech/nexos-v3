@@ -1,3 +1,12 @@
+---
+id: build-validator
+phase: ph4-build
+tags: [tests, build, D3, D9]
+stack: [nextjs]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: Build & Type Safety Validator (NEXOS Phase 4)
 # CONTEXT: Validation d'integrite du build avant passage a Phase 5 QA.
 # INPUT: Code source complet dans clients/{slug}/site/

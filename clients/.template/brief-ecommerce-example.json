@@ -1,0 +1,89 @@
+{
+  "_meta": {
+    "generator": "nexos-v3.0",
+    "created_at": "2026-02-28T20:00:00Z",
+    "mode": "create"
+  },
+  "client": {
+    "name": "Erable et Terroir",
+    "slug": "erable-et-terroir"
+  },
+  "company_name": "Erable et Terroir inc.",
+  "legal": {
+    "company_name": "Erable et Terroir inc.",
+    "neq": "1189234567",
+    "address": "45 chemin du Rang, Saint-Tite-des-Caps, QC G0A 4J0",
+    "phone": "418-555-1234",
+    "email": "info@erableetterroir.ca",
+    "rpp_name": "Marie-Claude Gagnon",
+    "rpp_email": "confidentialite@erableetterroir.ca",
+    "rpp_title": "Cofondatrice et directrice generale",
+    "data_collected": ["nom", "courriel", "telephone", "adresse", "navigation", "paiement"],
+    "purposes": ["commandes", "infolettre", "analytics", "formulaire-contact"],
+    "retention": "5 ans apres la derniere commande (obligation fiscale), donnees marketing 2 ans apres le dernier consentement",
+    "third_parties": [
+      "Vercel (hebergement, US)",
+      "Stripe (paiement, US/Canada)",
+      "Google Analytics (analytique, US)",
+      "Mailchimp (infolettre, US)",
+      "Canada Post API (livraison, Canada)"
+    ],
+    "transfer_outside_qc": true,
+    "transfer_countries": ["USA (Vercel, Stripe, Google, Mailchimp)", "Canada (Postes Canada)"],
+    "cookie_consent": "opt-in",
+    "incident_process": true,
+    "incident_email": "confidentialite@erableetterroir.ca"
+  },
+  "site": {
+    "type": "ecommerce",
+    "pages": [
+      "accueil",
+      "boutique",
+      "produit",
+      "panier",
+      "a-propos",
+      "notre-histoire",
+      "contact",
+      "blogue",
+      "livraison-retours",
+      "politique-confidentialite",
+      "mentions-legales"
+    ],
+    "languages": ["fr", "en"],
+    "features": [
+      "e-commerce",
+      "formulaire-contact",
+      "infolettre",
+      "carte-google"
+    ],
+    "hosting": "vercel",
+    "domain": "erableetterroir.ca"
+  },
+  "context": {
+    "competitors": [
+      "delicesderables.com",
+      "terroirquebecois.ca",
+      "laboutiquequebecoise.com",
+      "siroperable.ca"
+    ],
+    "keywords_seo": [
+      "produits terroir quebec",
+      "sirop erable artisanal",
+      "boutique en ligne terroir",
+      "cadeau quebecois",
+      "produits locaux quebec",
+      "confiture artisanale quebec"
+    ],
+    "free_text": "Entreprise familiale depuis 3 generations a Saint-Tite-des-Caps. Notre erabliere produit 5000 entailles. Nous vendons en ligne depuis 2020 (ancien site Shopify trop couteux). Nous voulons un site Next.js rapide, avec une boutique integree (Stripe), un blogue recettes, et une section sur notre histoire. Clientele : 60% Quebec, 30% reste du Canada, 10% France. Les paniers cadeaux de Noel representent 40% des ventes. Look chaleureux, rustique mais moderne. Photos professionnelles fournies."
+  },
+  "design": {
+    "palette": "#5C3A1E (brun erable), #D4A853 (ambre/sirop), #2D5016 (vert foret), #F5F0E8 (creme)",
+    "typography": "Playfair Display (titres) + Source Sans 3 (corps)",
+    "style": "creatif",
+    "logo_provided": true,
+    "references": [
+      "https://www.lepanierbleu.ca",
+      "https://www.nousrire.com"
+    ]
+  }
+}

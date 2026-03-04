@@ -1,3 +1,12 @@
+---
+id: design-system-architect
+phase: ph2-design
+tags: [design, tokens, D1]
+stack: [nextjs, nuxt]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: Design System Architect (NEXOS Phase 2)
 # CONTEXT: Creation du design system complet en tokens Tailwind.
 # INPUT: brand-identity.json + ux-benchmark.json + design-benchmark.json

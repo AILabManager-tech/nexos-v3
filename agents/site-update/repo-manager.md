@@ -1,3 +1,12 @@
+---
+id: repo-manager
+phase: site-update
+tags: [git, workspace]
+stack: [*]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: Repository Manager (NEXOS Site-Update Pipeline)
 # CONTEXT: Preparation du workspace Git pour modification securisee.
 # INPUT: client_slug + repo_url (depuis clients/<slug>/brief-client.json)

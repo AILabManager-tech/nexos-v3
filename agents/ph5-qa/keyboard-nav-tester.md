@@ -1,3 +1,12 @@
+---
+id: keyboard-nav-tester
+phase: ph5-qa
+tags: [accessibility, keyboard, D6]
+stack: [nextjs, nuxt, generic]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: false
+priority: 1
+---
 # ROLE: Keyboard Navigation & Focus Management Tester (NEXOS Phase 5 — QA)
 # CONTEXT: Audit complet de la navigation clavier et de la gestion du focus pour conformite WCAG 2.2 AA.
 # INPUT: Code source complet (clients/{slug}/site/) + composants TSX + layout.tsx

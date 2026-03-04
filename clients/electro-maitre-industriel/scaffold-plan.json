@@ -1,0 +1,74 @@
+{
+  "project": "electro-maitre-industriel",
+  "framework": "next.js-15",
+  "language": "typescript-strict",
+  "css": "tailwind-4",
+  "i18n": "next-intl",
+  "locales": ["fr", "en"],
+  "default_locale": "fr",
+  "pages": [
+    { "route": "/[locale]", "component": "page.tsx", "type": "home" },
+    { "route": "/[locale]/services", "component": "services/page.tsx", "type": "landing" },
+    { "route": "/[locale]/services/automation", "component": "services/automation/page.tsx", "type": "service" },
+    { "route": "/[locale]/services/maintenance", "component": "services/maintenance/page.tsx", "type": "service" },
+    { "route": "/[locale]/services/thermographie", "component": "services/thermographie/page.tsx", "type": "service" },
+    { "route": "/[locale]/projets", "component": "projets/page.tsx", "type": "portfolio" },
+    { "route": "/[locale]/carriere", "component": "carriere/page.tsx", "type": "career" },
+    { "route": "/[locale]/contact", "component": "contact/page.tsx", "type": "form" },
+    { "route": "/[locale]/urgence", "component": "urgence/page.tsx", "type": "emergency" },
+    { "route": "/[locale]/politique-confidentialite", "component": "politique-confidentialite/page.tsx", "type": "legal" },
+    { "route": "/[locale]/mentions-legales", "component": "mentions-legales/page.tsx", "type": "legal" },
+    { "route": "/[locale]/plan-du-site", "component": "plan-du-site/page.tsx", "type": "sitemap" }
+  ],
+  "api_routes": [
+    { "route": "/api/contact", "method": "POST", "description": "Formulaire soumission + upload PDF" },
+    { "route": "/api/urgence", "method": "POST", "description": "Formulaire urgence simplifié" }
+  ],
+  "components": {
+    "layout": ["Header", "Footer", "MobileNav", "Breadcrumbs"],
+    "ui": ["Button", "Card", "Counter", "Badge", "Input", "Textarea", "FileUpload"],
+    "sections": ["Hero", "ServicesGrid", "StatsCounter", "FeaturedProjects", "Certifications", "Testimonial", "CtaBanner"],
+    "forms": ["ContactForm", "UrgencyForm"],
+    "maps": ["ServiceAreaMap"],
+    "legal": ["CookieConsent"],
+    "common": ["UrgencyButton", "LanguageSwitcher"]
+  },
+  "design_tokens": {
+    "colors": {
+      "primary": "#1A2B3C",
+      "secondary": "#B2B2B2",
+      "accent": "#FFD700",
+      "bg-light": "#F8F9FA",
+      "bg-dark": "#0F1923",
+      "text-light": "#FFFFFF",
+      "text-body": "#374151",
+      "success": "#22C55E",
+      "error": "#EF4444",
+      "urgence": "#FF6B35"
+    },
+    "fonts": {
+      "heading": "Montserrat",
+      "body": "Inter"
+    }
+  },
+  "security": {
+    "headers": ["Content-Security-Policy", "X-Content-Type-Options", "X-Frame-Options", "Strict-Transport-Security", "Referrer-Policy", "Permissions-Policy"],
+    "powered_by_header": false,
+    "upload_max_size_mb": 10,
+    "upload_allowed_types": ["application/pdf"],
+    "rate_limiting": true
+  },
+  "seo": {
+    "structured_data": ["LocalBusiness", "Service", "BreadcrumbList", "FAQPage", "Organization"],
+    "sitemap": true,
+    "robots": true,
+    "og_images": true
+  },
+  "loi25": {
+    "cookie_consent": "opt-in",
+    "privacy_policy_page": true,
+    "legal_mentions_page": true,
+    "rpp_identified": true,
+    "trackers_after_consent_only": true
+  }
+}

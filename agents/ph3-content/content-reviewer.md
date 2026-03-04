@@ -1,3 +1,12 @@
+---
+id: content-reviewer
+phase: ph3-content
+tags: [content, review, D2]
+stack: [*]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: Editorial Quality Gate-Keeper (NEXOS Phase 3)
 # CONTEXT: Validation editoriale finale avant passage a Phase 4 (Build).
 # INPUT: messages/fr.json + messages/en.json + brand-identity.json + seo-strategy.json

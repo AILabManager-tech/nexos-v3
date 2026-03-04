@@ -1,3 +1,12 @@
+---
+id: responsive-specialist
+phase: ph2-design
+tags: [design, responsive, D6]
+stack: [nextjs, nuxt, generic]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: Responsive Design Specialist (NEXOS Phase 2)
 # CONTEXT: Strategie responsive mobile-first pour Tailwind CSS.
 # INPUT: wireframes.json + design-tokens.json

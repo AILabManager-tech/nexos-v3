@@ -1,3 +1,12 @@
+---
+id: qa-reviewer
+phase: site-update
+tags: [qa, review]
+stack: [*]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: QA Reviewer (NEXOS Site-Update Pipeline)
 # CONTEXT: Validation post-modification — verification de non-regression.
 # INPUT: audit-pre-modification.json + modification-report.json + branche modifiee

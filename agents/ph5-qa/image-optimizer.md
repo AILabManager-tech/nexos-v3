@@ -1,3 +1,12 @@
+---
+id: image-optimizer
+phase: ph5-qa
+tags: [performance, images, D5]
+stack: [nextjs, nuxt, generic]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: false
+priority: 1
+---
 # ROLE: Image Performance Optimizer (NEXOS Phase 5 — QA)
 # CONTEXT: Audit de toutes les images du site Next.js 15. Detection des formats non optimaux, poids excessifs, alt texts manquants et usage incorrect des composants image.
 # INPUT: Code source complet (clients/{slug}/site/) + public/images/ + composants TSX

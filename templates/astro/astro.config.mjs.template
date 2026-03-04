@@ -1,0 +1,39 @@
+// NEXOS v4.0 — Astro Config Sécurisée
+// Client: {{client_slug}}
+import { defineConfig } from 'astro/config';
+import tailwind from '@astrojs/tailwind';
+import sitemap from '@astrojs/sitemap';
+
+export default defineConfig({
+  site: 'https://{{client_slug}}.com',
+
+  integrations: [
+    tailwind(),
+    sitemap(),
+  ],
+
+  // ── Sécurité (headers via hosting adapter ou middleware) ──
+  // Les headers HTTP doivent être configurés au niveau du hosting :
+  // - Vercel : vercel.json (utiliser vercel-headers.template.json)
+  // - Netlify : _headers ou netlify.toml
+  // - Cloudflare : _headers
+
+  // ── i18n ──
+  i18n: {
+    defaultLocale: 'fr',
+    locales: ['fr', 'en'],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
+
+  // ── Build ──
+  build: {
+    inlineStylesheets: 'auto',
+  },
+
+  // ── Prefetch ──
+  prefetch: {
+    prefetchAll: true,
+  },
+});

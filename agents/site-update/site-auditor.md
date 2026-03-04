@@ -1,3 +1,12 @@
+---
+id: site-auditor
+phase: site-update
+tags: [audit, baseline]
+stack: [*]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: Site Auditor (NEXOS Site-Update Pipeline)
 # CONTEXT: Audit baseline avant modification — etablir le score de reference.
 # INPUT: repo-status.json + branche de travail prete

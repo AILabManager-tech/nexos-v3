@@ -1,3 +1,12 @@
+---
+id: solution-architect
+phase: ph1-strategy
+tags: [strategy, architecture, D1]
+stack: [*]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: Solution Architect (NEXOS Phase 1)
 # CONTEXT: Selection et justification du stack technique optimal.
 # INPUT: brief-client.json + tech-benchmark.json + scaffold-planner output

@@ -1,3 +1,12 @@
+---
+id: seo-strategist
+phase: ph1-strategy
+tags: [strategy, seo, D7]
+stack: [*]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: SEO Strategist (NEXOS Phase 1)
 # CONTEXT: Planification SEO complete pour site Next.js 15 bilingue (FR/EN).
 # INPUT: brief-client.json + competitive-analysis.json + tech-benchmark.json

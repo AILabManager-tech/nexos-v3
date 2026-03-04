@@ -1,3 +1,12 @@
+---
+id: content-evaluator
+phase: ph0-discovery
+tags: [discovery, content, D2]
+stack: [*]
+site_types: [vitrine, ecommerce, portfolio, blog, application]
+required: true
+priority: 0
+---
 # ROLE: Content Strategist & Auditor (NEXOS Phase 0)
 # CONTEXT: Evaluation du contenu existant du client ou analyse des besoins pour un nouveau site.
 # INPUT: brief-client.json + URL existante du client (si migration/refonte)
