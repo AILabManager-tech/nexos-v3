@@ -11,6 +11,12 @@ from nexos.build_validator import validate_build, format_build_report, _check_cr
 from nexos.auto_fixer import auto_fix, REQUIRED_HEADERS
 
 try:
+    from nexos.changelog import log_event, EventType, get_changelog_summary
+    _HAS_CHANGELOG = True
+except ImportError:
+    _HAS_CHANGELOG = False
+
+try:
     from rich.console import Console
     from rich.panel import Panel
     from rich.table import Table
@@ -105,6 +111,10 @@ def run_fix(client_dir: Path, dry_run: bool = False):
         console.print("    + Page politique-confidentialite générée")
     if fix_report.legal_page_added:
         console.print("    + Page mentions-legales générée")
+
+    if _HAS_CHANGELOG:
+        log_event(client_dir, EventType.CLI_FIX, agent="cli",
+                  details={"fixes": fix_report.total_fixes, "build_pass": result_after.overall_pass})
 
     if result_after.overall_pass:
         console.print("\n[green bold]BUILD PASS après corrections[/]")
@@ -274,3 +284,24 @@ def run_report(client_dir: Path):
                 console.print(f"  RPP: {rpp}")
         except json.JSONDecodeError:
             console.print("\n[yellow]brief-client.json corrompu[/]")
+
+    # 6. Changelog
+    if _HAS_CHANGELOG:
+        summary = get_changelog_summary(client_dir)
+        if summary["total"] > 0:
+            console.print(f"\n[bold]Changelog :[/] {summary['total']} événements")
+            if summary["first"]:
+                console.print(f"  Période: {summary['first']} → {summary['last']}")
+            if summary["fixes"] > 0:
+                console.print(f"  Auto-fixes appliqués: {summary['fixes']}")
+            if summary["by_type"]:
+                table = Table(show_header=True, header_style="bold")
+                table.add_column("Événement")
+                table.add_column("Count", justify="right")
+                for evt, count in sorted(summary["by_type"].items()):
+                    table.add_row(evt, str(count))
+                console.print(table)
+        else:
+            console.print("\n[dim]Pas de changelog[/]")
+
+        log_event(client_dir, EventType.CLI_REPORT, agent="cli")

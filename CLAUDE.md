@@ -17,7 +17,7 @@ NEXOS v4.0 = Multi-phase × Quality Gates × Tooling Réel × Auto-Fix
 - **Tooling CLI réel** (Lighthouse, pa11y, curl, npm audit) AVANT les agents LLM
 - **Auto-fix D4/D8** : correction automatique sécurité + Loi 25 entre les phases
 - **46 agents spécialisés** (1 agent = 1 domaine)
-- **Package `nexos/`** : modules d'augmentation (tooling_manager, build_validator, auto_fixer, cli_commands)
+- **Package `nexos/`** : modules d'augmentation (tooling_manager, build_validator, auto_fixer, cli_commands, changelog)
 
 ## MODES D'OPÉRATION
 
@@ -25,11 +25,18 @@ NEXOS v4.0 = Multi-phase × Quality Gates × Tooling Réel × Auto-Fix
 |------|-------------|--------|
 | `create` | Création complète d'un site | ph0 → ph1 → ph2 → ph3 → ph4 → ph5 |
 | `audit` | Audit d'un site existant | tooling → ph5-qa |
-| `modify` | Modification ciblée | site-update pipeline |
+| `modify` | Modification ciblée (`--section S-NNN` pour cibler des sections) | site-update pipeline |
 | `content` | Rédaction/traduction seule | ph3 |
 | `doctor` | Diagnostic système | outils + templates + SOIC + clients |
 | `fix` | Auto-correction D4/D8 standalone | validate → fix → re-validate |
 | `report` | Rapport agrégé d'un client | phases + gates + tooling + brief |
+
+### Option `--colors` (tous modes pipeline)
+Impose une palette de couleurs exacte via le CLI :
+```bash
+nexos create --client-dir clients/mon-client --colors primary=#1A2B3C accent=#FFD700 secondary=#B2B2B2
+```
+Format : `role=#HEXCODE`. Rôles courants : primary, secondary, accent, background, surface, text, error, success, warning, info, border. Les couleurs sont injectées comme directive contraignante dans le prompt de chaque phase — l'agent DOIT les utiliser telles quelles.
 
 ## RÈGLES ABSOLUES
 
@@ -80,7 +87,7 @@ NEXOS v4.0 = Multi-phase × Quality Gates × Tooling Réel × Auto-Fix
 ```
 clients/{slug}/
 ├── brief-client.json
-├── section-manifest.json    ← Registre des sections (S-NNN), généré en Ph1, mis à jour Ph2→Ph5
+├── section-manifest.json    ← Registre des sections (S-NNN), généré en Ph1, mis à jour Ph2→Ph5. Ciblable via `--section S-NNN` en mode modify
 ├── ph0-discovery-report.md
 ├── ph1-strategy-report.md
 ├── ph2-design-report.md
@@ -88,6 +95,7 @@ clients/{slug}/
 ├── ph4-build-log.md
 ├── ph5-qa-report.md
 ├── soic-gates.json
+├── nexos-changelog.json  ← Audit trail append-only (événements pipeline/phases/SOIC/fixes)
 ├── tooling/
 │   ├── lighthouse.json
 │   ├── headers.json
@@ -137,7 +145,7 @@ tools/preflight.sh <URL> <CLIENT_DIR>
 
 ## NEXOS v4.0 — MODULES D'AUGMENTATION
 
-Le package `nexos/` contient 4 modules qui se branchent sur `orchestrator.py` :
+Le package `nexos/` contient 5 modules qui se branchent sur `orchestrator.py` :
 
 ### `nexos/tooling_manager.py`
 - Verifie les outils CLI requis au demarrage du pipeline
@@ -155,6 +163,13 @@ Le package `nexos/` contient 4 modules qui se branchent sur `orchestrator.py` :
 - 6 fixes : cookie consent, npm audit fix, vercel headers, next.config, politique-confidentialite, mentions-legales
 - Se declenche automatiquement avant Ph5 et apres echec Ph4
 - Pattern try-fix-retry : validate → auto_fix → re-validate (1 tentative max)
+
+### `nexos/changelog.py`
+- Journal structuré append-only (`nexos-changelog.json`) par client
+- 19 types d'événements (EventType enum) : pipeline, phases, SOIC, build, auto-fix, tooling, CLI, brief
+- `log_event()` append défensif (crée le fichier, résiste au JSON corrompu)
+- `get_changelog()` lecture complète, `get_changelog_summary()` agrégation
+- Import conditionnel `_HAS_CHANGELOG` dans orchestrator, auto_fixer, cli_commands
 
 ### `nexos/cli_commands.py`
 - `nexos doctor` : diagnostic outils + templates + SOIC + clients

@@ -133,6 +133,21 @@ Ces actions sont BLOQUEES — si le brief les demande, reporter au qa-reviewer :
 | D8 (Legal) | Consentements preserves, Loi 25 respectee |
 | D9 (Qualite) | Code propre, conventions respectees |
 
+## [MODIFICATIONS CIBLÉES PAR SECTION S-NNN]
+
+Si le prompt contient une directive "MODIFICATIONS CIBLÉES — Sections S-NNN" :
+
+1. **Résolution** : Pour chaque S-NNN ciblé, lookup dans `section-manifest.json` pour résoudre :
+   - `component_name` → fichier composant à modifier
+   - `page` → page contenant la section
+   - `i18n_namespace` → clés de traduction concernées
+2. **Périmètre strict** : Modifier **UNIQUEMENT** les composants, pages et namespaces i18n des sections listées. Ne pas toucher aux autres sections.
+3. **Rapport** : Dans `modification-report.json`, ajouter un champ `sections_modified` listant les S-NNN effectivement touchées :
+   ```json
+   "sections_modified": ["S-003", "S-007"]
+   ```
+4. **Lifecycle** : Après modification, mettre à jour `lifecycle.ph5_audited = null` dans le manifest pour réinitialiser la QA.
+
 ## [CHECKLIST AVANT PASSAGE AU QA-REVIEWER]
 
 - [ ] Toutes les modifications du brief appliquees

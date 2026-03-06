@@ -26,6 +26,12 @@ except ImportError:
     console = Console()
 
 
+try:
+    from nexos.changelog import log_event, EventType
+    _HAS_CHANGELOG = True
+except ImportError:
+    _HAS_CHANGELOG = False
+
 TEMPLATES_DIR = Path(__file__).parent.parent / "templates"
 
 REQUIRED_HEADERS = {
@@ -470,6 +476,9 @@ def auto_fix(site_dir: Path, client_dir: Path, brief: dict | None = None) -> Fix
 
     console.print("[cyan]  Auto-fix D4/D8 en cours...[/]")
 
+    if _HAS_CHANGELOG:
+        log_event(client_dir, EventType.AUTOFIX_START, agent="auto_fixer")
+
     _fix_cookie_consent(site_dir, report)
     _fix_npm_audit(site_dir, report)
     _fix_vercel_headers(site_dir, report)
@@ -477,5 +486,28 @@ def auto_fix(site_dir: Path, client_dir: Path, brief: dict | None = None) -> Fix
     _fix_privacy_page(site_dir, brief, report)
     _fix_legal_page(site_dir, brief, report)
 
+    if _HAS_CHANGELOG:
+        _log_applied_fixes(client_dir, report)
+
     console.print(f"[cyan]  Auto-fix terminé: {report.total_fixes} correction(s)[/]")
     return report
+
+
+def _log_applied_fixes(client_dir: Path, report: FixReport) -> None:
+    """Log chaque fix appliqué individuellement dans le changelog."""
+    fixes = []
+    if report.cookie_consent_added:
+        fixes.append({"fix": "cookie_consent", "target": "layout.tsx"})
+    if report.npm_audit_fixed > 0:
+        fixes.append({"fix": "npm_audit", "vulns_fixed": report.npm_audit_fixed})
+    if report.vercel_headers_fixed:
+        fixes.append({"fix": "vercel_headers", "target": "vercel.json"})
+    if report.next_config_patched:
+        fixes.append({"fix": "next_config", "target": "next.config"})
+    if report.privacy_page_added:
+        fixes.append({"fix": "privacy_page", "target": "politique-confidentialite"})
+    if report.legal_page_added:
+        fixes.append({"fix": "legal_page", "target": "mentions-legales"})
+
+    for fix_detail in fixes:
+        log_event(client_dir, EventType.AUTOFIX_APPLIED, agent="auto_fixer", details=fix_detail)

@@ -27,6 +27,12 @@ except ImportError:
     _NEXOS_V4 = False
 
 try:
+    from nexos.changelog import log_event, EventType
+    _HAS_CHANGELOG = True
+except ImportError:
+    _HAS_CHANGELOG = False
+
+try:
     from rich.console import Console
     from rich.panel import Panel
     from rich.table import Table
@@ -122,6 +128,11 @@ def generate_brief(mode: str, answers: dict, free_text: str = "") -> Path:
     brief_path.write_text(json.dumps(brief, ensure_ascii=False, indent=2), encoding="utf-8")
 
     console.print(f"[green]✓[/] Brief généré : {brief_path}")
+
+    if _HAS_CHANGELOG:
+        log_event(client_dir, EventType.BRIEF_CREATED, agent="orchestrator",
+                  details={"slug": slug, "mode": mode})
+
     return client_dir
 
 
@@ -148,7 +159,37 @@ def generate_brief_from_wizard(mode: str, brief_data: dict) -> Path:
     return client_dir
 
 
-def build_phase_prompt(phase: str, client_dir: Path, stack: str = "nextjs", site_type: str = "vitrine") -> str:
+def _format_color_directive(color_overrides: dict[str, str]) -> str:
+    """Format color overrides into a prompt directive for the LLM agent.
+
+    Args:
+        color_overrides: Dict mapping role names to hex values,
+                         e.g. {"primary": "#1A2B3C", "accent": "#FFD700"}
+
+    Returns:
+        A prompt block that constrains the agent to use these exact colors.
+    """
+    lines = [
+        "\n# 🎨 PALETTE IMPOSÉE — Couleurs obligatoires",
+        "Les couleurs ci-dessous sont des ORDRES du client, pas des suggestions.",
+        "Tu DOIS utiliser ces valeurs hex EXACTES dans brand-identity, design-tokens,",
+        "tailwind.config et tous les composants. Ne jamais les modifier ni les remplacer.",
+        "Les rôles non listés restent à ta discrétion (cohérents avec la palette imposée).",
+        "",
+        "| Rôle | Hex | CSS Variable | Tailwind |",
+        "|------|-----|-------------|----------|",
+    ]
+    for role, hex_val in color_overrides.items():
+        css_var = f"--color-{role}"
+        tw_class = role
+        lines.append(f"| {role} | {hex_val} | {css_var} | {tw_class} |")
+    lines.append("")
+    return "\n".join(lines)
+
+
+def build_phase_prompt(phase: str, client_dir: Path, stack: str = "nextjs", site_type: str = "vitrine",
+                       target_sections: list[str] | None = None,
+                       color_overrides: dict[str, str] | None = None) -> str:
     """Construit le prompt pour une phase avec contexte cumulatif."""
     parts = []
 
@@ -181,22 +222,48 @@ def build_phase_prompt(phase: str, client_dir: Path, stack: str = "nextjs", site
     if manifest_path.exists():
         try:
             manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            all_sections = manifest.get("sections", [])
             section_count = manifest.get("total_sections", 0)
-            sections_summary = []
-            for s in manifest.get("sections", []):
-                sections_summary.append(
-                    f"  {s['id']} | {s['page']}.{s['name']} | {s['status']} | {s.get('component_name', '?')}"
-                )
-            if sections_summary:
-                parts.append(
-                    f"\n# Section Manifest ({section_count} sections) :\n"
-                    f"Le fichier section-manifest.json dans {client_dir} contient le registre "
-                    f"de toutes les sections. Lis-le.\nResume :\n"
-                    + "\n".join(sections_summary[:30])
-                    + "\n"
-                )
+
+            # Targeted sections: filter and enrich
+            if target_sections:
+                target_ids = set(target_sections)
+                filtered = [s for s in all_sections if s["id"] in target_ids]
+                targeted_details = []
+                for s in filtered:
+                    targeted_details.append(
+                        f"  {s['id']} | page={s['page']} | name={s['name']} | "
+                        f"component={s.get('component_name', '?')} | "
+                        f"i18n={s.get('i18n_namespace', '?')} | "
+                        f"description={s.get('description', '')}"
+                    )
+                if targeted_details:
+                    parts.append(
+                        f"\n# MODIFICATIONS CIBLÉES — Sections S-NNN\n"
+                        f"⚠ Ne modifier QUE les sections suivantes (sur {section_count} total) :\n"
+                        + "\n".join(targeted_details)
+                        + f"\n\nLe fichier section-manifest.json dans {client_dir} contient les détails complets. Lis-le.\n"
+                    )
+            else:
+                sections_summary = []
+                for s in all_sections:
+                    sections_summary.append(
+                        f"  {s['id']} | {s['page']}.{s['name']} | {s['status']} | {s.get('component_name', '?')}"
+                    )
+                if sections_summary:
+                    parts.append(
+                        f"\n# Section Manifest ({section_count} sections) :\n"
+                        f"Le fichier section-manifest.json dans {client_dir} contient le registre "
+                        f"de toutes les sections. Lis-le.\nResume :\n"
+                        + "\n".join(sections_summary[:30])
+                        + "\n"
+                    )
         except (json.JSONDecodeError, KeyError):
             pass
+
+    # 1d. Color overrides — inject color palette directive into prompt
+    if color_overrides:
+        parts.append(_format_color_directive(color_overrides))
 
     # 2. Brief client
     brief_path = client_dir / "brief-client.json"
@@ -598,7 +665,27 @@ def verify_phase_output(phase: str, client_dir: Path) -> bool:
     return True
 
 
-def run_pipeline(mode: str, client_dir: Path, url: Optional[str] = None, profile=None):
+def _fix_report_to_dict(report) -> dict:
+    """Convertit un FixReport en dict pour le changelog."""
+    d: dict = {"total_fixes": report.total_fixes}
+    if report.cookie_consent_added:
+        d["cookie_consent"] = True
+    if report.npm_audit_fixed > 0:
+        d["npm_audit_fixed"] = report.npm_audit_fixed
+    if report.vercel_headers_fixed:
+        d["vercel_headers"] = True
+    if report.next_config_patched:
+        d["next_config"] = True
+    if report.privacy_page_added:
+        d["privacy_page"] = True
+    if report.legal_page_added:
+        d["legal_page"] = True
+    return d
+
+
+def run_pipeline(mode: str, client_dir: Path, url: Optional[str] = None, profile=None,
+                  target_sections: list[str] | None = None,
+                  color_overrides: dict[str, str] | None = None):
     """Exécute le pipeline complet pour un mode donné."""
     # Resolve phases via PipelineConfig (dynamic) or PHASES_MAP (fallback)
     brief_path = client_dir / "brief-client.json"
@@ -609,6 +696,10 @@ def run_pipeline(mode: str, client_dir: Path, url: Optional[str] = None, profile
     try:
         from nexos.pipeline_config import PipelineConfig
         pipeline_cfg = PipelineConfig.from_brief(brief, mode, nexos_root=NEXOS_ROOT)
+        if target_sections:
+            pipeline_cfg.target_sections = target_sections
+        if color_overrides:
+            pipeline_cfg.color_overrides = color_overrides
         phases = pipeline_cfg.phases
     except Exception:
         pipeline_cfg = None
@@ -636,10 +727,17 @@ def run_pipeline(mode: str, client_dir: Path, url: Optional[str] = None, profile
         border_style="cyan",
     ))
 
+    if _HAS_CHANGELOG:
+        log_event(client_dir, EventType.PIPELINE_START, agent="orchestrator",
+                  details={"mode": mode, "phases": phases})
+
     for i, phase in enumerate(phases):
         console.print(f"\n[bold]{'━'*60}[/]")
         console.print(f"[bold cyan]PHASE {i}: {phase.upper()}[/]")
         console.print(f"[bold]{'━'*60}[/]\n")
+
+        if _HAS_CHANGELOG:
+            log_event(client_dir, EventType.PHASE_START, phase=phase, agent="orchestrator")
 
         # Detect site directory for preflight
         site_dir = client_dir / "site"
@@ -669,7 +767,9 @@ def run_pipeline(mode: str, client_dir: Path, url: Optional[str] = None, profile
         _site_type = pipeline_cfg.site_type if pipeline_cfg else "vitrine"
 
         # Construire le prompt
-        prompt = build_phase_prompt(phase, client_dir, stack=_stack, site_type=_site_type)
+        prompt = build_phase_prompt(phase, client_dir, stack=_stack, site_type=_site_type,
+                                    target_sections=pipeline_cfg.target_sections if pipeline_cfg else None,
+                                    color_overrides=pipeline_cfg.color_overrides if pipeline_cfg else None)
         log_path = LOGS_DIR / f"{timestamp}_{phase}.log"
 
         # Exécuter Claude CLI
@@ -677,12 +777,18 @@ def run_pipeline(mode: str, client_dir: Path, url: Optional[str] = None, profile
 
         if returncode != 0:
             console.print(f"[red]✗ Phase {phase} échouée (code {returncode})[/]")
+            if _HAS_CHANGELOG:
+                log_event(client_dir, EventType.PHASE_FAIL, phase=phase, agent="orchestrator",
+                          details={"returncode": returncode})
             break
 
         # Vérifier que l'output existe et est valide
         if phase in OUTPUT_MAP:
             if not verify_phase_output(phase, client_dir):
                 console.print(f"[red]✗ Phase {phase} n'a pas produit de rapport valide — ARRÊT[/]")
+                if _HAS_CHANGELOG:
+                    log_event(client_dir, EventType.PHASE_FAIL, phase=phase, agent="orchestrator",
+                              details={"reason": "missing_output"})
                 break
 
         # Quality gate with convergence loop
@@ -704,9 +810,15 @@ def run_pipeline(mode: str, client_dir: Path, url: Optional[str] = None, profile
                         brief = json.loads(brief_path.read_text()) if brief_path.exists() else None
                         fix_report = auto_fix(site_dir, client_dir, brief)
                         console.print(f"[cyan]  Auto-fix: {fix_report.total_fixes} corrections[/]")
+                        if _HAS_CHANGELOG:
+                            log_event(client_dir, EventType.AUTOFIX_END, phase=phase,
+                                      agent="auto_fixer", details=_fix_report_to_dict(fix_report))
                         build_result = validate_build(site_dir)
                         build_ok = build_result.overall_pass
                     console.print(format_build_report(build_result))
+                    if _HAS_CHANGELOG:
+                        evt = EventType.BUILD_PASS if build_ok else EventType.BUILD_FAIL
+                        log_event(client_dir, evt, phase=phase, agent="build_validator")
                 else:
                     # Fallback v3.0 — vérification textuelle
                     build_log = client_dir / "ph4-build-log.md"
@@ -772,6 +884,12 @@ def run_pipeline(mode: str, client_dir: Path, url: Optional[str] = None, profile
                 "timestamp": datetime.now().isoformat(),
             })
 
+            if _HAS_CHANGELOG:
+                gate_evt = EventType.SOIC_GATE_PASS if loop.converged else EventType.SOIC_GATE_FAIL
+                log_event(client_dir, gate_evt, phase=phase, agent="soic",
+                          details={"mu": loop.final_mu, "threshold": threshold,
+                                   "iterations": loop.total_iterations})
+
             if loop.converged:
                 console.print(
                     f"[green]✓ SOIC GATE: μ={loop.final_mu:.2f} ≥ {threshold} "
@@ -789,6 +907,10 @@ def run_pipeline(mode: str, client_dir: Path, url: Optional[str] = None, profile
     # Sauvegarder l'historique des gates (enrichi avec convergence)
     gates_path = client_dir / "soic-gates.json"
     gates_path.write_text(json.dumps(gate_history, indent=2), encoding="utf-8")
+
+    if _HAS_CHANGELOG:
+        log_event(client_dir, EventType.PIPELINE_END, agent="orchestrator",
+                  details={"gates": len(gate_history), "mode": mode})
 
     console.print(Panel(
         f"[green]Pipeline terminé[/]\n"
@@ -1146,6 +1268,11 @@ if __name__ == "__main__":
         sp.add_argument("--stack", choices=["nextjs", "nuxt", "astro", "fastapi", "generic"],
                         help="Stack technique (résout le profil SOIC automatiquement)")
         sp.add_argument("--profile", type=str, help="Profil SOIC (ex: web-nextjs, api-fastapi)")
+        sp.add_argument("--colors", nargs="*", metavar="ROLE=#HEX",
+                        help="Palette couleurs (ex: primary=#1A2B3C accent=#FFD700)")
+        if mode == "modify":
+            sp.add_argument("--section", nargs="*", metavar="S-NNN",
+                            help="Sections ciblées par ID (ex: S-001 S-003)")
 
     # Knowledge mode
     sp_know = subparsers.add_parser(
@@ -1270,4 +1397,18 @@ if __name__ == "__main__":
                 if brief_stack:
                     cli_profile = _resolve_profile(stack=brief_stack)
 
-        run_pipeline(args.mode, client_dir, url=getattr(args, "url", None), profile=cli_profile)
+        # Parse --colors if provided
+        _raw_colors = getattr(args, "colors", None)
+        _color_overrides = None
+        if _raw_colors:
+            from nexos.pipeline_config import parse_color_args
+            try:
+                _color_overrides = parse_color_args(_raw_colors)
+                console.print(f"[cyan]🎨 Palette couleurs : {_color_overrides}[/]")
+            except ValueError as e:
+                console.print(f"[red]Erreur --colors : {e}[/]")
+                sys.exit(1)
+
+        run_pipeline(args.mode, client_dir, url=getattr(args, "url", None), profile=cli_profile,
+                     target_sections=getattr(args, "section", None),
+                     color_overrides=_color_overrides)

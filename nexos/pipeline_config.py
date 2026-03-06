@@ -9,9 +9,39 @@ it as a fallback for backward compatibility.
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
+
+# ── Color validation ─────────────────────────────────────────────────────────
+
+_HEX_RE = re.compile(r"^#(?:[0-9a-fA-F]{3}){1,2}$")
+
+VALID_COLOR_ROLES = frozenset({
+    "primary", "secondary", "accent", "background", "surface",
+    "text", "error", "success", "warning", "info", "border",
+})
+
+
+def parse_color_args(raw: list[str]) -> dict[str, str]:
+    """Parse CLI color arguments like ['primary=#1A2B3C', 'accent=#FFD700'].
+
+    Returns a dict {role: hex_value}. Raises ValueError on invalid input.
+    """
+    colors: dict[str, str] = {}
+    for item in raw:
+        if "=" not in item:
+            raise ValueError(f"Format invalide '{item}' — attendu: role=#HEXCODE")
+        role, hex_val = item.split("=", 1)
+        role = role.strip().lower()
+        hex_val = hex_val.strip()
+        if not hex_val.startswith("#"):
+            hex_val = f"#{hex_val}"
+        if not _HEX_RE.match(hex_val):
+            raise ValueError(f"Code hex invalide '{hex_val}' pour le rôle '{role}'")
+        colors[role] = hex_val.upper()
+    return colors
 
 # ── Default phase sequences (kept as fallbacks) ─────────────────────────────
 
@@ -48,6 +78,8 @@ class PipelineConfig:
     stack: str = "nextjs"
     site_type: str = "vitrine"
     template_dir: Path | None = None
+    target_sections: list[str] | None = None
+    color_overrides: dict[str, str] | None = None
 
     @classmethod
     def from_brief(
