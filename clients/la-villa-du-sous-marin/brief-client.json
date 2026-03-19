@@ -1,0 +1,89 @@
+{
+  "_meta": {
+    "generator": "nexos-v4.0-wizard",
+    "created_at": "2026-03-13T19:55:08.776385",
+    "mode": "analyze"
+  },
+  "client": {
+    "name": "La villa du sous-marin",
+    "slug": "la-villa-du-sous-marin"
+  },
+  "company_name": "La villa du sous-marin",
+  "company": {
+    "neq": null,
+    "address": "Québec, QC",
+    "phone": "514-555-0000",
+    "email": "info@la-villa-du-sous-marin.ca"
+  },
+  "legal": {
+    "rpp": {
+      "name": "La villa du sous-marin",
+      "email": "info@la-villa-du-sous-marin.ca",
+      "title": "Direction"
+    },
+    "data_collected": [
+      "nom",
+      "courriel",
+      "téléphone",
+      "navigation"
+    ],
+    "purposes": [
+      "communication",
+      "analytics"
+    ],
+    "retention": "24 mois",
+    "transfer_outside_qc": true,
+    "transfer_countries": [
+      "États-Unis"
+    ],
+    "third_party_services": [
+      "Vercel (hébergement)",
+      "GA4 (analytics)"
+    ],
+    "consent_mode": "opt-in (recommandé Loi 25)",
+    "incident": {
+      "process_in_place": false,
+      "notification_email": "info@la-villa-du-sous-marin.ca"
+    }
+  },
+  "site": {
+    "type": "vitrine",
+    "pages": [
+      "accueil",
+      "services",
+      "a-propos",
+      "contact",
+      "politique-confidentialite",
+      "mentions-legales"
+    ],
+    "languages": [
+      "fr",
+      "en"
+    ],
+    "features": [
+      "formulaire-contact",
+      "analytics"
+    ],
+    "hosting": "Vercel",
+    "domain": null
+  },
+  "context": {
+    "competitors": [],
+    "keywords_seo": [],
+    "free_text": "Génération automatique pour La villa du sous-marin"
+  },
+  "design": {
+    "style": "minimaliste",
+    "logo_provided": false,
+    "palette": null,
+    "typography": null,
+    "references": []
+  },
+  "adaptive": {},
+  "mission": {
+    "mode": "analyze",
+    "phases": [
+      "ph0-discovery"
+    ]
+  }
+}

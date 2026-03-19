@@ -34,10 +34,10 @@ REQUIRED_TOOLS: dict[str, dict] = {
         "install": "inclus avec node",
         "critical": True,
     },
-    "claude": {
-        "cmd": ["claude", "--version"],
+    "codex": {
+        "cmd": ["codex", "--version"],
         "min_version": None,
-        "install": "npm i -g @anthropic-ai/claude-code",
+        "install": "npm i -g @openai/codex",
         "critical": True,
     },
     "lighthouse": {
@@ -50,6 +50,18 @@ REQUIRED_TOOLS: dict[str, dict] = {
         "cmd": ["pa11y", "--version"],
         "min_version": None,
         "install": "npm i -g pa11y",
+        "critical": False,
+    },
+    "claude": {
+        "cmd": ["claude", "--version"],
+        "min_version": None,
+        "install": "npm i -g @anthropic-ai/claude-code",
+        "critical": False,
+    },
+    "gemini": {
+        "cmd": ["gemini", "--version"],
+        "min_version": None,
+        "install": "npm i -g @anthropic-ai/gemini-cli ou https://github.com/google-gemini/gemini-cli",
         "critical": False,
     },
 }
@@ -101,7 +113,7 @@ def ensure_tooling(interactive: bool = True) -> dict[str, bool]:
     Si interactive=True, affiche un rapport et propose d'installer les manquants.
     Si interactive=False, affiche warnings/erreurs et retourne le statut.
 
-    Lève RuntimeError si un outil critique manque (node, npm, claude).
+    Lève RuntimeError si un outil critique manque (node, npm, codex).
     """
     results: dict[str, bool] = {}
     missing_critical: list[str] = []

@@ -1,0 +1,12 @@
+[
+  {
+    "phase": "ph0-discovery",
+    "mu": 2.0,
+    "threshold": 7.0,
+    "converged": false,
+    "iterations": 2,
+    "decision": "ABORT_MAX_ITER",
+    "abort_reason": "Timeout global atteint (5min)",
+    "timestamp": "2026-03-13T20:06:46.673444"
+  }
+]

@@ -22,6 +22,7 @@ try:
     from nexos.build_validator import validate_build
     from nexos.auto_fixer import auto_fix
     from nexos.brief_wizard import interactive_brief
+    from nexos.brief_contract import normalize_brief, validate_brief
     _NEXOS_V4 = True
 except ImportError:
     _NEXOS_V4 = False
@@ -138,6 +139,10 @@ def generate_brief(mode: str, answers: dict, free_text: str = "") -> Path:
 
 def generate_brief_from_wizard(mode: str, brief_data: dict) -> Path:
     """Crée le dossier client et écrit le brief généré par le wizard interactif."""
+    brief_data = normalize_brief(brief_data, mode=mode)
+    errors = validate_brief(brief_data)
+    if errors:
+        raise ValueError(f"Brief wizard invalide: {', '.join(errors)}")
     slug = brief_data["client"]["slug"]
     client_dir = CLIENTS_DIR / slug
     client_dir.mkdir(parents=True, exist_ok=True)
@@ -157,6 +162,16 @@ def generate_brief_from_wizard(mode: str, brief_data: dict) -> Path:
 
     console.print(f"[green]✓[/] Brief wizard généré : {brief_path}")
     return client_dir
+
+
+def load_runtime_brief(brief_path: Path, mode: str | None = None) -> dict:
+    """Charge, normalise et valide un brief avant exécution."""
+    brief_data = json.loads(brief_path.read_text())
+    normalized = normalize_brief(brief_data, mode=mode)
+    errors = validate_brief(normalized)
+    if errors:
+        raise ValueError(f"Brief invalide ({brief_path}): {', '.join(errors)}")
+    return normalized
 
 
 def _format_color_directive(color_overrides: dict[str, str]) -> str:
@@ -185,6 +200,174 @@ def _format_color_directive(color_overrides: dict[str, str]) -> str:
         lines.append(f"| {role} | {hex_val} | {css_var} | {tw_class} |")
     lines.append("")
     return "\n".join(lines)
+
+
+def _format_mode_intake_directive(brief: dict | None, phase: str) -> str | None:
+    """Résume mission.intake et impose les règles de travail liées au mode."""
+    if not brief:
+        return None
+
+    mission = brief.get("mission", {}) if isinstance(brief.get("mission"), dict) else {}
+    intake = mission.get("intake", {}) if isinstance(mission.get("intake"), dict) else {}
+    mode = mission.get("mode") or brief.get("_meta", {}).get("mode")
+    if not intake and not mode:
+        return None
+
+    lines = ["# CADRAGE MÉTIER PRIORITAIRE"]
+    if mode:
+        lines.append(f"Mode NEXOS: {mode}")
+
+    preferred_keys = [
+        ("business_goal", "Objectif business"),
+        ("primary_cta", "CTA principal"),
+        ("success_metric", "Indicateur de succès"),
+        ("content_readiness", "État des contenus"),
+        ("delivery_window", "Délai cible"),
+        ("existing_url", "URL de référence"),
+        ("audit_scope", "Périmètre audit"),
+        ("audit_goal", "Question d'audit"),
+        ("requested_changes", "Changements demandés"),
+        ("sections_in_scope", "Sections en scope"),
+        ("must_preserve", "À préserver"),
+        ("target_pages", "Pages ciblées"),
+        ("content_goal", "Objectif éditorial"),
+        ("tone", "Ton souhaité"),
+        ("source_materials", "Matière source"),
+        ("analysis_questions", "Questions d'analyse"),
+        ("geography", "Zone géographique"),
+        ("expected_output", "Sortie attendue"),
+    ]
+    for key, label in preferred_keys:
+        value = intake.get(key)
+        if value:
+            if isinstance(value, list):
+                value = ", ".join(str(item) for item in value)
+            lines.append(f"- {label}: {value}")
+
+    mode_rules = {
+        "create": [
+            "Traite ce travail comme une création from scratch orientée résultat business.",
+            "Priorise le CTA principal, la clarté de l'offre et l'indicateur de succès du client.",
+        ],
+        "audit": [
+            "Ne propose pas un rebuild générique: réponds d'abord à la question d'audit et au périmètre demandé.",
+            "Distingue clairement constats, preuves, risques et priorités d'action.",
+        ],
+        "modify": [
+            "Travaille comme une intervention ciblée sur un existant, pas comme une refonte totale.",
+            "Respecte strictement les sections en scope et les éléments à préserver.",
+        ],
+        "content": [
+            "Produis le contenu en fonction des pages ciblées, du ton souhaité et de la matière source disponible.",
+            "Ne dérive pas vers des décisions design ou build non nécessaires à la mission éditoriale.",
+        ],
+        "analyze": [
+            "Cadre l'analyse autour des questions de recherche demandées et de la zone géographique ciblée.",
+            "La sortie doit correspondre explicitement au format attendu par le client.",
+        ],
+    }
+    for rule in mode_rules.get(mode, []):
+        lines.append(f"- {rule}")
+
+    phase_rules = {
+        "ph0-discovery": "Utilise ce cadrage pour orienter la découverte et éviter les analyses hors sujet.",
+        "ph1-strategy": "Les décisions stratégiques doivent découler du cadrage métier ci-dessus.",
+        "ph2-design": "Les choix de design doivent servir l'objectif business et le CTA, pas une esthétique arbitraire.",
+        "ph3-content": "Le contenu doit rester aligné au ton, aux pages ciblées et au but métier.",
+        "ph4-build": "Le build doit respecter le scope réel de la mission et éviter les ajouts hors mandat.",
+        "ph5-qa": "Évalue la qualité par rapport au cadrage demandé, pas seulement selon une checklist générique.",
+        "site-update": "N'interviens que sur le périmètre demandé; le reste du site est présumé stable.",
+    }
+    if phase in phase_rules:
+        lines.append(f"- {phase_rules[phase]}")
+
+    return "\n".join(lines)
+
+
+def _normalize_text_for_match(text: str) -> str:
+    """Normalise un texte pour matching tolérant aux accents/casse."""
+    normalized = unicodedata.normalize("NFD", text.lower())
+    normalized = "".join(c for c in normalized if unicodedata.category(c) != "Mn")
+    return re.sub(r"[^a-z0-9]+", " ", normalized).strip()
+
+
+def _extract_intake_signals(intake: dict) -> list[tuple[str, list[str]]]:
+    """Extrait des signaux textuels qui doivent apparaître dans le rapport."""
+    keys = {
+        "audit_goal": "question d'audit",
+        "requested_changes": "changements demandés",
+        "must_preserve": "éléments à préserver",
+        "content_goal": "objectif éditorial",
+        "tone": "ton souhaité",
+        "analysis_questions": "questions d'analyse",
+        "expected_output": "sortie attendue",
+        "business_goal": "objectif business",
+        "primary_cta": "cta principal",
+    }
+    signals: list[tuple[str, list[str]]] = []
+    for key, label in keys.items():
+        value = intake.get(key)
+        if not value:
+            continue
+        if isinstance(value, list):
+            text = " ".join(str(item) for item in value)
+        else:
+            text = str(value)
+        words = [word for word in _normalize_text_for_match(text).split() if len(word) >= 4]
+        if words:
+            signals.append((label, words[:4]))
+    return signals
+
+
+def _validate_phase_against_intake(phase: str, content: str, brief: dict | None) -> list[str]:
+    """Détecte les rapports qui ignorent le cadrage de mission."""
+    if not brief:
+        return []
+    mission = brief.get("mission", {}) if isinstance(brief.get("mission"), dict) else {}
+    intake = mission.get("intake", {}) if isinstance(mission.get("intake"), dict) else {}
+    if not intake:
+        return []
+
+    content_norm = _normalize_text_for_match(content)
+    issues: list[str] = []
+
+    # Soft requirement: at least some core intake signals are acknowledged in report text.
+    matched_signal = False
+    for label, words in _extract_intake_signals(intake):
+        if any(word in content_norm for word in words):
+            matched_signal = True
+        else:
+            issues.append(f"rapport ne reprend pas le cadrage '{label}'")
+
+    # Mode/phase-specific hard guards.
+    mode = mission.get("mode") or brief.get("_meta", {}).get("mode")
+    if mode == "modify" and phase == "site-update":
+        scope = intake.get("sections_in_scope")
+        if scope:
+            scope_words = [w for w in _normalize_text_for_match(str(scope)).split() if len(w) >= 4]
+            if scope_words and not any(word in content_norm for word in scope_words):
+                issues.append("rapport modify ne mentionne pas les sections en scope")
+    if mode == "audit" and phase == "ph5-qa":
+        scope = intake.get("audit_scope")
+        if isinstance(scope, list):
+            if not any(_normalize_text_for_match(str(item)) in content_norm for item in scope):
+                issues.append("rapport audit ne mentionne pas le périmètre demandé")
+    if mode == "content" and phase == "ph3-content":
+        target_pages = intake.get("target_pages")
+        if target_pages:
+            page_words = [w for w in _normalize_text_for_match(str(target_pages)).split() if len(w) >= 4]
+            if page_words and not any(word in content_norm for word in page_words):
+                issues.append("rapport content ne mentionne pas les pages ciblées")
+
+    if not matched_signal and _extract_intake_signals(intake):
+        issues.append("rapport semble générique par rapport au cadrage mission.intake")
+
+    # Keep signal, but avoid overwhelming duplicates.
+    deduped: list[str] = []
+    for issue in issues:
+        if issue not in deduped:
+            deduped.append(issue)
+    return deduped
 
 
 def build_phase_prompt(phase: str, client_dir: Path, stack: str = "nextjs", site_type: str = "vitrine",
@@ -268,6 +451,14 @@ def build_phase_prompt(phase: str, client_dir: Path, stack: str = "nextjs", site
     # 2. Brief client
     brief_path = client_dir / "brief-client.json"
     parts.append(f"Le brief client est dans {brief_path}. Lis-le.")
+    if brief_path.exists():
+        try:
+            brief_data = load_runtime_brief(brief_path)
+            intake_directive = _format_mode_intake_directive(brief_data, phase)
+            if intake_directive:
+                parts.append(intake_directive)
+        except Exception:
+            pass
 
     # 3. Feed des phases précédentes
     phase_reports = {
@@ -302,6 +493,7 @@ def build_phase_prompt(phase: str, client_dir: Path, stack: str = "nextjs", site
         "ph3-content":   "ph3-content-report.md",
         "ph4-build":     "ph4-build-log.md",
         "ph5-qa":        "ph5-qa-report.md",
+        "site-update":   "site-update-report.md",
     }
     output_file = output_map.get(phase, f"{phase}-report.md")
     parts.append(f"Écris ton rapport dans {client_dir / output_file}")
@@ -365,32 +557,38 @@ def run_soic_gate(phase: str, client_dir: Path, profile=None) -> tuple[bool, flo
         return False, 0.0
 
 
-_CLAUDE_CLI_TIMEOUT = 1800  # 30 minutes par phase
+_CODEX_CLI_TIMEOUT = 1800  # 30 minutes par phase
 
 
-def run_claude_cli(prompt: str, cwd: str, log_path: Path) -> int:
-    """Lance claude CLI avec le prompt et capture la sortie.
+def run_codex_cli(prompt: str, cwd: str, log_path: Path) -> int:
+    """Lance Codex CLI avec le prompt et capture la sortie.
 
     Timeout: 30 minutes par défaut pour éviter un blocage indéfini.
     """
-    cmd = ["claude", "--dangerously-skip-permissions", "-p", prompt]
+    cmd = ["codex", "exec", "--dangerously-bypass-approvals-and-sandbox", "-"]
 
     log_path.parent.mkdir(parents=True, exist_ok=True)
 
-    # Allow nested Claude Code sessions and use Claude's own auth
+    # Preserve runtime environment for Codex execution.
     env = os.environ.copy()
-    env.pop("CLAUDECODE", None)
-    env.pop("ANTHROPIC_API_KEY", None)
 
     process = None
     try:
         process = subprocess.Popen(
             cmd, cwd=cwd, env=env,
+            stdin=subprocess.PIPE,
             stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
             text=True, bufsize=1,
         )
+        if process.stdin:
+            try:
+                process.stdin.write(prompt)
+                process.stdin.close()
+            except BrokenPipeError:
+                # Process exited early; stdout/stderr will still provide context.
+                pass
 
-        deadline = time.monotonic() + _CLAUDE_CLI_TIMEOUT
+        deadline = time.monotonic() + _CODEX_CLI_TIMEOUT
 
         with open(log_path, "w", encoding="utf-8") as log:
             log.write(f"# NEXOS v3.0 Log\n")
@@ -404,7 +602,7 @@ def run_claude_cli(prompt: str, cwd: str, log_path: Path) -> int:
                 # Check timeout between lines
                 if time.monotonic() > deadline:
                     console.print(
-                        f"\n[red]⚠ Claude CLI timeout ({_CLAUDE_CLI_TIMEOUT // 60}min) — interruption[/]"
+                        f"\n[red]⚠ Codex CLI timeout ({_CODEX_CLI_TIMEOUT // 60}min) — interruption[/]"
                     )
                     process.terminate()
                     try:
@@ -418,8 +616,8 @@ def run_claude_cli(prompt: str, cwd: str, log_path: Path) -> int:
 
     except FileNotFoundError:
         console.print(
-            "[red bold]Claude CLI non trouvé.[/]\n"
-            "Installe-le avec: [cyan]npm install -g @anthropic-ai/claude-code[/]"
+            "[red bold]Codex CLI non trouvé.[/]\n"
+            "Installe-le avec: [cyan]npm install -g @openai/codex[/]"
         )
         return 1
     except KeyboardInterrupt:
@@ -428,10 +626,15 @@ def run_claude_cli(prompt: str, cwd: str, log_path: Path) -> int:
             process.terminate()
         return 130
     except subprocess.TimeoutExpired:
-        console.print("\n[red]⚠ Claude CLI process.wait() timeout — kill[/]")
+        console.print("\n[red]⚠ Codex CLI process.wait() timeout — kill[/]")
         if process:
             process.kill()
         return 124
+
+
+def run_claude_cli(prompt: str, cwd: str, log_path: Path) -> int:
+    """Compat shim: historical API kept for legacy imports/scripts."""
+    return run_codex_cli(prompt, cwd, log_path)
 
 
 # ── Preflight scan config ────────────────────────────────────────────────────
@@ -605,7 +808,7 @@ class RerunContext:
         rerun_prompt = build_phase_prompt(phase, self.client_dir, stack=self.stack, site_type=self.site_type)
         rerun_prompt += f"\n\n# SOIC FEEDBACK — Iteration {iteration + 1}\n{feedback}"
         rerun_log = LOGS_DIR / f"{self.timestamp}_{phase}_iter{iteration + 1}.log"
-        return run_claude_cli(rerun_prompt, str(NEXOS_ROOT), rerun_log) == 0
+        return run_codex_cli(rerun_prompt, str(NEXOS_ROOT), rerun_log) == 0
 
 
 KNOWLEDGE_DIR = NEXOS_ROOT / "output" / "knowledge"
@@ -617,6 +820,7 @@ OUTPUT_MAP = {
     "ph3-content":   "ph3-content-report.md",
     "ph4-build":     "ph4-build-log.md",
     "ph5-qa":        "ph5-qa-report.md",
+    "site-update":   "site-update-report.md",
 }
 
 
@@ -661,6 +865,20 @@ def verify_phase_output(phase: str, client_dir: Path) -> bool:
         )
         return False
 
+    brief = None
+    brief_path = client_dir / "brief-client.json"
+    if brief_path.exists():
+        try:
+            brief = load_runtime_brief(brief_path)
+        except Exception:
+            brief = None
+    intake_issues = _validate_phase_against_intake(phase, content, brief)
+    if intake_issues:
+        console.print(
+            f"[red]✗ Phase {phase} rapport hors cadrage mission.intake : {intake_issues[0]}[/]"
+        )
+        return False
+
     console.print(f"[green]✓ Phase {phase} rapport valide ({size} octets)[/]")
     return True
 
@@ -691,7 +909,7 @@ def run_pipeline(mode: str, client_dir: Path, url: Optional[str] = None, profile
     brief_path = client_dir / "brief-client.json"
     brief = None
     if brief_path.exists():
-        brief = json.loads(brief_path.read_text())
+        brief = load_runtime_brief(brief_path, mode=mode)
 
     try:
         from nexos.pipeline_config import PipelineConfig
@@ -747,7 +965,7 @@ def run_pipeline(mode: str, client_dir: Path, url: Optional[str] = None, profile
         # NEXOS v4.0 — Auto-fix D4/D8 avant QA (garantir compliance)
         if phase == "ph5-qa" and _NEXOS_V4 and site_dir:
             brief_path = client_dir / "brief-client.json"
-            brief = json.loads(brief_path.read_text()) if brief_path.exists() else None
+            brief = load_runtime_brief(brief_path, mode=mode) if brief_path.exists() else None
             fix_report = auto_fix(site_dir, client_dir, brief)
             if fix_report.total_fixes > 0:
                 console.print(f"[cyan]  Auto-fix: {fix_report.total_fixes} corrections appliquées[/]")
@@ -772,8 +990,8 @@ def run_pipeline(mode: str, client_dir: Path, url: Optional[str] = None, profile
                                     color_overrides=pipeline_cfg.color_overrides if pipeline_cfg else None)
         log_path = LOGS_DIR / f"{timestamp}_{phase}.log"
 
-        # Exécuter Claude CLI
-        returncode = run_claude_cli(prompt, str(NEXOS_ROOT), log_path)
+        # Exécuter Codex CLI
+        returncode = run_codex_cli(prompt, str(NEXOS_ROOT), log_path)
 
         if returncode != 0:
             console.print(f"[red]✗ Phase {phase} échouée (code {returncode})[/]")
@@ -807,7 +1025,7 @@ def run_pipeline(mode: str, client_dir: Path, url: Optional[str] = None, profile
                         # Tenter auto-fix puis re-valider
                         console.print("[cyan]  Build FAIL — tentative auto-fix...[/]")
                         brief_path = client_dir / "brief-client.json"
-                        brief = json.loads(brief_path.read_text()) if brief_path.exists() else None
+                        brief = load_runtime_brief(brief_path, mode=mode) if brief_path.exists() else None
                         fix_report = auto_fix(site_dir, client_dir, brief)
                         console.print(f"[cyan]  Auto-fix: {fix_report.total_fixes} corrections[/]")
                         if _HAS_CHANGELOG:
@@ -1043,7 +1261,7 @@ def run_converge(
         store.save_run(report)
 
     else:
-        # ── Full convergence loop with Claude CLI rerun ─────────────────────
+        # ── Full convergence loop with Codex CLI rerun ─────────────────────
         store = RunStore(client_dir)
         iterator = PhaseIterator(
             phase=phase,
@@ -1152,7 +1370,7 @@ def run_knowledge_agent(
             console.print(f"[red]✗ Erreur scoring: {e}[/]")
         return
 
-    # ── Generation mode: produire un résumé via Claude CLI ──
+    # ── Generation mode: produire un résumé via Codex CLI ──
     KNOWLEDGE_DIR.mkdir(parents=True, exist_ok=True)
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
     source_slug = slugify(source)[:60]
@@ -1191,9 +1409,9 @@ def run_knowledge_agent(
         border_style="cyan",
     ))
 
-    # Exécuter Claude CLI
+    # Exécuter Codex CLI
     log_path = LOGS_DIR / f"{timestamp}_hexabrief_{source_slug}.log"
-    returncode = run_claude_cli(prompt, str(NEXOS_ROOT), log_path)
+    returncode = run_codex_cli(prompt, str(NEXOS_ROOT), log_path)
 
     if returncode != 0:
         console.print(f"[red]✗ HexaBrief échoué (code {returncode})[/]")
@@ -1244,6 +1462,7 @@ if __name__ == "__main__":
         description="NEXOS v4.0 Orchestrator",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""modes:
+  session   Lance un CLI hôte (Codex/Claude/Gemini) en mode NEXOS
   create    Création complète d'un site (ph0 → ph5)
   audit     Audit d'un site existant (ph5-qa)
   modify    Modification ciblée
@@ -1257,12 +1476,24 @@ if __name__ == "__main__":
 
     subparsers = parser.add_subparsers(dest="mode", help="Mode d'opération")
 
+    # Interactive session bootstrap
+    sp_session = subparsers.add_parser(
+        "session",
+        help="Lance un CLI hôte en mode NEXOS",
+        description="Démarre Codex, Claude ou Gemini avec le bootstrap NEXOS.",
+    )
+    sp_session.add_argument("--host", choices=["codex", "claude", "gemini"],
+                            help="CLI hôte à lancer explicitement")
+    sp_session.add_argument("--print-prompt", action="store_true",
+                            help="Afficher uniquement le prompt bootstrap")
+
     # Pipeline modes
     for mode in ["create", "audit", "modify", "content", "analyze"]:
         sp = subparsers.add_parser(mode)
         sp.add_argument("--client-dir", type=Path, help="Dossier client existant")
         sp.add_argument("--url", type=str, help="URL du site (pour audit/preflight)")
         sp.add_argument("--brief", type=str, help="Chemin vers brief-client.json")
+        sp.add_argument("--name", type=str, help="Nom du client (pour génération rapide)")
         sp.add_argument("-i", "--interactive", action="store_true",
                         help="Lancer le wizard interactif pour générer le brief")
         sp.add_argument("--stack", choices=["nextjs", "nuxt", "astro", "fastapi", "generic"],
@@ -1326,8 +1557,16 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if not args.mode:
-        parser.print_help()
-        sys.exit(1)
+        from nexos.session_launcher import launch_session
+        sys.exit(launch_session(NEXOS_ROOT))
+
+    if args.mode == "session":
+        from nexos.session_launcher import launch_session
+        sys.exit(launch_session(
+            NEXOS_ROOT,
+            explicit_host=args.host,
+            print_prompt_only=args.print_prompt,
+        ))
 
     # NEXOS v4.0 — commandes standalone
     if args.mode == "doctor":
@@ -1374,11 +1613,21 @@ if __name__ == "__main__":
         if hasattr(args, "client_dir") and args.client_dir:
             client_dir = args.client_dir
         elif hasattr(args, "brief") and args.brief and not getattr(args, "interactive", False):
-            brief_data = json.loads(Path(args.brief).read_text())
-            client_dir = generate_brief(args.mode, brief_data.get("inputs", {}))
-        elif _NEXOS_V4 and (getattr(args, "interactive", False) or sys.stdin.isatty()):
-            brief_data = interactive_brief(args.mode)
+            brief_path = Path(args.brief)
+            brief_data = load_runtime_brief(brief_path, mode=args.mode)
             client_dir = generate_brief_from_wizard(args.mode, brief_data)
+        elif _NEXOS_V4:
+            from nexos.brief_wizard import generate_minimal_brief
+            if getattr(args, "name", None):
+                console.print(f"[cyan]ℹ Génération rapide du brief pour : {args.name}[/]")
+                brief_data = generate_minimal_brief(args.name, args.mode)
+                client_dir = generate_brief_from_wizard(args.mode, brief_data)
+            elif getattr(args, "interactive", False) or sys.stdin.isatty():
+                brief_data = interactive_brief(args.mode)
+                client_dir = generate_brief_from_wizard(args.mode, brief_data)
+            else:
+                console.print("[red]Erreur: --client-dir, --brief ou --name requis (non-TTY)[/]")
+                sys.exit(1)
         else:
             console.print("[red]Erreur: --client-dir ou --brief requis[/]")
             console.print("[dim]Astuce : lancez nexos create en terminal pour le wizard interactif[/]")
@@ -1392,7 +1641,7 @@ if __name__ == "__main__":
         if cli_profile is None:
             brief_path = client_dir / "brief-client.json"
             if brief_path.exists():
-                brief_data = json.loads(brief_path.read_text())
+                brief_data = load_runtime_brief(brief_path)
                 brief_stack = brief_data.get("stack") or brief_data.get("site", {}).get("stack")
                 if brief_stack:
                     cli_profile = _resolve_profile(stack=brief_stack)

@@ -1,0 +1,39 @@
+[
+  {
+    "event": "pipeline_start",
+    "timestamp": "2026-03-13T19:55:11",
+    "agent": "orchestrator",
+    "details": {
+      "mode": "analyze",
+      "phases": [
+        "ph0-discovery"
+      ]
+    }
+  },
+  {
+    "event": "phase_start",
+    "timestamp": "2026-03-13T19:55:11",
+    "phase": "ph0-discovery",
+    "agent": "orchestrator"
+  },
+  {
+    "event": "soic_gate_fail",
+    "timestamp": "2026-03-13T20:06:46",
+    "phase": "ph0-discovery",
+    "agent": "soic",
+    "details": {
+      "mu": 2.0,
+      "threshold": 7.0,
+      "iterations": 2
+    }
+  },
+  {
+    "event": "pipeline_end",
+    "timestamp": "2026-03-13T20:06:46",
+    "agent": "orchestrator",
+    "details": {
+      "gates": 1,
+      "mode": "analyze"
+    }
+  }
+]

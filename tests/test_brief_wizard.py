@@ -15,6 +15,7 @@ from nexos.brief_wizard import (
     _slugify,
     _assemble_brief,
     _ask_adaptive,
+    _ask_mode_intake,
     interactive_brief,
 )
 
@@ -74,6 +75,7 @@ class TestAssembleBrief:
                 "email": "info@test.com",
             },
             "site": {
+                "stack": "nextjs",
                 "type": "vitrine",
                 "pages": ["accueil", "services", "contact",
                           "politique-confidentialite", "mentions-legales"],
@@ -138,8 +140,38 @@ class TestAssembleBrief:
             sample_inputs["design"],
             sample_inputs["context"],
         )
-        assert brief["_meta"]["generator"] == "nexos-v4.0-wizard"
+        assert brief["_meta"]["generator"] == "nexos-v3.0"
         assert brief["_meta"]["mode"] == "create"
+        assert brief["site"]["stack"] == "nextjs"
+
+    def test_brief_flattens_legal_fields(self, sample_inputs):
+        brief = _assemble_brief(
+            "create",
+            sample_inputs["company"],
+            sample_inputs["site"],
+            sample_inputs["adaptive"],
+            sample_inputs["legal"],
+            sample_inputs["design"],
+            sample_inputs["context"],
+        )
+        assert brief["legal"]["company_name"] == "Test Corp"
+        assert brief["legal"]["rpp_name"] == "Jean Test"
+        assert brief["legal"]["cookie_consent"] == "opt-in"
+        assert brief["legal"]["third_parties"] == ["Vercel (hébergement)"]
+
+    def test_mode_intake_populates_mission_and_existing_url(self, sample_inputs):
+        brief = _assemble_brief(
+            "audit",
+            sample_inputs["company"],
+            sample_inputs["site"],
+            sample_inputs["adaptive"],
+            sample_inputs["legal"],
+            sample_inputs["design"],
+            sample_inputs["context"],
+            {"existing_url": "https://example.com", "audit_goal": "Trouver les blocages"},
+        )
+        assert brief["mission"]["intake"]["audit_goal"] == "Trouver les blocages"
+        assert brief["site"]["existing_url"] == "https://example.com"
 
     def test_client_slug(self, sample_inputs):
         brief = _assemble_brief(
@@ -239,6 +271,19 @@ class TestAdaptiveLogic:
         """Vitrine sans features spéciales = dict vide."""
         result = _ask_adaptive("vitrine", [])
         assert result == {}
+
+
+class TestModeIntake:
+    @patch("nexos.brief_wizard._safe_ask")
+    def test_audit_mode_intake(self, mock_ask):
+        mock_ask.side_effect = [
+            "https://example.com",
+            ["seo", "performance"],
+            "Identifier les priorites",
+        ]
+        result = _ask_mode_intake("audit")
+        assert result["existing_url"] == "https://example.com"
+        assert "seo" in result["audit_scope"]
 
 
 # ── Wizard interactif (flux complet mocké) ────────────────────────────────────

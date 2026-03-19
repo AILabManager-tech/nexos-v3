@@ -265,7 +265,7 @@ const CONVERGENCE_STEPS = [
   { id: 1, name: 'GateEngine', desc: 'Évaluation SOIC 9 dimensions', icon: 'BarChart3', color: '#00d4ff' },
   { id: 2, name: 'Converger', desc: 'Décision: ACCEPT / ITERATE / ABORT', icon: 'GitBranch', color: '#ffaa00' },
   { id: 3, name: 'FeedbackRouter', desc: 'Feedback correctif priorisé (D4/D8 first)', icon: 'Target', color: '#ff3366' },
-  { id: 4, name: 'Claude CLI', desc: 'Réexécution agent avec feedback injecté', icon: 'Terminal', color: '#a855f7' },
+  { id: 4, name: 'Codex CLI', desc: 'Réexécution agent avec feedback injecté', icon: 'Terminal', color: '#a855f7' },
   { id: 5, name: 'RunStore', desc: 'Persistence du run (soic-gates.json)', icon: 'Fingerprint', color: '#00ff88' },
 ];
 

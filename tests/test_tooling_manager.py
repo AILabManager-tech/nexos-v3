@@ -14,7 +14,7 @@ class TestParseVersion:
         assert _parse_version("v22.20.0") == (22, 20, 0)
 
     def test_with_text(self):
-        assert _parse_version("2.1.62 (Claude Code)") == (2, 1, 62)
+        assert _parse_version("0.43.0 (Codex CLI)") == (0, 43, 0)
 
     def test_no_version(self):
         assert _parse_version("no version here") == (0,)

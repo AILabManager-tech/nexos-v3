@@ -17,6 +17,8 @@ from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 
+from nexos.brief_contract import normalize_brief
+
 try:
     from rich.console import Console
     console = Console()
@@ -42,6 +44,16 @@ REQUIRED_HEADERS = {
     "X-DNS-Prefetch-Control": "on",
     "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
 }
+
+
+def _template_value(value, fallback: str) -> str:
+    """Garantit une valeur chaîne sûre pour les templates."""
+    if value is None:
+        return fallback
+    if isinstance(value, list):
+        return "\n".join(str(item) for item in value) if value else fallback
+    text = str(value).strip()
+    return text or fallback
 
 
 @dataclass
@@ -296,20 +308,20 @@ def _fix_privacy_page(site_dir: Path, brief: dict, report: FixReport):
     template = template_path.read_text()
     legal = brief.get("legal", {})
     replacements = {
-        "{{COMPANY_NAME}}": brief.get("company_name", legal.get("company_name", "[Nom entreprise]")),
-        "{{RPP_NAME}}": legal.get("rpp_name", "[Nom du RPP]"),
-        "{{RPP_TITLE}}": legal.get("rpp_title", "[Titre du RPP]"),
-        "{{RPP_EMAIL}}": legal.get("rpp_email", "[courriel@example.com]"),
+        "{{COMPANY_NAME}}": _template_value(brief.get("company_name", legal.get("company_name")), "[Nom entreprise]"),
+        "{{RPP_NAME}}": _template_value(legal.get("rpp_name"), "[Nom du RPP]"),
+        "{{RPP_TITLE}}": _template_value(legal.get("rpp_title"), "[Titre du RPP]"),
+        "{{RPP_EMAIL}}": _template_value(legal.get("rpp_email"), "[courriel@example.com]"),
         "{{DATE}}": datetime.now().strftime("%Y-%m-%d"),
-        "{{DATA_TYPES}}": legal.get("data_types", "- Nom, prenom, courriel\n- Adresse IP\n- Donnees de navigation"),
-        "{{PURPOSES}}": legal.get("purposes", "- Fournir nos services\n- Ameliorer l'experience utilisateur\n- Communications marketing (avec consentement)"),
-        "{{RETENTION_PERIOD}}": legal.get("retention", "24 mois apres la derniere interaction"),
-        "{{ADDRESS}}": legal.get("address", "[Adresse]"),
-        "{{THIRD_PARTIES}}": legal.get("third_parties", "- Google Analytics (analytique)\n- Vercel (hebergement)"),
-        "{{TRANSFER_SECTION}}": legal.get("transfer", "Certaines donnees peuvent etre traitees par des services heberges hors du Quebec (ex : Vercel, Google). Nous nous assurons que ces transferts respectent les exigences de la Loi 25."),
-        "{{INCIDENT_EMAIL}}": legal.get("incident_email", legal.get("rpp_email", "[courriel@example.com]")),
-        "{{PHONE}}": legal.get("phone", "[Telephone]"),
-        "{{EMAIL}}": legal.get("email", legal.get("rpp_email", "[courriel@example.com]")),
+        "{{DATA_TYPES}}": _template_value(legal.get("data_types"), "- Nom, prenom, courriel\n- Adresse IP\n- Donnees de navigation"),
+        "{{PURPOSES}}": _template_value(legal.get("purposes"), "- Fournir nos services\n- Ameliorer l'experience utilisateur\n- Communications marketing (avec consentement)"),
+        "{{RETENTION_PERIOD}}": _template_value(legal.get("retention"), "24 mois apres la derniere interaction"),
+        "{{ADDRESS}}": _template_value(legal.get("address"), "[Adresse]"),
+        "{{THIRD_PARTIES}}": _template_value(legal.get("third_parties"), "- Google Analytics (analytique)\n- Vercel (hebergement)"),
+        "{{TRANSFER_SECTION}}": _template_value(legal.get("transfer"), "Certaines donnees peuvent etre traitees par des services heberges hors du Quebec (ex : Vercel, Google). Nous nous assurons que ces transferts respectent les exigences de la Loi 25."),
+        "{{INCIDENT_EMAIL}}": _template_value(legal.get("incident_email") or legal.get("rpp_email"), "[courriel@example.com]"),
+        "{{PHONE}}": _template_value(legal.get("phone"), "[Telephone]"),
+        "{{EMAIL}}": _template_value(legal.get("email") or legal.get("rpp_email"), "[courriel@example.com]"),
     }
 
     for placeholder, value in replacements.items():
@@ -348,16 +360,16 @@ def _fix_legal_page(site_dir: Path, brief: dict, report: FixReport):
     template = template_path.read_text()
     legal = brief.get("legal", {})
     replacements = {
-        "{{COMPANY_NAME}}": brief.get("company_name", legal.get("company_name", "[Nom entreprise]")),
-        "{{NEQ}}": legal.get("neq", "[NEQ]"),
-        "{{ADDRESS}}": legal.get("address", "[Adresse]"),
-        "{{PHONE}}": legal.get("phone", "[Telephone]"),
-        "{{EMAIL}}": legal.get("email", "[courriel@example.com]"),
-        "{{HOSTING_PROVIDER}}": legal.get("hosting_provider", "Vercel Inc."),
-        "{{HOSTING_ADDRESS}}": legal.get("hosting_address", "340 S Lemon Ave #4133, Walnut, CA 91789, USA"),
-        "{{RPP_NAME}}": legal.get("rpp_name", "[Nom du RPP]"),
-        "{{RPP_TITLE}}": legal.get("rpp_title", "[Titre du RPP]"),
-        "{{RPP_EMAIL}}": legal.get("rpp_email", "[courriel@example.com]"),
+        "{{COMPANY_NAME}}": _template_value(brief.get("company_name", legal.get("company_name")), "[Nom entreprise]"),
+        "{{NEQ}}": _template_value(legal.get("neq"), "[NEQ]"),
+        "{{ADDRESS}}": _template_value(legal.get("address"), "[Adresse]"),
+        "{{PHONE}}": _template_value(legal.get("phone"), "[Telephone]"),
+        "{{EMAIL}}": _template_value(legal.get("email"), "[courriel@example.com]"),
+        "{{HOSTING_PROVIDER}}": _template_value(legal.get("hosting_provider"), "Vercel Inc."),
+        "{{HOSTING_ADDRESS}}": _template_value(legal.get("hosting_address"), "340 S Lemon Ave #4133, Walnut, CA 91789, USA"),
+        "{{RPP_NAME}}": _template_value(legal.get("rpp_name"), "[Nom du RPP]"),
+        "{{RPP_TITLE}}": _template_value(legal.get("rpp_title"), "[Titre du RPP]"),
+        "{{RPP_EMAIL}}": _template_value(legal.get("rpp_email"), "[courriel@example.com]"),
     }
 
     for placeholder, value in replacements.items():
@@ -468,11 +480,13 @@ def auto_fix(site_dir: Path, client_dir: Path, brief: dict | None = None) -> Fix
         brief_path = client_dir / "brief-client.json"
         if brief_path.exists():
             try:
-                brief = json.loads(brief_path.read_text())
+                brief = normalize_brief(json.loads(brief_path.read_text()))
             except json.JSONDecodeError:
                 brief = {}
         else:
             brief = {}
+    else:
+        brief = normalize_brief(brief)
 
     console.print("[cyan]  Auto-fix D4/D8 en cours...[/]")
 

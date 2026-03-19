@@ -9,19 +9,31 @@ Il orchestre 46+ agents specialises a travers 6 phases sequentielles avec qualit
 # 1. Installer la commande CLI
 bash install_nexos.sh
 
-# 2. Verifier que le systeme est operationnel
+# 2. Lancer l'accueil NEXOS interactif
+nexos
+
+# 3. Verifier que le systeme est operationnel
 nexos doctor
 
-# 3. Creer un site complet depuis un brief
+# 4. Creer un site complet depuis un brief
 nexos create --brief clients/.template/brief-client.json
 
-# 4. Auditer un site existant
+# 5. Auditer un site existant
 nexos audit --client-dir clients/mon-client --url https://example.com
 
-# 5. Corriger automatiquement un client
+# 6. Corriger automatiquement un client
 nexos fix clients/mon-client
 nexos fix clients/mon-client --dry-run   # apercu sans appliquer
 ```
+
+`nexos` sans argument ouvre maintenant un accueil NEXOS interactif:
+1. menu principal (`create`, `audit`, `modify`, etc.)
+2. selection du CLI hote
+3. recommandation + forces/faiblesses de chaque CLI selon le type de travail
+4. ecran de resume final avec confirmation ou retour arriere
+5. lancement du CLI choisi avec bootstrap NEXOS
+
+Astuce: appuyer sur `Entree` accepte le choix recommande, `b` revient a l'etape precedente et `q` quitte l'accueil NEXOS.
 
 ## Prerequis
 
@@ -30,7 +42,7 @@ nexos fix clients/mon-client --dry-run   # apercu sans appliquer
 | Python | 3.10+ | Oui | systeme |
 | Node.js | 20.0+ | Oui | https://nodejs.org |
 | npm | inclus | Oui | inclus avec Node |
-| Claude Code | latest | Oui | `npm i -g @anthropic-ai/claude-code` |
+| Codex CLI | latest | Oui | `npm i -g @openai/codex` |
 | Lighthouse | latest | Non | `npm i -g lighthouse` |
 | pa11y | latest | Non | `npm i -g pa11y` |
 

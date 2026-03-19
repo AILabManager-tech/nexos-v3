@@ -96,15 +96,81 @@ def _safe_ask(question: questionary.Question) -> Any:
     return result
 
 
+import unicodedata
+
+from nexos.brief_contract import normalize_brief
+
 # ── Slugify ──────────────────────────────────────────────────────────────────
 def _slugify(name: str) -> str:
     """Génère un slug URL-friendly à partir d'un nom."""
-    import unicodedata
     slug = unicodedata.normalize("NFC", name).lower().strip()
     slug = unicodedata.normalize("NFD", slug)
     slug = "".join(c for c in slug if unicodedata.category(c) != "Mn")
     slug = re.sub(r"[^a-z0-9]+", "-", slug).strip("-")
     return slug
+
+
+def generate_minimal_brief(name: str, mode: str = "create") -> dict:
+    """Génère un brief minimaliste de manière non-interactive.
+
+    Utile quand stdin n'est pas un TTY ou pour des tests rapides.
+    """
+    slug = _slugify(name)
+    timestamp = datetime.now().isoformat()
+
+    # Valeurs par défaut sécurisées et conformes
+    company = {
+        "name": name,
+        "slug": slug,
+        "email": f"info@{slug}.ca",
+        "phone": "514-555-0000",
+        "address": "Québec, QC",
+    }
+
+    site = {
+        "type": "vitrine",
+        "stack": "nextjs",
+        "pages": ["accueil", "services", "a-propos", "contact",
+                  "politique-confidentialite", "mentions-legales"],
+        "features": ["formulaire-contact", "analytics"],
+        "languages": ["fr", "en"],
+        "hosting": "Vercel",
+    }
+
+    legal = {
+        "rpp": {
+            "name": name,
+            "email": company["email"],
+            "title": "Direction",
+        },
+        "data_collected": ["nom", "courriel", "téléphone", "navigation"],
+        "purposes": ["communication", "analytics"],
+        "retention": "24 mois",
+        "transfer_outside_qc": True,
+        "transfer_countries": ["États-Unis"],
+        "third_party_services": ["Vercel (hébergement)", "GA4 (analytics)"],
+        "consent_mode": "opt-in (recommandé Loi 25)",
+        "incident": {
+            "process_in_place": False,
+            "notification_email": company["email"],
+        },
+    }
+
+    design = {
+        "style": "minimaliste",
+        "logo_provided": False,
+        "palette": None,
+        "typography": None,
+        "references": [],
+    }
+
+    context = {
+        "competitors": [],
+        "keywords_seo": [],
+        "free_text": f"Génération automatique pour {name}",
+    }
+
+    return _assemble_brief(mode, company, site, {}, legal, design, context)
 
 
 # ── Phase 1 : Informations entreprise ────────────────────────────────────────
@@ -590,6 +656,132 @@ def _ask_context_seo() -> dict:
     }
 
 
+def _ask_mode_intake(mode: str) -> dict:
+    """Collecte un cadrage spécialisé selon le mode."""
+    console.print(Panel(f"🧭 Cadrage du mode {mode}", style="bold magenta"))
+
+    if mode == "create":
+        return {
+            "business_goal": _safe_ask(questionary.text(
+                "Objectif business principal :",
+                default="Generer plus de demandes qualifiees",
+                style=WIZARD_STYLE,
+            )),
+            "primary_cta": _safe_ask(questionary.text(
+                "CTA principal attendu :",
+                default="Prendre contact",
+                style=WIZARD_STYLE,
+            )),
+            "success_metric": _safe_ask(questionary.text(
+                "Indicateur de succes prioritaire :",
+                default="Leads qualifies / mois",
+                style=WIZARD_STYLE,
+            )),
+            "content_readiness": _safe_ask(questionary.select(
+                "Etat des contenus fournis par le client :",
+                choices=["aucun", "partiel", "complet"],
+                style=WIZARD_STYLE,
+            )),
+            "delivery_window": _safe_ask(questionary.text(
+                "Delai cible :",
+                default="2-4 semaines",
+                style=WIZARD_STYLE,
+            )),
+        }
+
+    if mode == "audit":
+        return {
+            "existing_url": _safe_ask(questionary.text(
+                "URL du site a auditer :",
+                validate=lambda t: t.startswith("http") or "URL requise (http/https)",
+                style=WIZARD_STYLE,
+            )),
+            "audit_scope": _safe_ask(questionary.checkbox(
+                "Perimetre de l'audit :",
+                choices=["ux", "seo", "performance", "contenu", "accessibilite", "legal"],
+                style=WIZARD_STYLE,
+                validate=lambda r: len(r) > 0 or "Selectionnez au moins un axe",
+            )),
+            "audit_goal": _safe_ask(questionary.text(
+                "Question principale a laquelle l'audit doit repondre :",
+                default="Pourquoi le site convertit-il mal ?",
+                style=WIZARD_STYLE,
+            )),
+        }
+
+    if mode == "modify":
+        return {
+            "existing_url": _safe_ask(questionary.text(
+                "URL du site ou environnement actuel (optionnel) :",
+                style=WIZARD_STYLE,
+            )) or None,
+            "requested_changes": _safe_ask(questionary.text(
+                "Changements demandes :",
+                validate=lambda t: len(t) >= 8 or "Decris les changements attendus",
+                style=WIZARD_STYLE,
+            )),
+            "sections_in_scope": _safe_ask(questionary.text(
+                "Sections/pages concernees (separees par virgule) :",
+                default="accueil, contact",
+                style=WIZARD_STYLE,
+            )),
+            "must_preserve": _safe_ask(questionary.text(
+                "Elements a ne pas casser ou modifier :",
+                default="SEO existant, branding, formulaire principal",
+                style=WIZARD_STYLE,
+            )),
+        }
+
+    if mode == "content":
+        return {
+            "target_pages": _safe_ask(questionary.text(
+                "Pages ou gabarits a rediger (separes par virgule) :",
+                default="accueil, services, contact",
+                style=WIZARD_STYLE,
+            )),
+            "content_goal": _safe_ask(questionary.text(
+                "Objectif editorial principal :",
+                default="Clarifier l'offre et augmenter les conversions",
+                style=WIZARD_STYLE,
+            )),
+            "tone": _safe_ask(questionary.text(
+                "Ton souhaite :",
+                default="Clair, credible, direct",
+                style=WIZARD_STYLE,
+            )),
+            "source_materials": _safe_ask(questionary.select(
+                "Matiere source disponible :",
+                choices=["aucune", "notes internes", "site existant", "documents complets"],
+                style=WIZARD_STYLE,
+            )),
+        }
+
+    if mode == "analyze":
+        return {
+            "existing_url": _safe_ask(questionary.text(
+                "URL de reference (optionnel) :",
+                style=WIZARD_STYLE,
+            )) or None,
+            "analysis_questions": _safe_ask(questionary.text(
+                "Questions de recherche principales :",
+                default="Marche, concurrents, opportunites, risques",
+                style=WIZARD_STYLE,
+            )),
+            "geography": _safe_ask(questionary.text(
+                "Zone geographique cible :",
+                default="Quebec",
+                style=WIZARD_STYLE,
+            )),
+            "expected_output": _safe_ask(questionary.select(
+                "Sortie attendue :",
+                choices=["synthese executive", "analyse detaillee", "angles SEO", "positionnement"],
+                style=WIZARD_STYLE,
+            )),
+        }
+
+    return {}
+
+
 # ── Phase 7 : Récapitulatif ──────────────────────────────────────────────────
 SECTION_NAMES = {
     "company": "Entreprise",
@@ -598,6 +790,7 @@ SECTION_NAMES = {
     "legal": "Loi 25 / Légal",
     "design": "Design",
     "context": "Contexte & SEO",
+    "mode_intake": "Cadrage du mode",
 }
 
 def _review_brief(brief: dict) -> bool:
@@ -668,6 +861,20 @@ def _review_brief(brief: dict) -> bool:
     ctx = brief["context"]
     if ctx.get("keywords_seo"):
         table.add_row("Mots-clés SEO", ", ".join(ctx["keywords_seo"]))
+    mission = brief.get("mission", {})
+    intake = mission.get("intake", {})
+    if intake:
+        summary = " | ".join(
+            value for value in [
+                intake.get("business_goal"),
+                intake.get("audit_goal"),
+                intake.get("requested_changes"),
+                intake.get("content_goal"),
+                intake.get("analysis_questions"),
+            ] if value
+        )
+        if summary:
+            table.add_row("Cadrage", summary[:120])
 
     console.print(table)
     console.print()
@@ -681,9 +888,28 @@ def _review_brief(brief: dict) -> bool:
 
 # ── Assemblage ────────────────────────────────────────────────────────────────
 def _assemble_brief(mode: str, company: dict, site: dict, adaptive: dict,
-                    legal: dict, design: dict, context: dict) -> dict:
+                    legal: dict, design: dict, context: dict,
+                    mode_intake: dict | None = None) -> dict:
     """Assemble le brief final conforme au schema."""
-    return {
+    mode_intake = mode_intake or {}
+    mission = {"mode": mode, "intake": mode_intake}
+    if mode_intake.get("existing_url") and not site.get("existing_url"):
+        site = {**site, "existing_url": mode_intake["existing_url"]}
+
+    merged_context = dict(context)
+    extra_context = []
+    for key in (
+        "business_goal", "primary_cta", "success_metric", "audit_goal",
+        "requested_changes", "must_preserve", "content_goal", "tone",
+        "analysis_questions", "expected_output",
+    ):
+        if mode_intake.get(key):
+            extra_context.append(f"{key}: {mode_intake[key]}")
+    if extra_context:
+        base = merged_context.get("free_text")
+        merged_context["free_text"] = "\n".join(([base] if base else []) + extra_context)
+
+    return normalize_brief({
         "_meta": {
             "generator": "nexos-v4.0-wizard",
             "created_at": datetime.now().isoformat(),
@@ -702,17 +928,20 @@ def _assemble_brief(mode: str, company: dict, site: dict, adaptive: dict,
         },
         "legal": legal,
         "site": {
+            "stack": site.get("stack"),
             "type": site["type"],
             "pages": site["pages"],
             "languages": site["languages"],
             "features": site["features"],
             "hosting": site["hosting"],
             "domain": site.get("domain"),
+            "existing_url": site.get("existing_url"),
         },
-        "context": context,
+        "context": merged_context,
         "design": design,
         "adaptive": adaptive,
-    }
+        "mission": mission,
+    }, mode=mode)
 
 
 # ── Point d'entrée ───────────────────────────────────────────────────────────
@@ -762,9 +991,12 @@ def interactive_brief(mode: str = "create") -> dict:
         # Phase 6 — Contexte SEO
         context = _ask_context_seo()
 
+        # Phase 6b — Cadrage spécialisé
+        mode_intake = _ask_mode_intake(mode)
+
         # Assemblage
         brief = _assemble_brief(mode, company, site, adaptive,
-                                legal, design, context)
+                                legal, design, context, mode_intake)
 
         # Phase 7 — Récap
         confirmed = _review_brief(brief)
@@ -792,9 +1024,11 @@ def interactive_brief(mode: str = "create") -> dict:
                 design = _ask_design()
             elif section == "Contexte & SEO":
                 context = _ask_context_seo()
+            elif section == "Cadrage du mode":
+                mode_intake = _ask_mode_intake(mode)
 
             brief = _assemble_brief(mode, company, site, adaptive,
-                                    legal, design, context)
+                                    legal, design, context, mode_intake)
             confirmed = _review_brief(brief)
 
         console.print("[bold green]✓ Brief confirmé ![/]")

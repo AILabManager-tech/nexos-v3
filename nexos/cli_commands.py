@@ -9,6 +9,7 @@ from pathlib import Path
 
 from nexos.build_validator import validate_build, format_build_report, _check_critical_files, _check_vercel_headers
 from nexos.auto_fixer import auto_fix, REQUIRED_HEADERS
+from nexos.brief_contract import normalize_brief
 
 try:
     from nexos.changelog import log_event, EventType, get_changelog_summary
@@ -85,7 +86,7 @@ def run_fix(client_dir: Path, dry_run: bool = False):
     brief = None
     if brief_path.exists():
         try:
-            brief = json.loads(brief_path.read_text())
+            brief = normalize_brief(json.loads(brief_path.read_text()))
         except json.JSONDecodeError:
             pass
 
@@ -275,7 +276,7 @@ def run_report(client_dir: Path):
     brief_path = client_dir / "brief-client.json"
     if brief_path.exists():
         try:
-            brief = json.loads(brief_path.read_text())
+            brief = normalize_brief(json.loads(brief_path.read_text()))
             company = brief.get("company_name", brief.get("inputs", {}).get("company_name", "?"))
             console.print(f"\n[bold]Brief :[/] {company}")
             legal = brief.get("legal", {})
