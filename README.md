@@ -1,7 +1,9 @@
 # NEXOS v4.0 — Pipeline Web Autonome
 
 NEXOS est un systeme de creation et d'audit de sites web professionnels pilote par IA.
-Il orchestre 46+ agents specialises a travers 6 phases sequentielles avec quality gates SOIC.
+Il orchestre 56 agents specialises a travers 6 phases sequentielles avec quality gates SOIC (9 dimensions).
+
+Objectif : **qualite premium des la premiere generation** (score SOIC >= 8.5/10).
 
 ## Quick Start
 
@@ -26,14 +28,13 @@ nexos fix clients/mon-client
 nexos fix clients/mon-client --dry-run   # apercu sans appliquer
 ```
 
-`nexos` sans argument ouvre maintenant un accueil NEXOS interactif:
-1. menu principal (`create`, `audit`, `modify`, etc.)
-2. selection du CLI hote
-3. recommandation + forces/faiblesses de chaque CLI selon le type de travail
-4. ecran de resume final avec confirmation ou retour arriere
-5. lancement du CLI choisi avec bootstrap NEXOS
+`nexos` sans argument ouvre un accueil interactif :
+1. Menu principal (`create`, `audit`, `modify`, etc.)
+2. Selection du CLI hote (Claude Code, Codex, Gemini)
+3. Recommandation + forces/faiblesses de chaque CLI selon le type de travail
+4. Ecran de resume final avec confirmation ou retour arriere
 
-Astuce: appuyer sur `Entree` accepte le choix recommande, `b` revient a l'etape precedente et `q` quitte l'accueil NEXOS.
+Astuce : `Entree` accepte le choix recommande, `b` revient en arriere, `q` quitte.
 
 ## Prerequis
 
@@ -53,30 +54,36 @@ Verifiez avec `nexos doctor` pour un diagnostic complet.
 ```
 NEXOS v4.0 = Multi-phase x Quality Gates x Tooling Reel x Auto-Fix
 
-                    orchestrator.py
+                    orchestrator.py (1663 lignes)
                          |
           +--------------+--------------+
           |              |              |
      nexos/         agents/        templates/
-   (modules)      (46 agents)    (15 templates)
+   (10 modules)   (56 agents)    (39 fichiers)
+   (5232 lignes)                 (5 stacks)
           |              |
   +-------+-------+     +-- ph0-discovery (6)
   |       |       |     +-- ph1-strategy  (6)
   | tooling_mgr   |     +-- ph2-design    (6)
   | build_valid    |     +-- ph3-content   (6)
   | auto_fixer     |     +-- ph4-build     (7)
-  | cli_commands   |     +-- ph5-qa       (24)
-  +-------+-------+     +-- site-update   (6)
+  | cli_commands   |     +-- ph5-qa       (18)
+  | brief_wizard   |     +-- site-update   (6)
+  | agent_registry |     +-- knowledge
+  | pipeline_config|
+  | changelog      |
+  | session_launcher|
+  +-------+-------+
           |
      soic/ (symlink)
-    Quality Gates
+    Quality Gates 9D
 ```
 
 ## Modes d'operation
 
 | Commande | Description |
 |----------|-------------|
-| `nexos create --brief <path>` | Creation complete ph0 → ph5 |
+| `nexos create --brief <path>` | Creation complete ph0 -> ph5 |
 | `nexos audit --client-dir <dir> --url <url>` | Audit site existant (ph5-qa) |
 | `nexos modify --client-dir <dir>` | Modification ciblee |
 | `nexos content --client-dir <dir>` | Redaction/traduction (ph3) |
@@ -86,10 +93,19 @@ NEXOS v4.0 = Multi-phase x Quality Gates x Tooling Reel x Auto-Fix
 | `nexos fix <dir> [--dry-run]` | Auto-correction D4/D8 |
 | `nexos report <dir>` | Rapport agrege client |
 
+### Options transversales
+
+| Option | Description |
+|--------|-------------|
+| `--stack nextjs\|nuxt\|astro\|fastapi` | Stack technique cible |
+| `--profile web-nextjs\|web-generic\|api-fastapi\|code-python` | Profil SOIC |
+| `--colors primary=#HEX accent=#HEX ...` | Palette de couleurs imposee |
+| `--section S-NNN` | Cibler une section specifique (mode modify) |
+
 ## Pipeline de creation (mode `create`)
 
 ```
-ph0-discovery → ph1-strategy → ph2-design → ph3-content → ph4-build → ph5-qa
+ph0-discovery -> ph1-strategy -> ph2-design -> ph3-content -> ph4-build -> ph5-qa
      |               |              |             |             |          |
    mu>=7.0        mu>=8.0       mu>=8.0       mu>=8.0     BUILD PASS  mu>=8.5
                                                                |
@@ -99,6 +115,22 @@ ph0-discovery → ph1-strategy → ph2-design → ph3-content → ph4-build → 
 
 Chaque transition est gardee par un quality gate SOIC (9 dimensions, score mu pondere).
 Le threshold de deploiement est mu >= 8.5 a la sortie de ph5-qa.
+
+### Quality Gates SOIC — 9 Dimensions
+
+| Dim | Domaine | Poids |
+|-----|---------|-------|
+| D1 | Architecture | x1.0 |
+| D2 | Documentation | x0.8 |
+| D3 | Tests | x0.9 |
+| D4 | Securite | x1.2 |
+| D5 | Performance | x1.0 |
+| D6 | Accessibilite | x1.1 |
+| D7 | SEO | x1.0 |
+| D8 | Conformite legale (Loi 25) | x1.1 |
+| D9 | Code Quality | x0.9 |
+
+D4 et D8 sont **bloquants** : un site ne peut pas etre deploye avec D8 < 7.0.
 
 ## Auto-Fix v4.0
 
@@ -113,11 +145,24 @@ Le module `nexos/auto_fixer.py` corrige automatiquement les problemes recurrents
 | Politique confidentialite | D8 Loi 25 | Genere la page depuis template + brief |
 | Mentions legales | D8 Loi 25 | Genere la page depuis template + brief |
 
+## Templates multi-stack
+
+| Stack | Templates | Statut |
+|-------|-----------|--------|
+| `nextjs/` | 6 fichiers (next.config, tailwind, vercel, etc.) | Production |
+| `nuxt/` | nuxt.config, tailwind, README | Production |
+| `astro/` | astro.config, tailwind, README | Production |
+| `fastapi/` | main.py, requirements.txt, README | Production |
+| `generic/` | brief-schema, brief-intake, etc. | Production |
+
+Templates securises additionnels : cookie-consent, privacy-policy, legal-mentions, sitemap, robots, og-image, ad-unit.
+
 ## Structure client
 
 ```
 clients/{slug}/
 +-- brief-client.json          # Brief client (donnees legales Loi 25)
++-- section-manifest.json      # Registre des sections (S-NNN)
 +-- ph0-discovery-report.md    # Rapport phase 0
 +-- ph1-strategy-report.md     # Rapport phase 1
 +-- ph2-design-report.md       # Rapport phase 2
@@ -125,19 +170,70 @@ clients/{slug}/
 +-- ph4-build-log.md           # Log de build
 +-- ph5-qa-report.md           # Rapport QA final
 +-- soic-gates.json            # Historique des quality gates
++-- nexos-changelog.json       # Audit trail append-only
 +-- tooling/                   # Resultats scans (lighthouse, pa11y, etc.)
-+-- site/                      # Code source du site Next.js
++-- site/                      # Code source du site
 ```
+
+## Portfolio — Sites generes par NEXOS
+
+| Projet | Secteur | Score SOIC | Tests | Lighthouse Perf |
+|--------|---------|-----------|-------|-----------------|
+| [Collectif Nova](https://github.com/AILabManager-tech/collectif-nova) | Agence creative, Montreal | 9.48 | 158 | 98 |
+| [Clinique Aura](https://github.com/AILabManager-tech/clinique-aura) | Clinique multidisciplinaire, Sherbrooke | 9.47 | 131 | 96 |
+| [Table de Marguerite](https://github.com/AILabManager-tech/table-de-marguerite) | Bistro gastronomique, Vieux-Quebec | 9.41 | 206 | 95 |
+| [Beaumont Avocats](https://github.com/AILabManager-tech/beaumont-avocats) | Cabinet d'avocats, Quebec | 9.38 | 113 | 97 |
+| [Vertex PMO](https://github.com/AILabManager-tech/vertex-pmo) | Gestion de projet, Gatineau-Ottawa | 9.23 | 111 | 87 |
+| [Electro-Maitre](https://github.com/AILabManager-tech/electro-maitre-site) | Electricien industriel, Monteregie | 8.72 | — | — |
+
+Tous les sites sont bilingues (FR/EN), conformes Loi 25 du Quebec, avec headers de securite complets.
 
 ## Stack technique par defaut
 
 - **Framework** : Next.js 15+ (App Router)
 - **Langage** : TypeScript 5 (strict mode)
-- **CSS** : Tailwind CSS 3.4+
+- **CSS** : Tailwind CSS 3.4+ / 4
 - **Tests** : Vitest + @testing-library/react
 - **i18n** : next-intl (FR/EN minimum)
+- **Icons** : Lucide React
+- **Animations** : Framer Motion (avec prefers-reduced-motion)
 - **Deploiement** : Vercel
 - **Conformite** : Loi 25 du Quebec (obligatoire)
+
+## Tooling CLI
+
+Scans automatises avant Phase 5 :
+
+```bash
+tools/preflight.sh <URL> <CLIENT_DIR>
+```
+
+| Outil | Script | Description |
+|-------|--------|-------------|
+| Lighthouse | `lighthouse-scan.sh` | Performance, a11y, SEO, best practices |
+| pa11y | `a11y-scan.sh` | WCAG 2.0 AA |
+| Headers | `headers-scan.sh` | Verification headers securite |
+| SSL | `ssl-scan.sh` | Certificat et configuration TLS |
+| Dependencies | `deps-scan.sh` | npm audit vulnerabilites |
+
+## Tests
+
+13 fichiers de tests couvrant tous les modules `nexos/` :
+
+```bash
+cd nexos_v.3.0
+python -m pytest tests/ -v
+```
+
+## Coordination multi-CLI
+
+NEXOS supporte 3 CLI hotes. Les regles metier (securite, Loi 25, SOIC, phases) sont identiques.
+
+| CLI | Fichier | Role |
+|-----|---------|------|
+| Claude Code | `CLAUDE.md` | Hote interactif (structuration, redaction, arbitrages) |
+| Codex CLI | `AGENTS.md` | Moteur d'execution (generation de code) |
+| Gemini CLI | `GEMINI.md` | Hote alternatif |
 
 ## Documentation
 
@@ -151,7 +247,115 @@ clients/{slug}/
 | [docs/architecture.md](docs/architecture.md) | Architecture detaillee |
 | [docs/deployment.md](docs/deployment.md) | Guide de deploiement |
 | [docs/troubleshooting.md](docs/troubleshooting.md) | Erreurs frequentes et solutions |
+| [docs/CLI_GUIDE.md](docs/CLI_GUIDE.md) | Guide CLI complet |
 
 ## License
 
 Propriete de Mark Systems. Voir [LICENSE](LICENSE).
+
+---
+
+# NEXOS v4.0 — Autonomous Web Pipeline
+
+NEXOS is an AI-driven system for creating and auditing professional websites.
+It orchestrates 56 specialized agents across 6 sequential phases with SOIC quality gates (9 dimensions).
+
+Goal: **premium quality from the first generation** (SOIC score >= 8.5/10).
+
+## Quick Start
+
+```bash
+# 1. Install the CLI command
+bash install_nexos.sh
+
+# 2. Launch the interactive NEXOS welcome screen
+nexos
+
+# 3. Verify the system is operational
+nexos doctor
+
+# 4. Create a complete site from a brief
+nexos create --brief clients/.template/brief-client.json
+
+# 5. Audit an existing site
+nexos audit --client-dir clients/my-client --url https://example.com
+
+# 6. Auto-fix a client project
+nexos fix clients/my-client
+nexos fix clients/my-client --dry-run   # preview without applying
+```
+
+## Key Features
+
+- **56 specialized agents** across 6 phases (discovery, strategy, design, content, build, QA)
+- **SOIC quality gates** between each phase (9 weighted dimensions, mu threshold)
+- **Real CLI tooling** (Lighthouse, pa11y, curl, npm audit) before LLM agents
+- **Auto-fix** for security (D4) and legal compliance (D8) issues
+- **Multi-stack support**: Next.js, Nuxt, Astro, FastAPI
+- **Quebec Law 25 compliance** built-in (cookie consent, privacy policy, legal notices)
+- **Multi-CLI orchestration**: Claude Code, Codex CLI, Gemini CLI
+- **Bilingual by default**: FR/EN with next-intl
+
+## Pipeline
+
+```
+ph0-discovery -> ph1-strategy -> ph2-design -> ph3-content -> ph4-build -> ph5-qa
+     |               |              |             |             |          |
+   mu>=7.0        mu>=8.0       mu>=8.0       mu>=8.0     BUILD PASS  mu>=8.5
+```
+
+Each transition is guarded by a SOIC quality gate (9 dimensions, weighted mu score).
+The deployment threshold is mu >= 8.5 at ph5-qa exit.
+
+## Commands
+
+| Command | Description |
+|---------|-------------|
+| `nexos create --brief <path>` | Full creation ph0 -> ph5 |
+| `nexos audit --client-dir <dir> --url <url>` | Audit existing site (ph5-qa) |
+| `nexos modify --client-dir <dir>` | Targeted modification |
+| `nexos content --client-dir <dir>` | Content/translation only (ph3) |
+| `nexos analyze --client-dir <dir>` | Discovery only (ph0) |
+| `nexos converge <dir> --target 8.5` | SOIC convergence loop |
+| `nexos doctor` | System diagnostics |
+| `nexos fix <dir> [--dry-run]` | Auto-fix D4/D8 standalone |
+| `nexos report <dir>` | Aggregated client report |
+
+## Portfolio — Sites Generated by NEXOS
+
+| Project | Sector | SOIC Score | Tests | Lighthouse Perf |
+|---------|--------|-----------|-------|-----------------|
+| [Collectif Nova](https://github.com/AILabManager-tech/collectif-nova) | Creative agency, Montreal | 9.48 | 158 | 98 |
+| [Clinique Aura](https://github.com/AILabManager-tech/clinique-aura) | Multidisciplinary clinic, Sherbrooke | 9.47 | 131 | 96 |
+| [Table de Marguerite](https://github.com/AILabManager-tech/table-de-marguerite) | Gastronomic bistro, Old Quebec | 9.41 | 206 | 95 |
+| [Beaumont Avocats](https://github.com/AILabManager-tech/beaumont-avocats) | Law firm, Quebec City | 9.38 | 113 | 97 |
+| [Vertex PMO](https://github.com/AILabManager-tech/vertex-pmo) | Project management, Gatineau-Ottawa | 9.23 | 111 | 87 |
+| [Electro-Maitre](https://github.com/AILabManager-tech/electro-maitre-site) | Industrial electrician, Monteregie | 8.72 | — | — |
+
+All sites are bilingual (FR/EN), Quebec Law 25 compliant, with full security headers.
+
+## Default Tech Stack
+
+- **Framework**: Next.js 15+ (App Router)
+- **Language**: TypeScript 5 (strict mode)
+- **CSS**: Tailwind CSS 3.4+ / 4
+- **Testing**: Vitest + @testing-library/react
+- **i18n**: next-intl (FR/EN minimum)
+- **Icons**: Lucide React
+- **Animations**: Framer Motion (with prefers-reduced-motion)
+- **Deployment**: Vercel
+- **Compliance**: Quebec Law 25 (mandatory)
+
+## Architecture
+
+- `orchestrator.py` — Central engine (1663 lines)
+- `nexos/` — 10 augmentation modules (5232 lines total)
+- `agents/` — 56 specialized agents in 6 phases + site-update
+- `templates/` — 39 files across 5 stacks (nextjs, nuxt, astro, fastapi, generic)
+- `soic/` — Quality gate engine (9 dimensions, profiles, convergence)
+- `tools/` — 9 CLI scanning scripts (Lighthouse, pa11y, headers, SSL, deps)
+- `tests/` — 13 test files
+
+## License
+
+Property of Mark Systems. See [LICENSE](LICENSE).
