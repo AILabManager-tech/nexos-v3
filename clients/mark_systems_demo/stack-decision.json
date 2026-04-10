@@ -1,0 +1,419 @@
+{
+  "_meta": {
+    "generator": "nexos-v3.0/solution-architect",
+    "soic_id": "WEB-2026-LAB-0409",
+    "client": "mark-systems-demo",
+    "created_at": "2026-04-09T00:00:00Z",
+    "phase": "ph1-strategy"
+  },
+  "stack": {
+    "framework": {
+      "name": "Next.js",
+      "version": "15.x",
+      "router": "App Router",
+      "react_version": "19.x",
+      "reason": "Standard NEXOS — SSR/SSG, React Server Components, streaming, native ViewTransitions API support for page transitions"
+    },
+    "language": {
+      "name": "TypeScript",
+      "version": "5.x",
+      "strict_mode": true,
+      "compiler_options": {
+        "strict": true,
+        "noUncheckedIndexedAccess": true,
+        "strictNullChecks": true,
+        "noImplicitAny": true,
+        "exactOptionalPropertyTypes": true
+      },
+      "reason": "Standard NEXOS — maximum type safety, critical for auto-documentation pipeline that extracts props from interfaces"
+    },
+    "css": {
+      "name": "Tailwind CSS",
+      "version": "4.x",
+      "config_format": "CSS-first (@theme directive)",
+      "reason": "Standard NEXOS — CSS-first config in v4 aligns with dynamic theming via CSS custom properties, native @theme tokens"
+    },
+    "i18n": {
+      "name": "next-intl",
+      "version": "^4.x",
+      "locales": ["fr", "en"],
+      "default_locale": "fr",
+      "fallback_locale": "en",
+      "strategy": "prefix-always",
+      "reason": "Standard NEXOS — App Router native integration, type-safe message keys, middleware-based locale detection"
+    },
+    "testing": {
+      "unit": "Vitest",
+      "component": "@testing-library/react",
+      "coverage": "@vitest/coverage-v8",
+      "e2e": "Playwright",
+      "reason": "Standard NEXOS — Vitest ESM-native, fast HMR, compatible with React 19 + Server Components testing"
+    },
+    "linting": {
+      "eslint": "eslint-config-next",
+      "a11y": "eslint-plugin-jsx-a11y",
+      "prettier": true,
+      "reason": "Standard NEXOS — Next.js conventions + accessibility linting mandatory"
+    },
+    "images": {
+      "name": "next/image",
+      "reason": "Standard NEXOS — automatic optimization, lazy loading, AVIF/WebP, responsive sizes"
+    },
+    "fonts": {
+      "name": "next/font",
+      "families": [
+        { "name": "Geist Sans", "weights": [400, 600], "usage": "headings" },
+        { "name": "Inter", "weights": [400, 500], "usage": "body" },
+        { "name": "JetBrains Mono", "weights": [400], "usage": "code blocks" }
+      ],
+      "reason": "Standard NEXOS — self-hosted, zero layout shift, fonts validated in Ph0 benchmark"
+    },
+    "deployment": {
+      "provider": "Vercel",
+      "features": ["preview-deploys", "edge-middleware", "analytics", "speed-insights"],
+      "reason": "Standard NEXOS — native Next.js CI/CD, edge middleware for CSP nonce + i18n + theme cookie"
+    }
+  },
+  "optional_additions": [
+    {
+      "name": "Framer Motion",
+      "version": "^12.x",
+      "reason": "Experiment transitions, shared layout animations (layoutId), scroll-triggered reveals, showroom presentation mode",
+      "impact": "+15KB gzipped (tree-shakeable)",
+      "decision": "include",
+      "condition": "Brief mandates animations: hover lift, fade-up stagger, layout transitions between experiment views",
+      "adr": "ADR-001"
+    },
+    {
+      "name": "@ai-sdk/openai + ai (Vercel AI SDK)",
+      "version": "^4.x",
+      "reason": "Agent protocol for 3 internal agents (DevOps, UI-Generator, Business-Strategist) with streaming responses",
+      "impact": "+12KB gzipped (core), API route handlers server-only",
+      "decision": "include",
+      "condition": "Brief defines 3 AI agents as core feature; Vercel AI SDK is the designated agent protocol",
+      "adr": "ADR-002"
+    },
+    {
+      "name": "@tiptap/react + extensions",
+      "version": "^2.x",
+      "extensions": [
+        "@tiptap/starter-kit",
+        "@tiptap/extension-placeholder",
+        "@tiptap/extension-link",
+        "@tiptap/extension-code-block-lowlight",
+        "@tiptap/extension-task-list",
+        "@tiptap/extension-task-item"
+      ],
+      "reason": "Rich-text notes editor with slash commands, inline toolbar, code blocks with syntax highlighting",
+      "impact": "+45KB gzipped (with extensions), client-side only",
+      "decision": "include",
+      "condition": "Brief specifies Tiptap as notes editor engine; no viable lighter alternative for slash-command + block-based editing",
+      "adr": "ADR-003"
+    },
+    {
+      "name": "@next/mdx + next-mdx-remote",
+      "version": "latest",
+      "reason": "MDX rendering for notes content, auto-generated experiment documentation, and legal page templates",
+      "impact": "+8KB gzipped (MDX runtime)",
+      "decision": "include",
+      "condition": "Brief specifies MDX as notes format; auto-documentation pipeline outputs MDX",
+      "adr": "ADR-004"
+    },
+    {
+      "name": "Radix UI Primitives",
+      "version": "latest",
+      "primitives": [
+        "@radix-ui/react-dialog",
+        "@radix-ui/react-dropdown-menu",
+        "@radix-ui/react-tabs",
+        "@radix-ui/react-tooltip",
+        "@radix-ui/react-toggle-group",
+        "@radix-ui/react-separator",
+        "@radix-ui/react-scroll-area",
+        "@radix-ui/react-select",
+        "@radix-ui/react-popover",
+        "@radix-ui/react-switch",
+        "@radix-ui/react-toast"
+      ],
+      "reason": "Unstyled, accessible primitives for dialog, dropdown, tabs, tooltip — handles focus management, keyboard navigation, ARIA automatically",
+      "impact": "+2-4KB per primitive (individually tree-shakeable)",
+      "decision": "include",
+      "condition": "4 themes require unstyled base components; Radix is the industry standard (shadcn, v0 both use it)",
+      "adr": "ADR-005"
+    },
+    {
+      "name": "Storybook",
+      "version": "^8.x",
+      "addons": [
+        "@storybook/addon-essentials",
+        "@storybook/addon-a11y",
+        "@storybook/addon-themes",
+        "@storybook/addon-interactions"
+      ],
+      "reason": "Component documentation, visual regression testing, experiment showcase with per-theme previews",
+      "impact": "Dev-only dependency (not in production bundle)",
+      "decision": "include",
+      "condition": "Brief mandates Storybook integration; auto-documentation pipeline feeds into Storybook docs addon",
+      "adr": "ADR-006"
+    },
+    {
+      "name": "Zod",
+      "version": "^3.x",
+      "reason": "Runtime schema validation for agent inputs/outputs, experiment metadata, form submissions, API route payloads",
+      "impact": "+3KB gzipped (tree-shakeable)",
+      "decision": "include",
+      "condition": "3 agents produce unstructured AI outputs requiring runtime validation; form validation with react-hook-form",
+      "adr": "ADR-007"
+    },
+    {
+      "name": "React Hook Form",
+      "version": "^7.x",
+      "resolver": "@hookform/resolvers (Zod)",
+      "reason": "Performant uncontrolled form management for settings, contact form, experiment metadata editing",
+      "impact": "+5KB gzipped",
+      "decision": "include",
+      "condition": "Multiple forms: contact, settings, experiment metadata, agent configuration. Zod resolver for schema-driven validation",
+      "adr": "ADR-008"
+    },
+    {
+      "name": "next-themes",
+      "version": "^0.4.x",
+      "reason": "Theme attribute management on <html>, cookie-based persistence, FOWT prevention, SSR-safe hydration",
+      "impact": "+1KB gzipped",
+      "decision": "include",
+      "condition": "4 dynamic themes with data-theme attribute switching; needs cookie persistence via middleware for FOWT prevention",
+      "adr": "ADR-009"
+    }
+  ],
+  "explicitly_rejected": [
+    {
+      "name": "jQuery",
+      "reason": "Obsolete, incompatible with React 19 virtual DOM, +90KB uncompressed, zero value in modern stack"
+    },
+    {
+      "name": "styled-components",
+      "reason": "Runtime CSS-in-JS — performance penalty on SSR hydration, incompatible with React Server Components streaming, conflicts with Tailwind utility-first approach"
+    },
+    {
+      "name": "Pages Router",
+      "reason": "Legacy Next.js routing — App Router is the standard since Next.js 13, required for Server Components, streaming SSR, and parallel routes"
+    },
+    {
+      "name": "CSS-in-JS runtime (Emotion, Stitches)",
+      "reason": "Runtime style injection breaks streaming SSR, conflicts with Tailwind CSS, adds unnecessary bundle weight. Tailwind + CSS custom properties covers all theming needs"
+    },
+    {
+      "name": "Chakra UI",
+      "reason": "Runtime CSS-in-JS under the hood (Emotion), opinionated design system conflicts with 4-theme architecture, heavy bundle (+100KB), poor RSC compatibility"
+    },
+    {
+      "name": "MUI (Material UI)",
+      "reason": "Emotion-based runtime CSS-in-JS, Material Design opinions conflict with Bento/Glassmorphism/Cyberpunk themes, +200KB bundle, poor tree-shaking"
+    },
+    {
+      "name": "GSAP",
+      "reason": "Overkill for UI transitions, proprietary license for commercial use, Framer Motion covers all required animation patterns with better React integration"
+    },
+    {
+      "name": "Prisma / Drizzle / any ORM",
+      "reason": "No database in Phase 1 scope — notes stored as local MDX files, experiment metadata as JSON. Database layer deferred to future phase if needed"
+    },
+    {
+      "name": "Redux / Zustand",
+      "reason": "No global client state management needed — React Server Components + URL state + React context covers all state patterns. Agent chat state is local to chat panels"
+    },
+    {
+      "name": "tRPC",
+      "reason": "No separate backend — Next.js API routes with Zod validation provide type-safe API layer without additional abstraction"
+    }
+  ],
+  "security_config": {
+    "next_config": {
+      "poweredByHeader": false,
+      "headers": [
+        { "key": "X-Frame-Options", "value": "DENY" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), interest-cohort=()" },
+        { "key": "X-DNS-Prefetch-Control", "value": "on" }
+      ]
+    },
+    "csp_strategy": {
+      "method": "nonce-based via middleware",
+      "description": "Middleware generates a cryptographic nonce per request, injected into CSP header and passed to Script/style tags. Allows inline scripts for next-themes hydration while blocking XSS.",
+      "directives": {
+        "default-src": "'self'",
+        "script-src": "'self' 'nonce-{NONCE}' https://vercel.live",
+        "style-src": "'self' 'unsafe-inline'",
+        "img-src": "'self' data: blob: https:",
+        "font-src": "'self'",
+        "connect-src": "'self' https://api.openai.com https://api.anthropic.com https://vercel.live",
+        "frame-src": "'none'",
+        "object-src": "'none'",
+        "base-uri": "'self'",
+        "form-action": "'self'"
+      },
+      "notes": "style-src unsafe-inline required for Tailwind CSS injection in dev mode; in production, consider hash-based approach. connect-src includes AI provider endpoints for agent protocol."
+    },
+    "cookie_security": {
+      "theme_cookie": { "name": "theme", "httpOnly": false, "secure": true, "sameSite": "lax", "path": "/" },
+      "locale_cookie": { "name": "NEXT_LOCALE", "httpOnly": false, "secure": true, "sameSite": "lax", "path": "/" },
+      "consent_cookie": { "name": "cookie-consent", "httpOnly": false, "secure": true, "sameSite": "strict", "path": "/", "maxAge": 31536000 }
+    }
+  },
+  "adr_log": [
+    {
+      "id": "ADR-001",
+      "title": "Framer Motion for UI animations",
+      "status": "accepted",
+      "date": "2026-04-09",
+      "context": "Brief mandates hover lift, fade-up stagger, shared layout transitions between experiment views, and presentation mode animations. CSS animations alone cannot handle layout animations (layoutId), gesture-driven interactions, or orchestrated stagger sequences across dynamic lists.",
+      "decision": "Include Framer Motion v12 as the animation library. Use layout and layoutId for experiment grid-to-detail transitions. Use AnimatePresence for route transitions. Enforce prefers-reduced-motion respect globally.",
+      "consequences": "+15KB gzipped to client bundle. All animations must be wrapped in a motion config that respects prefers-reduced-motion. Tree-shake unused features via modular imports.",
+      "alternatives_considered": [
+        { "name": "CSS animations only", "rejected_because": "Cannot handle layout animations, gesture-driven interactions, or coordinated stagger across dynamic lists" },
+        { "name": "GSAP", "rejected_because": "Proprietary license for commercial use, heavier bundle, worse React integration" },
+        { "name": "Motion One", "rejected_because": "Lacks React-specific features (AnimatePresence, layout), smaller ecosystem" }
+      ]
+    },
+    {
+      "id": "ADR-002",
+      "title": "Vercel AI SDK for agent protocol",
+      "status": "accepted",
+      "date": "2026-04-09",
+      "context": "Platform requires 3 internal AI agents (DevOps, UI-Generator, Business-Strategist) with streaming responses, structured output, and tool calling. The brief designates Vercel AI SDK as the agent protocol.",
+      "decision": "Use Vercel AI SDK v4 (ai + @ai-sdk/openai packages). Implement agents as Next.js API route handlers with streaming. Use Zod schemas for structured output validation. Agent system prompts stored in /config/agents/ as TypeScript constants.",
+      "consequences": "Server-side only dependency for API routes (+0KB client bundle for core). Requires API keys for LLM providers (stored in environment variables, never committed). Rate limiting must be implemented per-agent to control costs.",
+      "alternatives_considered": [
+        { "name": "LangChain", "rejected_because": "Heavier abstraction, more complex, not specified in brief" },
+        { "name": "Direct OpenAI SDK", "rejected_because": "No streaming UI primitives, no provider abstraction, more boilerplate" },
+        { "name": "Custom fetch-based streaming", "rejected_because": "Reinventing streaming response parsing, error handling, and abort controller management" }
+      ]
+    },
+    {
+      "id": "ADR-003",
+      "title": "Tiptap for notes rich-text editor",
+      "status": "accepted",
+      "date": "2026-04-09",
+      "context": "Notes engine requires slash commands, inline formatting toolbar, code blocks with syntax highlighting, task lists, and MDX-compatible output. The brief specifies Tiptap as the editor.",
+      "decision": "Use Tiptap v2 with modular extensions: starter-kit, placeholder, link, code-block-lowlight, task-list, task-item. Editor is client-only (use dynamic import with ssr: false). Output serialized to MDX-compatible markdown.",
+      "consequences": "+45KB gzipped client bundle for editor views. Editor must be dynamically imported to avoid SSR hydration issues. Tiptap extensions are individually selectable — only import what is needed. Autosave with debounce (300ms) to localStorage, with conflict detection for multi-tab.",
+      "alternatives_considered": [
+        { "name": "ProseMirror (raw)", "rejected_because": "Tiptap is built on ProseMirror but provides React bindings and extension system — raw ProseMirror requires significantly more boilerplate" },
+        { "name": "Slate.js", "rejected_because": "Less mature extension ecosystem, harder to implement slash commands, smaller community" },
+        { "name": "Monaco Editor", "rejected_because": "Code editor, not rich-text editor — wrong tool for notes with mixed content" }
+      ]
+    },
+    {
+      "id": "ADR-004",
+      "title": "MDX for notes rendering and documentation",
+      "status": "accepted",
+      "date": "2026-04-09",
+      "context": "Notes engine uses MDX format for storage and rendering. Auto-documentation pipeline generates MDX from TypeScript interfaces. Legal pages are templated MDX populated from brief-client.json.",
+      "decision": "Use @next/mdx for static MDX pages (legal) and next-mdx-remote for dynamic MDX rendering (notes, auto-docs). MDX components map to themed UI primitives. Custom remark/rehype plugins for frontmatter extraction and code block enhancement.",
+      "consequences": "+8KB gzipped for MDX runtime. MDX compilation happens server-side (RSC compatible). Custom components must be registered in an MDX provider. Security: sanitize user-generated MDX to prevent XSS via component injection.",
+      "alternatives_considered": [
+        { "name": "Plain Markdown (remark)", "rejected_because": "Cannot embed React components, limits auto-doc rendering capabilities" },
+        { "name": "Contentlayer", "rejected_because": "Deprecated/unmaintained, next-mdx-remote is actively maintained and more flexible" },
+        { "name": "Markdoc (Stripe)", "rejected_because": "Different syntax from MDX, smaller ecosystem, team familiar with MDX" }
+      ]
+    },
+    {
+      "id": "ADR-005",
+      "title": "Radix UI for accessible component primitives",
+      "status": "accepted",
+      "date": "2026-04-09",
+      "context": "4 dynamic themes (Bento, Glassmorphism, Minimalist, Cyberpunk) require unstyled base components that can be themed entirely via CSS custom properties and Tailwind classes. Accessibility (WCAG 2.1 AA) is non-negotiable.",
+      "decision": "Use Radix UI primitives for all interactive patterns: Dialog, DropdownMenu, Tabs, Tooltip, ToggleGroup, Select, Popover, Switch, Toast, ScrollArea, Separator. Style exclusively with Tailwind classes referencing CSS custom properties from the active theme.",
+      "consequences": "+2-4KB per primitive (individually tree-shakeable, only import used primitives). All keyboard navigation, focus management, and ARIA attributes handled automatically. No visual opinions — fully compatible with all 4 themes.",
+      "alternatives_considered": [
+        { "name": "Headless UI (Tailwind Labs)", "rejected_because": "Fewer primitives available, slower release cadence, less battle-tested than Radix" },
+        { "name": "Ark UI", "rejected_because": "Newer, smaller community, less documentation, Radix is the proven standard" },
+        { "name": "Custom primitives", "rejected_because": "Massive effort to implement accessible dialog, dropdown, tooltip correctly — Radix solves this definitively" }
+      ]
+    },
+    {
+      "id": "ADR-006",
+      "title": "Storybook 8 for component documentation and experiment showcase",
+      "status": "accepted",
+      "date": "2026-04-09",
+      "context": "Brief mandates Storybook integration for component documentation. Auto-documentation pipeline generates Storybook stories from experiment metadata. Showroom needs visual previews per theme.",
+      "decision": "Use Storybook 8 with Next.js framework integration. Addons: essentials (controls, actions, viewport), a11y (accessibility checks), themes (4-theme switching in Storybook), interactions (play functions for testing). Each experiment in /experiments/[cat]/[feat]/ includes a .stories.tsx file.",
+      "consequences": "Dev-only dependency — zero production bundle impact. Requires .storybook/ config directory. Build time increases for Storybook static export. Theme addon configured to mirror the 4 runtime themes.",
+      "alternatives_considered": [
+        { "name": "Ladle", "rejected_because": "Fewer addons, no a11y addon, smaller community" },
+        { "name": "Histoire", "rejected_because": "Vue-focused, React support is secondary" },
+        { "name": "Custom docs site", "rejected_because": "Massive effort to replicate controls, viewport switching, a11y checking that Storybook provides out of the box" }
+      ]
+    },
+    {
+      "id": "ADR-007",
+      "title": "Zod for runtime schema validation",
+      "status": "accepted",
+      "date": "2026-04-09",
+      "context": "AI agents produce unstructured outputs that need runtime validation before rendering. Experiment metadata.json files need schema validation. Form submissions need server-side validation. API route payloads need validation.",
+      "decision": "Use Zod v3 as the single runtime validation library. Define schemas in /types/ alongside TypeScript types (infer types from Zod schemas where possible). Use with React Hook Form via @hookform/resolvers. Use with Vercel AI SDK structured output.",
+      "consequences": "+3KB gzipped (tree-shakeable). Single source of truth for runtime + compile-time types via z.infer<>. All API routes validate input with Zod before processing.",
+      "alternatives_considered": [
+        { "name": "Yup", "rejected_because": "Larger bundle, weaker TypeScript inference, Zod is the modern standard" },
+        { "name": "Valibot", "rejected_because": "Smaller community, less integration with Vercel AI SDK and React Hook Form" },
+        { "name": "TypeScript only (no runtime)", "rejected_because": "Types are erased at runtime — AI outputs, user input, and API payloads need runtime validation" }
+      ]
+    },
+    {
+      "id": "ADR-008",
+      "title": "React Hook Form for form management",
+      "status": "accepted",
+      "date": "2026-04-09",
+      "context": "Multiple forms: contact form, settings (theme, language, agent config), experiment metadata editing, cookie consent preferences. Need performant form handling with validation.",
+      "decision": "Use React Hook Form v7 with Zod resolver. Uncontrolled inputs by default for performance. Server Actions for form submission where possible (progressive enhancement).",
+      "consequences": "+5KB gzipped. Uncontrolled inputs reduce re-renders. Zod resolver bridges runtime validation with form state. All forms work without JavaScript (progressive enhancement via Server Actions).",
+      "alternatives_considered": [
+        { "name": "Formik", "rejected_because": "Controlled inputs by default (more re-renders), larger bundle, less active maintenance" },
+        { "name": "Server Actions only", "rejected_because": "No client-side validation feedback, poor UX for complex forms like settings" },
+        { "name": "Native form validation", "rejected_because": "Inconsistent browser implementations, no custom error styling, no complex validation rules" }
+      ]
+    },
+    {
+      "id": "ADR-009",
+      "title": "next-themes for theme management",
+      "status": "accepted",
+      "date": "2026-04-09",
+      "context": "4 dynamic themes (Bento, Glassmorphism, Minimalist, Cyberpunk) need runtime switching without page reload. Theme must persist across sessions via cookie. Flash of Wrong Theme (FOWT) must be prevented on initial load.",
+      "decision": "Use next-themes v0.4 with attribute='data-theme' (not class-based). Configure with storageKey='theme', defaultTheme='minimalist'. Extend with custom cookie sync in middleware for SSR-safe theme rendering. Cyberpunk forces data-mode='dark' regardless of system preference.",
+      "consequences": "+1KB gzipped. Theme attribute set before hydration via injected script (prevents FOWT). Middleware reads theme cookie to set correct data-theme on server render. Custom logic needed for Cyberpunk dark-only enforcement.",
+      "alternatives_considered": [
+        { "name": "Custom React context", "rejected_because": "Must solve FOWT, cookie sync, SSR hydration mismatch — next-themes solves all of these" },
+        { "name": "CSS media queries only", "rejected_because": "Only supports light/dark, not 4 named themes" },
+        { "name": "Tailwind darkMode config", "rejected_because": "Only supports binary dark/light toggle, not multi-theme switching" }
+      ]
+    }
+  ],
+  "bundle_budget": {
+    "total_target": "< 150KB gzipped first load JS",
+    "breakdown": {
+      "next_runtime": "~85KB",
+      "framer_motion": "~15KB",
+      "radix_primitives": "~12KB (estimated, all used primitives)",
+      "zod": "~3KB",
+      "react_hook_form": "~5KB",
+      "next_themes": "~1KB",
+      "app_code": "~25KB",
+      "remaining_headroom": "~4KB"
+    },
+    "notes": "Tiptap (~45KB) and MDX runtime (~8KB) are loaded only on /notes routes via dynamic import. Vercel AI SDK is server-only. Storybook is dev-only."
+  },
+  "production_dependencies_count": 9,
+  "production_dependencies_list": [
+    "framer-motion",
+    "next-themes",
+    "next-intl",
+    "zod",
+    "react-hook-form",
+    "@hookform/resolvers",
+    "ai + @ai-sdk/openai",
+    "@tiptap/* (editor views only)",
+    "@radix-ui/* (per-primitive)"
+  ]
+}

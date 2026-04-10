@@ -1,0 +1,55 @@
+{
+  "_meta": {
+    "generator": "marksystems-saas",
+    "created_at": "2026-04-09T16:40:13.994831+00:00",
+    "mode": "create"
+  },
+  "client": {
+    "name": "usine-rh",
+    "slug": "usine-rh"
+  },
+  "company": {
+    "name": "usine-rh",
+    "industry": "Ressources humaines",
+    "description": "Refonte complete usinerh.ca — firme RH conseil quebecoise. Marque Usine RH au premier plan. Style simple et aere. Bilingue FR/EN. Loi 25."
+  },
+  "site": {
+    "url": "https://www.usinerh.ca",
+    "stack": "nextjs",
+    "languages": [
+      "fr",
+      "en"
+    ],
+    "pages": [
+      "accueil",
+      "services",
+      "a-propos",
+      "contact"
+    ]
+  },
+  "legal": {
+    "address": "À compléter",
+    "phone": "À compléter",
+    "email": "info@usine-rh.ca",
+    "rpp_name": "Responsable protection",
+    "rpp_email": "privacy@usine-rh.ca",
+    "rpp_title": "Responsable de la protection des renseignements personnels",
+    "retention": "3 ans"
+  },
+  "mission": {
+    "mode": "create",
+    "phases": [
+      "ph0-discovery",
+      "ph1-strategy",
+      "ph2-design",
+      "ph3-content",
+      "ph4-build",
+      "ph5-qa"
+    ]
+  },
+  "inputs": {
+    "industry": "Ressources humaines",
+    "description": "Refonte complete usinerh.ca — firme RH conseil quebecoise. Marque Usine RH au premier plan. Style simple et aere. Bilingue FR/EN. Loi 25.",
+    "url": "https://www.usinerh.ca"
+  }
+}

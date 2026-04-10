@@ -1,0 +1,495 @@
+{
+  "_meta": {
+    "generator": "nexos-v3.0/responsive-specialist",
+    "soic_id": "WEB-2026-LAB-0409",
+    "client": "mark-systems-demo",
+    "created_at": "2026-04-09T00:00:00Z",
+    "phase": "ph2-design",
+    "output": "responsive-strategy.json",
+    "version": "1.0.0"
+  },
+
+  "approach": "mobile-first",
+  "css_strategy": "Tailwind CSS v4 with @theme tokens. Base styles target mobile. Breakpoints add complexity upward.",
+
+  "breakpoints": {
+    "sm": {
+      "min_width": "640px",
+      "tailwind_prefix": "sm:",
+      "usage": "Large phones in landscape, minor layout adjustments"
+    },
+    "md": {
+      "min_width": "768px",
+      "tailwind_prefix": "md:",
+      "usage": "Tablet portrait. Sidebar collapse point. Bottom nav -> rail transition. 2-column grids begin."
+    },
+    "lg": {
+      "min_width": "1024px",
+      "tailwind_prefix": "lg:",
+      "usage": "Tablet landscape / small desktop. Full sidebar expands. 3-column grids. Split panes activate."
+    },
+    "xl": {
+      "min_width": "1280px",
+      "tailwind_prefix": "xl:",
+      "usage": "Standard desktop. Maximum content width applied. Optimal reading experience."
+    },
+    "2xl": {
+      "min_width": "1536px",
+      "tailwind_prefix": "2xl:",
+      "usage": "Large desktop. Extra whitespace, wider card grids, comfortable spacing."
+    },
+    "custom": {
+      "sidebar_collapse": "768px (md) — below this: bottom nav. At and above: sidebar rail.",
+      "sidebar_expand": "1024px (lg) — at and above: rail + contextual panel (264px total).",
+      "content_max_width": "1400px — centered with auto margins at 2xl+",
+      "editor_split_pane": "1024px (lg) — below: stacked. At and above: side-by-side."
+    }
+  },
+
+  "navigation_adaptive": {
+    "mobile": {
+      "range": "< 768px",
+      "primary_nav": {
+        "type": "Bottom navigation bar",
+        "height": "64px",
+        "items": 5,
+        "item_structure": "Icon (24px) + label (10px caption)",
+        "safe_area": "padding-bottom: env(safe-area-inset-bottom)",
+        "z_index": 50,
+        "background": "var(--surface) with backdrop-filter: blur(12px)",
+        "border_top": "1px solid var(--border)"
+      },
+      "secondary_nav": {
+        "type": "Bottom sheet drawer",
+        "trigger": "Drill-down from bottom nav items (e.g., experiment categories)",
+        "max_height": "85vh",
+        "drag_to_dismiss": true
+      },
+      "command_palette": {
+        "available": true,
+        "trigger": "Search icon in top header bar (no keyboard shortcut prominent on mobile)",
+        "layout": "Full-width, positioned at top of viewport"
+      },
+      "breadcrumbs": {
+        "visible": true,
+        "truncation": "Show only current + parent (e.g., Experiments > [Feature])",
+        "font_size": "var(--small)"
+      },
+      "header": {
+        "height": "48px",
+        "content": "Page title (left) + search icon + theme toggle (right)",
+        "position": "Sticky top"
+      }
+    },
+    "tablet": {
+      "range": "768px - 1023px",
+      "primary_nav": {
+        "type": "Collapsed sidebar rail",
+        "width": "64px",
+        "position": "Fixed left",
+        "items": "5 icon-only nav items + theme toggle at bottom",
+        "tooltip_on_hover": true,
+        "tooltip_delay_ms": 200
+      },
+      "secondary_nav": {
+        "type": "Temporary overlay panel",
+        "trigger": "Click on rail icon opens 200px panel overlay (not push)",
+        "dismiss": "Click outside or Escape",
+        "width": "200px"
+      },
+      "command_palette": {
+        "available": true,
+        "trigger": "CMD+K / Ctrl+K + search icon in header",
+        "width": "560px",
+        "position": "Centered top third of viewport"
+      },
+      "breadcrumbs": {
+        "visible": true,
+        "full_path": true
+      }
+    },
+    "desktop": {
+      "range": ">= 1024px",
+      "primary_nav": {
+        "type": "Full sidebar: rail (64px) + contextual panel (200px)",
+        "total_width": "264px",
+        "position": "Fixed left",
+        "panel_behavior": "Persistent, shows contextual sub-navigation per section",
+        "collapse_toggle": "Button at bottom of panel to collapse to rail-only"
+      },
+      "command_palette": {
+        "available": true,
+        "trigger": "CMD+K / Ctrl+K",
+        "width": "640px",
+        "max_height": "480px",
+        "position": "Centered, 20% from top"
+      },
+      "breadcrumbs": {
+        "visible": true,
+        "full_path": true,
+        "position": "Below header, above page content"
+      }
+    }
+  },
+
+  "grid_strategy": {
+    "global": {
+      "container_padding": {
+        "mobile": "16px (px-4)",
+        "tablet": "24px (px-6)",
+        "desktop": "32px (px-8)"
+      },
+      "gap": {
+        "card_grid": {
+          "mobile": "16px (gap-4)",
+          "tablet": "20px (gap-5)",
+          "desktop": "24px (gap-6)"
+        },
+        "section": {
+          "mobile": "32px (gap-8)",
+          "tablet": "40px (gap-10)",
+          "desktop": "48px (gap-12)"
+        }
+      },
+      "max_content_width": "1400px"
+    },
+
+    "dashboard": {
+      "stat_strip": {
+        "mobile": "2x2 grid (grid-cols-2), compact cards",
+        "tablet": "4-col single row (grid-cols-4)",
+        "desktop": "4-col single row, larger cards with sparkline charts"
+      },
+      "recent_experiments": {
+        "mobile": "1-col vertical list (card stack)",
+        "tablet": "2-col card grid (grid-cols-2)",
+        "desktop": "3-col bento asymmetric grid: 1 featured (span-2 rows) + 4 standard"
+      },
+      "agent_status": {
+        "mobile": "Horizontal scroll row of 3 agent cards (snap-x)",
+        "tablet": "3-col grid (grid-cols-3)",
+        "desktop": "3-col grid within right sidebar area or inline row"
+      },
+      "activity_feed": {
+        "mobile": "Full-width list, compact items",
+        "tablet": "Full-width list with timestamps in-line",
+        "desktop": "Right column (300px fixed) or bottom section, scrollable"
+      },
+      "bento_layout_desktop": {
+        "grid_template": "grid-cols-3 grid-rows-[auto_1fr_auto]",
+        "featured_card": "col-span-2 row-span-2",
+        "stat_strip": "col-span-3",
+        "agent_status": "col-span-3 or col-span-2",
+        "activity_feed": "col-span-1 row-span-2"
+      }
+    },
+
+    "experiments_index": {
+      "search_filters": {
+        "mobile": "Sticky search bar + horizontal scroll category chips below",
+        "tablet": "Search bar (50%) + filter dropdowns inline",
+        "desktop": "Full search bar + category chips + sort/view toggles, single row"
+      },
+      "card_grid": {
+        "mobile": "1-col full-width cards (grid-cols-1)",
+        "tablet": "2-col card grid (grid-cols-2)",
+        "desktop": "3-col card grid (grid-cols-3)",
+        "2xl": "4-col card grid (grid-cols-4)"
+      },
+      "view_toggle": {
+        "options": ["Grid", "List"],
+        "persisted": "localStorage",
+        "list_view_mobile": "Compact horizontal card (image left, text right)",
+        "list_view_desktop": "Table-like rows with columns: thumbnail, name, category, status, date"
+      }
+    },
+
+    "experiment_detail": {
+      "mobile": {
+        "layout": "Single column stacked",
+        "order": ["Breadcrumbs", "Title + metadata", "Preview (full-width)", "Tab switcher (Preview|Code|Docs|Props)", "Active tab content"],
+        "preview_height": "50vh or aspect-16/9",
+        "code_block": "Full-width with overflow-x scroll"
+      },
+      "tablet": {
+        "layout": "Single column with wider content area",
+        "order": ["Breadcrumbs", "Title + metadata", "Preview (full-width)", "Code panel (full-width)", "Auto-docs + Props playground stacked"],
+        "split_pane": false
+      },
+      "desktop": {
+        "layout": "Split pane: left (preview/code) + right (docs/props)",
+        "grid_template": "grid-cols-[1fr_380px]",
+        "left_pane": {
+          "top": "Preview area (resizable height)",
+          "bottom": "Code panel with syntax highlighting"
+        },
+        "right_pane": {
+          "top": "Auto-generated documentation",
+          "bottom": "Props playground (interactive controls)"
+        },
+        "resizable": true,
+        "min_left": "400px",
+        "min_right": "320px"
+      }
+    },
+
+    "notes": {
+      "mobile": {
+        "layout": "Full-width single view",
+        "default_mode": "Read-only viewer",
+        "edit_trigger": "FAB button (bottom-right, 56px, primary color) opens editor",
+        "note_list": "Accessed via back navigation or drawer",
+        "toolbar": "Fixed bottom toolbar above keyboard when editing"
+      },
+      "tablet": {
+        "layout": "Note list sidebar (240px collapsible) + editor/viewer area",
+        "sidebar_trigger": "Toggle button or swipe-right from edge",
+        "toolbar": "Floating inline on text selection"
+      },
+      "desktop": {
+        "layout": "3-zone: Note sidebar (260px) + Editor (1fr) + Preview (optional, togglable, 1fr)",
+        "grid_template": "grid-cols-[260px_1fr] or grid-cols-[260px_1fr_1fr] when preview visible",
+        "sidebar": {
+          "search": "Top of sidebar",
+          "list": "Scrollable note list with date groups",
+          "new_note_button": "Bottom of sidebar"
+        },
+        "editor": {
+          "max_width": "720px centered within pane for readability",
+          "toolbar": "Floating inline on text selection (Tiptap BubbleMenu)"
+        }
+      }
+    },
+
+    "showroom": {
+      "mobile": {
+        "layout": "1-col card gallery",
+        "theme_selector": "Horizontal scroll pills at top",
+        "preview": "Tap card opens full-screen preview with bottom sheet for details",
+        "cta": "Sticky bottom bar with primary CTA"
+      },
+      "tablet": {
+        "layout": "2-col card gallery (grid-cols-2)",
+        "theme_selector": "Horizontal row of 4 theme cards (visual swatches)",
+        "preview": "Tap card opens overlay panel (right side, 50% width)"
+      },
+      "desktop": {
+        "layout": "Gallery (2-3 cols) + preview panel (right, 400px)",
+        "grid_template": "grid-cols-[1fr_400px]",
+        "gallery": {
+          "grid": "grid-cols-2 within left area (or grid-cols-3 at 2xl)",
+          "cards": "Thumbnail + title + category badge + theme indicator"
+        },
+        "preview_panel": {
+          "position": "Sticky right panel",
+          "content": ["Live component preview (iframe)", "Theme showdown toggle", "Viewport size controls", "Code snippet", "CTA: Request this feature"],
+          "max_height": "calc(100vh - header)"
+        },
+        "theme_selector": {
+          "position": "Above gallery grid",
+          "type": "4 visual swatch cards in horizontal row",
+          "selected_state": "Ring + scale(1.02)"
+        },
+        "presentation_mode": {
+          "trigger": "Button in header or P key",
+          "layout": "Full-screen, no chrome, arrow key navigation between experiments",
+          "exit": "Escape key"
+        }
+      }
+    },
+
+    "settings": {
+      "mobile": "Single column, section accordions",
+      "tablet": "Single column, all sections visible",
+      "desktop": "Left nav (200px) + right content (1fr), max-width 800px centered"
+    }
+  },
+
+  "typography_scaling": {
+    "strategy": "Fluid typography using clamp() for key heading levels. Body text remains fixed for readability.",
+    "scale": {
+      "h1": {
+        "mobile": "1.953rem (31.2px)",
+        "desktop": "3.052rem (48.8px)",
+        "clamp": "clamp(1.953rem, 1.5rem + 2vw, 3.052rem)",
+        "line_height": "1.1"
+      },
+      "h2": {
+        "mobile": "1.563rem (25.0px)",
+        "desktop": "2.441rem (39.1px)",
+        "clamp": "clamp(1.563rem, 1.2rem + 1.6vw, 2.441rem)",
+        "line_height": "1.15"
+      },
+      "h3": {
+        "mobile": "1.25rem (20.0px)",
+        "desktop": "1.953rem (31.2px)",
+        "clamp": "clamp(1.25rem, 1rem + 1.2vw, 1.953rem)",
+        "line_height": "1.2"
+      },
+      "h4": {
+        "mobile": "1.125rem (18.0px)",
+        "desktop": "1.563rem (25.0px)",
+        "clamp": "clamp(1.125rem, 0.95rem + 0.8vw, 1.563rem)",
+        "line_height": "1.25"
+      },
+      "h5": {
+        "mobile": "1rem (16.0px)",
+        "desktop": "1.25rem (20.0px)",
+        "clamp": "clamp(1rem, 0.9rem + 0.5vw, 1.25rem)",
+        "line_height": "1.3"
+      },
+      "h6": {
+        "mobile": "0.875rem (14.0px)",
+        "desktop": "1rem (16.0px)",
+        "line_height": "1.4"
+      },
+      "body_lg": {
+        "all": "1rem (16px) — no scaling",
+        "line_height": "1.625"
+      },
+      "body": {
+        "all": "0.875rem (14px) — no scaling",
+        "line_height": "1.571"
+      },
+      "small": {
+        "all": "0.75rem (12px) — no scaling",
+        "line_height": "1.5"
+      },
+      "caption": {
+        "all": "0.625rem (10px) — no scaling",
+        "line_height": "1.4"
+      }
+    }
+  },
+
+  "touch_targets": {
+    "minimum_size": "48x48px (12x12 Tailwind units)",
+    "note": "WCAG 2.5.8 Target Size (Minimum) requires 24x24px. We exceed this at 48x48px for comfort.",
+    "applies_to": [
+      "All buttons (min-h-12 min-w-12)",
+      "Bottom nav items (icon + label area = 48x64px)",
+      "Sidebar rail icons (48x48px hit area within 64px rail)",
+      "Form inputs (min-h-12)",
+      "Checkbox/Radio (24px visual + 48px hit area via padding)",
+      "Dropdown triggers (min-h-12)",
+      "Breadcrumb links (padded to 48px height)",
+      "Card tap targets (entire card surface)",
+      "Close buttons on modals/dialogs (48x48px)"
+    ],
+    "spacing_between_targets": "Minimum 8px gap between adjacent interactive elements on mobile"
+  },
+
+  "content_adaptation": {
+    "tables": {
+      "mobile": "Horizontal scroll with sticky first column. Shadow gradient on scroll edge to indicate overflow.",
+      "tablet": "Full table if columns <= 5. Otherwise horizontal scroll.",
+      "desktop": "Full table display.",
+      "implementation": "Wrapper div with overflow-x-auto. First column position: sticky; left: 0; z-index: 1."
+    },
+    "code_blocks": {
+      "mobile": "Full-width, overflow-x: auto with horizontal scroll. Font size reduced to 12px. Line numbers hidden.",
+      "tablet": "Overflow-x: auto. Font size 13px. Line numbers visible.",
+      "desktop": "Full display within split pane or content area. Font size 13px. Line numbers visible.",
+      "max_height": "400px with scroll, expandable via toggle",
+      "copy_button": "Sticky top-right corner of code block"
+    },
+    "editor_toolbar": {
+      "mobile": "Fixed bottom strip above keyboard. Icons only, no labels. 6 core actions.",
+      "tablet": "Floating bubble menu on text selection. Icons + short labels.",
+      "desktop": "Floating bubble menu on text selection. Full labels."
+    },
+    "images": {
+      "strategy": "Next.js Image component with sizes attribute per component context",
+      "card_thumbnail": {
+        "aspect_ratio": "16/9",
+        "sizes": "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+      },
+      "experiment_preview": {
+        "aspect_ratio": "16/9 or 4/3 depending on component",
+        "sizes": "(max-width: 768px) 100vw, (max-width: 1024px) 100vw, 60vw"
+      },
+      "showroom_gallery": {
+        "aspect_ratio": "16/9",
+        "sizes": "(max-width: 768px) 100vw, (max-width: 1024px) 50vw, (max-width: 1536px) 33vw, 25vw"
+      },
+      "agent_avatar": {
+        "size": "40x40px",
+        "sizes": "40px"
+      },
+      "loading": "lazy for below-fold, eager for LCP candidates (first card, hero)",
+      "placeholder": "blur (generated at build time via next/image blurDataURL)"
+    },
+    "long_text": {
+      "mobile": "Line-clamp-3 on card descriptions, expandable on tap",
+      "desktop": "Line-clamp-2 on cards (wider cards need less lines), full text in detail views"
+    }
+  },
+
+  "image_strategy": {
+    "formats": ["WebP (primary)", "AVIF (progressive enhancement)", "PNG/JPG (fallback)"],
+    "optimization": "Next.js Image component handles format negotiation and resizing automatically",
+    "og_images": {
+      "size": "1200x630px",
+      "generation": "Dynamic via Next.js generateMetadata + @vercel/og",
+      "per_experiment": true
+    },
+    "favicon": {
+      "sizes": ["16x16", "32x32", "180x180 (apple-touch-icon)", "192x192 (android)", "512x512 (PWA)"],
+      "format": "SVG primary with PNG fallbacks"
+    }
+  },
+
+  "testing_checklist": {
+    "devices": [
+      { "device": "iPhone SE (375x667)", "priority": "high", "notes": "Smallest supported viewport" },
+      { "device": "iPhone 15 Pro (393x852)", "priority": "high", "notes": "Modern iOS baseline" },
+      { "device": "iPhone 15 Pro Max (430x932)", "priority": "medium", "notes": "Large phone" },
+      { "device": "iPad Air (820x1180)", "priority": "high", "notes": "Tablet baseline" },
+      { "device": "iPad Pro 12.9 (1024x1366)", "priority": "medium", "notes": "Large tablet / sidebar breakpoint" },
+      { "device": "MacBook Air 13 (1470x956)", "priority": "high", "notes": "Common developer laptop" },
+      { "device": "External monitor (1920x1080)", "priority": "high", "notes": "Standard desktop" },
+      { "device": "Ultrawide (2560x1440)", "priority": "low", "notes": "Max content width test" },
+      { "device": "Galaxy S24 (360x780)", "priority": "medium", "notes": "Android baseline" },
+      { "device": "Pixel 8 (412x915)", "priority": "medium", "notes": "Android reference" }
+    ],
+    "orientations": [
+      "Portrait (all phones and tablets)",
+      "Landscape (tablets only — phone landscape is supported but not optimized)"
+    ],
+    "zoom_levels": [
+      "100% (baseline)",
+      "150% (common accessibility zoom)",
+      "200% (WCAG 1.4.4 Resize Text requirement)",
+      "400% (WCAG 1.4.10 Reflow — content must not require 2D scroll at 320px equivalent)"
+    ],
+    "accessibility_responsive": [
+      "Screen reader with mobile VoiceOver (iOS Safari)",
+      "Screen reader with desktop NVDA (Chrome/Edge)",
+      "Keyboard-only navigation at all breakpoints",
+      "Reduced motion preference enabled — verify all animations respect it",
+      "High contrast mode (Windows) — verify borders and focus indicators visible",
+      "Text spacing override (WCAG 1.4.12) — verify no content clipping"
+    ],
+    "browser_matrix": [
+      { "browser": "Chrome (latest)", "priority": "high" },
+      { "browser": "Firefox (latest)", "priority": "high" },
+      { "browser": "Safari (latest)", "priority": "high", "notes": "ViewTransitions API support check" },
+      { "browser": "Edge (latest)", "priority": "medium" },
+      { "browser": "Safari iOS (latest)", "priority": "high" },
+      { "browser": "Chrome Android (latest)", "priority": "medium" }
+    ],
+    "performance_budgets": {
+      "LCP": "< 2.5s on 4G throttled",
+      "FID": "< 100ms",
+      "CLS": "< 0.1",
+      "first_load_JS": "< 150KB gzipped",
+      "font_load": "No layout shift (next/font + display: swap)"
+    },
+    "automated_tools": [
+      "Playwright visual regression tests at 375px, 768px, 1280px, 1920px",
+      "Storybook viewport addon for component-level responsive testing",
+      "axe-core for automated accessibility checks",
+      "Lighthouse CI in GitHub Actions"
+    ]
+  }
+}

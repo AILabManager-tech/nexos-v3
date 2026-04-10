@@ -1,0 +1,742 @@
+{
+  "_meta": {
+    "generator": "nexos-v3.0-information-architect",
+    "soic_id": "WEB-2026-LAB-0409",
+    "client": "mark-systems-demo",
+    "phase": "ph1",
+    "created_at": "2026-04-09T00:00:00Z",
+    "version": "1.0.0"
+  },
+
+  "ROUTES": [
+    {
+      "id": "home",
+      "path_fr": "/fr",
+      "path_en": "/en",
+      "component": "app/[locale]/page.tsx",
+      "template": "dashboard",
+      "priority": 1.0,
+      "seo_title_fr": "Mark Systems | Tableau de bord - Mega-Lab Platform",
+      "seo_title_en": "Mark Systems | Dashboard - Mega-Lab Platform",
+      "seo_description_fr": "Tableau de bord du Mega-Lab Mark Systems. Activite recente, experiences, statut des agents et statistiques.",
+      "seo_description_en": "Mark Systems Mega-Lab dashboard. Recent activity, experiments, agent status and statistics.",
+      "estimated_content_blocks": ["hero_metrics", "recent_experiments_grid", "quick_actions", "agent_status_panel", "activity_feed"]
+    },
+    {
+      "id": "experiments_index",
+      "path_fr": "/fr/experiments",
+      "path_en": "/en/experiments",
+      "component": "app/[locale]/experiments/page.tsx",
+      "template": "experiments-index",
+      "priority": 0.9,
+      "seo_title_fr": "Experiences | Mark Systems Mega-Lab",
+      "seo_title_en": "Experiments | Mark Systems Mega-Lab",
+      "seo_description_fr": "Explorez les micro-produits du laboratoire Mark Systems. Composants testables, documentes et prets a deployer.",
+      "seo_description_en": "Explore Mark Systems lab micro-products. Testable, documented, and deployment-ready components.",
+      "estimated_content_blocks": ["category_grid", "search_filter_bar", "sorting_controls", "experiment_cards", "list_grid_toggle", "empty_state"]
+    },
+    {
+      "id": "experiment_detail",
+      "path_fr": "/fr/experiments/[category]/[feature]",
+      "path_en": "/en/experiments/[category]/[feature]",
+      "component": "app/[locale]/experiments/[category]/[feature]/page.tsx",
+      "template": "experiment-detail",
+      "priority": 0.8,
+      "seo_title_fr": "{{feature_title}} | Experiences Mark Systems",
+      "seo_title_en": "{{feature_title}} | Mark Systems Experiments",
+      "seo_description_fr": "{{feature_description}} - Micro-produit du Mega-Lab Mark Systems. Preview, documentation et tarification.",
+      "seo_description_en": "{{feature_description}} - Mark Systems Mega-Lab micro-product. Preview, documentation and pricing.",
+      "dynamic": true,
+      "generateStaticParams": "app/[locale]/experiments/[category]/[feature]/generateStaticParams.ts",
+      "estimated_content_blocks": ["feature_demo_preview", "props_playground", "code_preview_panel", "auto_docs_panel", "pricing_badge", "theme_showdown", "experiment_business_card", "related_notes", "cta_request_feature", "qr_code_mobile"]
+    },
+    {
+      "id": "notes_index",
+      "path_fr": "/fr/notes",
+      "path_en": "/en/notes",
+      "component": "app/[locale]/notes/page.tsx",
+      "template": "notes-index",
+      "priority": 0.7,
+      "seo_title_fr": "Notes | Mark Systems Mega-Lab",
+      "seo_title_en": "Notes | Mark Systems Mega-Lab",
+      "seo_description_fr": "Journal de laboratoire et notes techniques. Editeur MDX + Tiptap avec wiki bidirectionnel.",
+      "seo_description_en": "Lab journal and technical notes. MDX + Tiptap editor with bidirectional wiki.",
+      "estimated_content_blocks": ["notes_sidebar_list", "search_bar", "tag_category_filter", "create_note_cta", "empty_state"]
+    },
+    {
+      "id": "note_detail",
+      "path_fr": "/fr/notes/[slug]",
+      "path_en": "/en/notes/[slug]",
+      "component": "app/[locale]/notes/[slug]/page.tsx",
+      "template": "note-detail",
+      "priority": 0.6,
+      "seo_title_fr": "{{note_title}} | Notes Mark Systems",
+      "seo_title_en": "{{note_title}} | Notes Mark Systems",
+      "seo_description_fr": "{{note_excerpt}} - Note technique du Mega-Lab Mark Systems.",
+      "seo_description_en": "{{note_excerpt}} - Mark Systems Mega-Lab technical note.",
+      "dynamic": true,
+      "estimated_content_blocks": ["mdx_tiptap_editor", "frontmatter_form", "backlinks_panel", "linked_experiments", "autosave_indicator", "split_pane_preview"]
+    },
+    {
+      "id": "showroom",
+      "path_fr": "/fr/showroom",
+      "path_en": "/en/showroom",
+      "component": "app/[locale]/showroom/page.tsx",
+      "template": "showroom",
+      "priority": 0.9,
+      "seo_title_fr": "Showroom | Mark Systems - Galerie de composants",
+      "seo_title_en": "Showroom | Mark Systems - Component Gallery",
+      "seo_description_fr": "Decouvrez les micro-produits Mark Systems. Previews interactifs, comparaison de themes et demandes de fonctionnalites.",
+      "seo_description_en": "Discover Mark Systems micro-products. Interactive previews, theme comparison and feature requests.",
+      "estimated_content_blocks": ["hero_section", "theme_selector", "experiment_gallery_grid", "live_preview_cards", "cta_per_experiment", "viewport_toggle", "presentation_mode_trigger", "contact_form_modal"]
+    },
+    {
+      "id": "settings",
+      "path_fr": "/fr/settings",
+      "path_en": "/en/settings",
+      "component": "app/[locale]/settings/page.tsx",
+      "template": "settings",
+      "priority": 0.3,
+      "seo_title_fr": "Parametres | Mark Systems",
+      "seo_title_en": "Settings | Mark Systems",
+      "seo_description_fr": "Configurez votre experience Mark Systems. Theme, langue, agents et profil.",
+      "seo_description_en": "Configure your Mark Systems experience. Theme, language, agents and profile.",
+      "estimated_content_blocks": ["theme_picker_grid", "language_toggle", "agent_config_panel", "profile_section", "export_options"]
+    },
+    {
+      "id": "privacy_policy",
+      "path_fr": "/fr/politique-confidentialite",
+      "path_en": "/en/privacy-policy",
+      "component": "app/[locale]/politique-confidentialite/page.tsx",
+      "template": "legal",
+      "priority": 0.4,
+      "seo_title_fr": "Politique de confidentialite | Mark Systems Inc.",
+      "seo_title_en": "Privacy Policy | Mark Systems Inc.",
+      "seo_description_fr": "Politique de confidentialite de Mark Systems Inc. conforme a la Loi 25 du Quebec.",
+      "seo_description_en": "Mark Systems Inc. privacy policy compliant with Quebec Law 25.",
+      "estimated_content_blocks": ["legal_header", "data_collected_section", "purposes_section", "retention_section", "third_parties_section", "transfer_section", "rights_section", "rpp_contact", "cookie_policy", "incident_process"]
+    },
+    {
+      "id": "legal_notices",
+      "path_fr": "/fr/mentions-legales",
+      "path_en": "/en/legal-notices",
+      "component": "app/[locale]/mentions-legales/page.tsx",
+      "template": "legal",
+      "priority": 0.4,
+      "seo_title_fr": "Mentions legales | Mark Systems Inc.",
+      "seo_title_en": "Legal Notices | Mark Systems Inc.",
+      "seo_description_fr": "Mentions legales de Mark Systems Inc. Informations sur l'entreprise, l'hebergement et la propriete intellectuelle.",
+      "seo_description_en": "Mark Systems Inc. legal notices. Company information, hosting and intellectual property.",
+      "estimated_content_blocks": ["company_info", "hosting_info", "intellectual_property", "liability_section", "applicable_law"]
+    },
+    {
+      "id": "not_found",
+      "path_fr": "/fr/*",
+      "path_en": "/en/*",
+      "component": "app/[locale]/not-found.tsx",
+      "template": "error",
+      "priority": 0.0,
+      "seo_title_fr": "Page introuvable | Mark Systems",
+      "seo_title_en": "Page Not Found | Mark Systems",
+      "seo_description_fr": "",
+      "seo_description_en": "",
+      "noindex": true,
+      "estimated_content_blocks": ["error_illustration", "error_message", "search_suggestion", "back_home_cta"]
+    },
+    {
+      "id": "error",
+      "path_fr": "/fr/error",
+      "path_en": "/en/error",
+      "component": "app/[locale]/error.tsx",
+      "template": "error",
+      "priority": 0.0,
+      "seo_title_fr": "Erreur | Mark Systems",
+      "seo_title_en": "Error | Mark Systems",
+      "seo_description_fr": "",
+      "seo_description_en": "",
+      "noindex": true,
+      "estimated_content_blocks": ["error_illustration", "error_message", "retry_button", "back_home_cta"]
+    }
+  ],
+
+  "HIERARCHY": {
+    "tree": [
+      {
+        "id": "home",
+        "depth": 0,
+        "children": [
+          {
+            "id": "experiments_index",
+            "depth": 1,
+            "children": [
+              {
+                "id": "experiment_detail",
+                "depth": 2,
+                "children": [],
+                "note": "Dynamic: /experiments/[category]/[feature] — max depth 2 from experiments_index"
+              }
+            ]
+          },
+          {
+            "id": "notes_index",
+            "depth": 1,
+            "children": [
+              {
+                "id": "note_detail",
+                "depth": 2,
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "showroom",
+            "depth": 1,
+            "children": []
+          },
+          {
+            "id": "settings",
+            "depth": 1,
+            "children": []
+          },
+          {
+            "id": "privacy_policy",
+            "depth": 1,
+            "children": []
+          },
+          {
+            "id": "legal_notices",
+            "depth": 1,
+            "children": []
+          }
+        ]
+      }
+    ],
+    "max_depth": 2,
+    "depth_rules": {
+      "0": "Dashboard (home)",
+      "1": "Section index pages and standalone pages",
+      "2": "Detail pages (experiment detail, note detail)"
+    },
+    "orphan_routes": ["not_found", "error"],
+    "orphan_note": "Error pages are not part of the navigation hierarchy but are accessible via Next.js error handling conventions."
+  },
+
+  "NAVIGATION": {
+    "main_nav": [
+      {
+        "id": "dashboard",
+        "route_id": "home",
+        "label_fr": "Tableau de bord",
+        "label_en": "Dashboard",
+        "icon": "LayoutDashboard",
+        "order": 1,
+        "shortcut": "G then D"
+      },
+      {
+        "id": "experiments",
+        "route_id": "experiments_index",
+        "label_fr": "Experiences",
+        "label_en": "Experiments",
+        "icon": "FlaskConical",
+        "order": 2,
+        "shortcut": "G then E"
+      },
+      {
+        "id": "notes",
+        "route_id": "notes_index",
+        "label_fr": "Notes",
+        "label_en": "Notes",
+        "icon": "NotebookPen",
+        "order": 3,
+        "shortcut": "G then N"
+      },
+      {
+        "id": "showroom",
+        "route_id": "showroom",
+        "label_fr": "Showroom",
+        "label_en": "Showroom",
+        "icon": "Presentation",
+        "order": 4,
+        "shortcut": "G then S"
+      },
+      {
+        "id": "settings",
+        "route_id": "settings",
+        "label_fr": "Parametres",
+        "label_en": "Settings",
+        "icon": "Settings",
+        "order": 5,
+        "shortcut": "G then comma"
+      }
+    ],
+
+    "sidebar_sections": {
+      "icon_rail": {
+        "width": "64px",
+        "position": "left",
+        "behavior": "persistent",
+        "items": [
+          { "icon": "LayoutDashboard", "tooltip_fr": "Tableau de bord", "tooltip_en": "Dashboard", "route_id": "home" },
+          { "icon": "FlaskConical", "tooltip_fr": "Experiences", "tooltip_en": "Experiments", "route_id": "experiments_index" },
+          { "icon": "NotebookPen", "tooltip_fr": "Notes", "tooltip_en": "Notes", "route_id": "notes_index" },
+          { "icon": "Presentation", "tooltip_fr": "Showroom", "tooltip_en": "Showroom", "route_id": "showroom" },
+          { "icon": "Settings", "tooltip_fr": "Parametres", "tooltip_en": "Settings", "route_id": "settings" }
+        ],
+        "bottom_items": [
+          { "icon": "HelpCircle", "tooltip_fr": "Aide", "tooltip_en": "Help", "action": "open_help" },
+          { "icon": "User", "tooltip_fr": "Profil", "tooltip_en": "Profile", "action": "open_profile" }
+        ]
+      },
+      "contextual_panel": {
+        "width": "200px",
+        "position": "adjacent_to_rail",
+        "behavior": "collapsible",
+        "panels": {
+          "experiments": {
+            "title_fr": "Categories",
+            "title_en": "Categories",
+            "content": "dynamic_category_tree",
+            "search": true
+          },
+          "notes": {
+            "title_fr": "Mes notes",
+            "title_en": "My Notes",
+            "content": "note_list_with_tags",
+            "search": true,
+            "create_button": true
+          },
+          "settings": {
+            "title_fr": "Preferences",
+            "title_en": "Preferences",
+            "content": "settings_sections_list",
+            "search": false
+          }
+        }
+      },
+      "mobile": {
+        "breakpoint": "768px",
+        "type": "bottom_nav",
+        "items_count": 5,
+        "secondary_nav": "bottom_sheet_drawer"
+      }
+    },
+
+    "footer_nav": {
+      "columns": [
+        {
+          "title_fr": "Plateforme",
+          "title_en": "Platform",
+          "links": [
+            { "label_fr": "Tableau de bord", "label_en": "Dashboard", "route_id": "home" },
+            { "label_fr": "Experiences", "label_en": "Experiments", "route_id": "experiments_index" },
+            { "label_fr": "Notes", "label_en": "Notes", "route_id": "notes_index" },
+            { "label_fr": "Showroom", "label_en": "Showroom", "route_id": "showroom" }
+          ]
+        },
+        {
+          "title_fr": "Ressources",
+          "title_en": "Resources",
+          "links": [
+            { "label_fr": "Documentation", "label_en": "Documentation", "url": "https://docs.mark-systems.com", "external": true },
+            { "label_fr": "Storybook", "label_en": "Storybook", "url": "https://storybook.mark-systems.com", "external": true },
+            { "label_fr": "Contact", "label_en": "Contact", "action": "open_contact_form" }
+          ]
+        },
+        {
+          "title_fr": "Legal",
+          "title_en": "Legal",
+          "links": [
+            { "label_fr": "Politique de confidentialite", "label_en": "Privacy Policy", "route_id": "privacy_policy" },
+            { "label_fr": "Mentions legales", "label_en": "Legal Notices", "route_id": "legal_notices" }
+          ]
+        }
+      ],
+      "bottom_bar": {
+        "copyright_fr": "2026 Mark Systems Inc. Tous droits reserves.",
+        "copyright_en": "2026 Mark Systems Inc. All rights reserved.",
+        "language_switcher": true,
+        "theme_indicator": true
+      }
+    },
+
+    "breadcrumb_rules": [
+      {
+        "template": "dashboard",
+        "show_breadcrumbs": false,
+        "reason": "Root level, depth 0"
+      },
+      {
+        "template": "experiments-index",
+        "show_breadcrumbs": false,
+        "reason": "Depth 1, accessible via main nav"
+      },
+      {
+        "template": "experiment-detail",
+        "show_breadcrumbs": true,
+        "pattern_fr": ["Tableau de bord", "Experiences", "{{category}}", "{{feature}}"],
+        "pattern_en": ["Dashboard", "Experiments", "{{category}}", "{{feature}}"],
+        "links": ["home", "experiments_index", null, null],
+        "note": "Category segment is non-clickable label. Feature is current page."
+      },
+      {
+        "template": "notes-index",
+        "show_breadcrumbs": false,
+        "reason": "Depth 1, accessible via main nav"
+      },
+      {
+        "template": "note-detail",
+        "show_breadcrumbs": true,
+        "pattern_fr": ["Tableau de bord", "Notes", "{{note_title}}"],
+        "pattern_en": ["Dashboard", "Notes", "{{note_title}}"],
+        "links": ["home", "notes_index", null]
+      },
+      {
+        "template": "showroom",
+        "show_breadcrumbs": false,
+        "reason": "Depth 1, accessible via main nav"
+      },
+      {
+        "template": "settings",
+        "show_breadcrumbs": false,
+        "reason": "Depth 1, accessible via main nav"
+      },
+      {
+        "template": "legal",
+        "show_breadcrumbs": true,
+        "pattern_fr": ["Tableau de bord", "{{page_title}}"],
+        "pattern_en": ["Dashboard", "{{page_title}}"],
+        "links": ["home", null]
+      },
+      {
+        "template": "error",
+        "show_breadcrumbs": false,
+        "reason": "Error states should not show navigation hierarchy"
+      }
+    ],
+
+    "command_palette": {
+      "trigger": "CMD+K",
+      "searchable_entities": [
+        {
+          "type": "page",
+          "label_fr": "Pages",
+          "label_en": "Pages",
+          "icon": "FileText",
+          "source": "static_routes",
+          "fields": ["label_fr", "label_en"]
+        },
+        {
+          "type": "experiment",
+          "label_fr": "Experiences",
+          "label_en": "Experiments",
+          "icon": "FlaskConical",
+          "source": "experiments_registry",
+          "fields": ["title", "category", "tags", "description"]
+        },
+        {
+          "type": "note",
+          "label_fr": "Notes",
+          "label_en": "Notes",
+          "icon": "NotebookPen",
+          "source": "notes_index",
+          "fields": ["title", "tags", "content_preview"]
+        },
+        {
+          "type": "action",
+          "label_fr": "Actions",
+          "label_en": "Actions",
+          "icon": "Zap",
+          "source": "action_registry",
+          "items": [
+            { "id": "create_note", "label_fr": "Creer une note", "label_en": "Create a note", "action": "navigate:/notes/new" },
+            { "id": "switch_theme", "label_fr": "Changer le theme", "label_en": "Switch theme", "action": "open_theme_picker" },
+            { "id": "switch_language", "label_fr": "Changer la langue", "label_en": "Switch language", "action": "toggle_locale" },
+            { "id": "open_showroom", "label_fr": "Ouvrir le showroom", "label_en": "Open showroom", "action": "navigate:/showroom" },
+            { "id": "contact", "label_fr": "Nous contacter", "label_en": "Contact us", "action": "open_contact_form" },
+            { "id": "presentation_mode", "label_fr": "Mode presentation", "label_en": "Presentation mode", "action": "enter_presentation_mode" }
+          ]
+        },
+        {
+          "type": "agent",
+          "label_fr": "Agents",
+          "label_en": "Agents",
+          "icon": "Bot",
+          "source": "agent_registry",
+          "items": [
+            { "id": "devops_agent", "label_fr": "Agent DevOps", "label_en": "DevOps Agent" },
+            { "id": "ui_generator_agent", "label_fr": "Agent UI-Generator", "label_en": "UI-Generator Agent" },
+            { "id": "business_strategist_agent", "label_fr": "Agent Business-Strategist", "label_en": "Business-Strategist Agent" }
+          ]
+        },
+        {
+          "type": "theme",
+          "label_fr": "Themes",
+          "label_en": "Themes",
+          "icon": "Palette",
+          "source": "theme_registry",
+          "items": [
+            { "id": "bento", "label_fr": "Bento", "label_en": "Bento" },
+            { "id": "glassmorphism", "label_fr": "Glassmorphism", "label_en": "Glassmorphism" },
+            { "id": "minimalist", "label_fr": "Minimaliste", "label_en": "Minimalist" },
+            { "id": "cyberpunk", "label_fr": "Cyberpunk", "label_en": "Cyberpunk" }
+          ]
+        }
+      ],
+      "recent_searches": {
+        "max": 5,
+        "storage": "localStorage"
+      },
+      "keyboard_navigation": true,
+      "fuzzy_search": true
+    }
+  },
+
+  "DATA_FLOW": {
+    "forms": [
+      {
+        "id": "contact_form",
+        "location": "modal_global",
+        "trigger_points": ["showroom_cta", "footer_contact", "command_palette", "experiment_request_feature"],
+        "fields": [
+          { "name": "full_name", "type": "text", "required": true, "label_fr": "Nom complet", "label_en": "Full name", "validation": "min:2,max:100" },
+          { "name": "email", "type": "email", "required": true, "label_fr": "Courriel", "label_en": "Email", "validation": "email" },
+          { "name": "company", "type": "text", "required": false, "label_fr": "Entreprise", "label_en": "Company", "validation": "max:100" },
+          { "name": "message", "type": "textarea", "required": true, "label_fr": "Message", "label_en": "Message", "validation": "min:10,max:2000" },
+          { "name": "experiment_ref", "type": "hidden", "required": false, "label_fr": "", "label_en": "", "note": "Auto-populated when triggered from experiment detail" },
+          {
+            "name": "consent_loi25",
+            "type": "checkbox",
+            "required": true,
+            "label_fr": "J'accepte que Mark Systems Inc. collecte et traite mon nom et mon courriel aux fins de repondre a ma demande, conformement a sa politique de confidentialite. Mes donnees seront conservees pendant 24 mois apres ma derniere interaction. Je peux retirer mon consentement a tout moment en ecrivant a privacy@mark-systems.com.",
+            "label_en": "I consent to Mark Systems Inc. collecting and processing my name and email to respond to my inquiry, in accordance with its privacy policy. My data will be retained for 24 months after my last interaction. I may withdraw my consent at any time by writing to privacy@mark-systems.com.",
+            "legal_reference": "Loi 25 - Loi modernisant des dispositions legislatives en matiere de protection des renseignements personnels (Quebec)"
+          }
+        ],
+        "data_retention": "24 mois apres derniere interaction",
+        "data_retention_en": "24 months after last interaction",
+        "submission_action": {
+          "type": "server_action",
+          "handler": "app/[locale]/actions/contact.ts",
+          "method": "submitContactForm",
+          "on_success": {
+            "toast_fr": "Votre message a ete envoye avec succes. Nous vous repondrons sous 48 heures.",
+            "toast_en": "Your message was sent successfully. We will respond within 48 hours.",
+            "action": "close_modal"
+          },
+          "on_error": {
+            "toast_fr": "Une erreur est survenue. Veuillez reessayer ou nous ecrire a contact@mark-systems.com.",
+            "toast_en": "An error occurred. Please try again or email us at contact@mark-systems.com.",
+            "action": "keep_modal_open"
+          },
+          "rate_limit": "3 submissions per 15 minutes per IP"
+        },
+        "rpp_contact": {
+          "name": "Mark Systems - Dirigeant principal",
+          "email": "privacy@mark-systems.com",
+          "title_fr": "Responsable de la protection des renseignements personnels",
+          "title_en": "Chief Privacy Officer"
+        }
+      }
+    ],
+
+    "cookie_consent": {
+      "type": "banner_bottom",
+      "behavior": "opt_in",
+      "component": "app/[locale]/components/CookieConsentBanner.tsx",
+      "text_fr": "Nous utilisons des temoins (cookies) pour analyser la navigation sur notre site. Vous pouvez accepter, refuser ou personnaliser vos preferences.",
+      "text_en": "We use cookies to analyze navigation on our site. You can accept, refuse, or customize your preferences.",
+      "buttons": [
+        { "id": "accept_all", "label_fr": "Tout accepter", "label_en": "Accept all" },
+        { "id": "refuse_all", "label_fr": "Tout refuser", "label_en": "Refuse all" },
+        { "id": "customize", "label_fr": "Personnaliser", "label_en": "Customize" }
+      ],
+      "categories": [
+        { "id": "essential", "label_fr": "Essentiels", "label_en": "Essential", "required": true, "description_fr": "Necessaires au fonctionnement du site (theme, langue, session).", "description_en": "Required for the site to function (theme, language, session)." },
+        { "id": "analytics", "label_fr": "Analytiques", "label_en": "Analytics", "required": false, "description_fr": "Nous aident a comprendre comment vous utilisez le site.", "description_en": "Help us understand how you use the site." }
+      ],
+      "storage": "cookie:consent_preferences",
+      "expiry_days": 365
+    },
+
+    "tracking_points": [
+      {
+        "id": "pageview",
+        "event_name": "page_view",
+        "trigger": "route_change",
+        "requires_consent": true,
+        "consent_category": "analytics",
+        "data": ["path", "locale", "referrer", "theme"]
+      },
+      {
+        "id": "experiment_view",
+        "event_name": "experiment_view",
+        "trigger": "experiment_detail_mount",
+        "requires_consent": true,
+        "consent_category": "analytics",
+        "data": ["experiment_id", "category", "feature", "theme", "viewport"]
+      },
+      {
+        "id": "theme_switch",
+        "event_name": "theme_switch",
+        "trigger": "theme_change",
+        "requires_consent": true,
+        "consent_category": "analytics",
+        "data": ["from_theme", "to_theme", "source"]
+      },
+      {
+        "id": "note_create",
+        "event_name": "note_create",
+        "trigger": "note_save_new",
+        "requires_consent": true,
+        "consent_category": "analytics",
+        "data": ["note_id", "tags_count", "linked_experiments_count"]
+      },
+      {
+        "id": "showroom_cta_click",
+        "event_name": "showroom_cta_click",
+        "trigger": "cta_click",
+        "requires_consent": true,
+        "consent_category": "analytics",
+        "data": ["experiment_id", "cta_type", "theme"]
+      },
+      {
+        "id": "command_palette_use",
+        "event_name": "command_palette_use",
+        "trigger": "command_palette_select",
+        "requires_consent": true,
+        "consent_category": "analytics",
+        "data": ["query", "selected_type", "selected_id", "result_position"]
+      },
+      {
+        "id": "contact_form_submit",
+        "event_name": "contact_form_submit",
+        "trigger": "form_submission_success",
+        "requires_consent": true,
+        "consent_category": "analytics",
+        "data": ["source_page", "has_experiment_ref"]
+      }
+    ]
+  },
+
+  "INTERNAL_LINKING": {
+    "hub_pages": [
+      {
+        "route_id": "home",
+        "role": "primary_hub",
+        "links_to": ["experiments_index", "notes_index", "showroom", "settings"],
+        "receives_from": ["all"],
+        "note": "Dashboard links to all sections via recent experiments, quick actions, and agent status"
+      },
+      {
+        "route_id": "experiments_index",
+        "role": "section_hub",
+        "links_to": ["experiment_detail", "showroom", "notes_index"],
+        "receives_from": ["home", "showroom", "notes_index", "command_palette"]
+      },
+      {
+        "route_id": "notes_index",
+        "role": "section_hub",
+        "links_to": ["note_detail", "experiments_index"],
+        "receives_from": ["home", "experiment_detail", "command_palette"]
+      },
+      {
+        "route_id": "showroom",
+        "role": "section_hub",
+        "links_to": ["experiment_detail", "contact_form"],
+        "receives_from": ["home", "experiments_index", "command_palette"]
+      }
+    ],
+
+    "link_map": [
+      {
+        "from": "experiment_detail",
+        "to": "note_detail",
+        "relationship": "bidirectional",
+        "mechanism": "backlinks_panel",
+        "label_fr": "Notes liees",
+        "label_en": "Linked notes"
+      },
+      {
+        "from": "experiment_detail",
+        "to": "showroom",
+        "relationship": "unidirectional",
+        "mechanism": "cta_button",
+        "label_fr": "Voir dans le showroom",
+        "label_en": "View in showroom"
+      },
+      {
+        "from": "showroom",
+        "to": "experiment_detail",
+        "relationship": "unidirectional",
+        "mechanism": "gallery_card_link",
+        "label_fr": "Voir les details",
+        "label_en": "View details"
+      },
+      {
+        "from": "note_detail",
+        "to": "experiment_detail",
+        "relationship": "bidirectional",
+        "mechanism": "backlinks_panel",
+        "label_fr": "Experiences liees",
+        "label_en": "Linked experiments"
+      },
+      {
+        "from": "home",
+        "to": "experiment_detail",
+        "relationship": "unidirectional",
+        "mechanism": "recent_experiments_grid",
+        "label_fr": "Experiences recentes",
+        "label_en": "Recent experiments"
+      },
+      {
+        "from": "home",
+        "to": "notes_index",
+        "relationship": "unidirectional",
+        "mechanism": "activity_feed",
+        "label_fr": "Derniere activite",
+        "label_en": "Recent activity"
+      },
+      {
+        "from": "privacy_policy",
+        "to": "legal_notices",
+        "relationship": "bidirectional",
+        "mechanism": "inline_link",
+        "label_fr": "Voir aussi",
+        "label_en": "See also"
+      },
+      {
+        "from": "all_pages",
+        "to": "privacy_policy",
+        "relationship": "unidirectional",
+        "mechanism": "footer_link",
+        "label_fr": "Politique de confidentialite",
+        "label_en": "Privacy Policy"
+      },
+      {
+        "from": "all_pages",
+        "to": "legal_notices",
+        "relationship": "unidirectional",
+        "mechanism": "footer_link",
+        "label_fr": "Mentions legales",
+        "label_en": "Legal Notices"
+      }
+    ],
+
+    "orphan_check_strategy": {
+      "method": "automated_build_time",
+      "implementation": "scripts/check-orphan-routes.ts",
+      "rules": [
+        "Every route in ROUTES must be reachable from at least one other route via main_nav, footer_nav, or inline link",
+        "Every experiment_detail page must be linked from experiments_index AND showroom",
+        "Every note_detail page must be linked from notes_index",
+        "Legal pages must be linked from footer on all pages",
+        "No route should have zero inbound links except home (root)",
+        "Dynamic routes ([slug], [category]/[feature]) must have generateStaticParams or be verified via sitemap generation"
+      ],
+      "ci_integration": true,
+      "report_format": "json",
+      "fail_on_orphan": true,
+      "exceptions": ["not_found", "error"]
+    }
+  }
+}

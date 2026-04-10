@@ -34,6 +34,13 @@ except ImportError:
     _HAS_CHANGELOG = False
 
 try:
+    from audit_toolkit.scanner import run_full_audit as _run_source_audit
+    from audit_toolkit.config import AuditConfig as _ToolkitConfig
+    _HAS_AUDIT_TOOLKIT = True
+except ImportError:
+    _HAS_AUDIT_TOOLKIT = False
+
+try:
     from rich.console import Console
     from rich.panel import Panel
     from rich.table import Table
@@ -980,6 +987,46 @@ def run_pipeline(mode: str, client_dir: Path, url: Optional[str] = None, profile
             else:
                 console.print("[yellow]⚠ Pas de site_dir ni URL — preflight skip[/]")
 
+        # NEXOS v4.0 — Audit Toolkit source-code scan (post-preflight)
+        if phase == "ph5-qa" and _HAS_AUDIT_TOOLKIT and site_dir:
+            console.print("[bold cyan]🔍 AUDIT TOOLKIT — Source Code Scan[/]")
+            try:
+                toolkit_config = _ToolkitConfig(
+                    target_url=url or "",
+                    source_path=str(site_dir),
+                )
+                audit_report = _run_source_audit(str(site_dir), url or "", toolkit_config)
+                # Save results
+                tooling_dir = client_dir / "tooling"
+                tooling_dir.mkdir(exist_ok=True)
+                import json
+                from audit_toolkit.report import generate_json
+                (tooling_dir / "audit-toolkit.json").write_text(
+                    json.dumps(generate_json(audit_report), indent=2, ensure_ascii=False),
+                    encoding="utf-8",
+                )
+                console.print(
+                    f"  μ={audit_report.composite_score}/10 | "
+                    f"{audit_report.total_issues} issues | "
+                    f"CRITICAL/HIGH: {len(audit_report.critical_issues)}"
+                )
+                dims = audit_report.to_dimension_scores()
+                if dims:
+                    dim_str = " ".join(f"{k}={v}" for k, v in sorted(dims.items()))
+                    console.print(f"  Dimensions: {dim_str}")
+                if _HAS_CHANGELOG:
+                    log_event(client_dir, EventType.TOOLING_COMPLETE,
+                              phase=phase, agent="audit_toolkit",
+                              details={"composite_score": audit_report.composite_score,
+                                       "total_issues": audit_report.total_issues,
+                                       "dimensions": dims})
+            except Exception as e:
+                console.print(f"[yellow]⚠ Audit Toolkit error: {e}[/]")
+                if _HAS_CHANGELOG:
+                    log_event(client_dir, EventType.TOOLING_ERROR,
+                              phase=phase, agent="audit_toolkit",
+                              details={"error": str(e)})
+
         # Resolve stack/site_type from pipeline config
         _stack = pipeline_cfg.stack if pipeline_cfg else "nextjs"
         _site_type = pipeline_cfg.site_type if pipeline_cfg else "vitrine"
@@ -1455,7 +1502,70 @@ def run_knowledge_agent(
 
 
 # ── Entry point ──────────────────────────────────────────────────────────────
+def _print_banner():
+    from rich.console import Console
+    from rich.text import Text
+    from rich.panel import Panel
+    from rich.columns import Columns
+    from rich import box
+    _con = Console()
+
+    ascii_art = Text()
+    ascii_art.append("\n")
+    ascii_art.append("  ███╗   ██╗███████╗██╗  ██╗ ██████╗ ███████╗\n", style="bold #8B6914")
+    ascii_art.append("  ████╗  ██║██╔════╝╚██╗██╔╝██╔═══██╗██╔════╝\n", style="bold #C49A1A")
+    ascii_art.append("  ██╔██╗ ██║█████╗   ╚███╔╝ ██║   ██║███████╗\n", style="bold #F0C520")
+    ascii_art.append("  ██║╚██╗██║██╔══╝   ██╔██╗ ██║   ██║╚════██║\n", style="bold #FFD700")
+    ascii_art.append("  ██║ ╚████║███████╗██╔╝ ██╗╚██████╔╝███████║\n", style="bold #FFE87C")
+    ascii_art.append("  ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝\n", style="bold white")
+    ascii_art.append("\n")
+    ascii_art.append("       Web Builder Autonome  ·  v4.0  ·  MARK SYSTEMS\n", style="dim white")
+
+    phases = Text()
+    phases.append("  PH0 ", style="bold magenta")
+    phases.append("Discovery  ", style="dim white")
+    phases.append("→  ", style="dim white")
+    phases.append("PH1 ", style="bold blue")
+    phases.append("Strategy  ", style="dim white")
+    phases.append("→  ", style="dim white")
+    phases.append("PH2 ", style="bold cyan")
+    phases.append("Design\n", style="dim white")
+    phases.append("  PH3 ", style="bold green")
+    phases.append("Content    ", style="dim white")
+    phases.append("→  ", style="dim white")
+    phases.append("PH4 ", style="bold yellow")
+    phases.append("Build     ", style="dim white")
+    phases.append("→  ", style="dim white")
+    phases.append("PH5 ", style="bold red")
+    phases.append("QA + Deploy\n", style="dim white")
+
+    soic = Text()
+    soic.append("  SOIC gates  ", style="bold white")
+    soic.append("μ ≥ 8.0  ", style="bold yellow")
+    soic.append("·  ", style="dim")
+    soic.append("48 agents  ", style="bold white")
+    soic.append("·  ", style="dim")
+    soic.append("Auto-Fix D4/D8  ", style="bold white")
+    soic.append("·  ", style="dim")
+    soic.append("Loi 25\n", style="bold white")
+
+    combined = Text()
+    combined.append_text(ascii_art)
+    combined.append_text(phases)
+    combined.append("\n")
+    combined.append_text(soic)
+
+    _con.print(Panel(
+        combined,
+        border_style="yellow",
+        box=box.DOUBLE_EDGE,
+        padding=(0, 2),
+    ))
+    _con.print()
+
+
 if __name__ == "__main__":
+    _print_banner()
     import argparse
 
     parser = argparse.ArgumentParser(

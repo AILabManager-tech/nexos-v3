@@ -1,0 +1,448 @@
+{
+  "common": {
+    "siteName": "Mark Systems",
+    "siteDescription": "The web lab where every experiment becomes a micro-product.",
+    "nav": {
+      "dashboard": "Dashboard",
+      "experiments": "Experiments",
+      "notes": "Notes",
+      "showroom": "Showroom",
+      "settings": "Settings",
+      "agents": "Agents",
+      "admin": "Admin"
+    },
+    "footer": {
+      "platform": "Platform",
+      "resources": "Resources",
+      "legal": "Legal",
+      "experiments": "Experiments",
+      "notes": "Notes",
+      "showroom": "Showroom",
+      "documentation": "Documentation",
+      "changelog": "Changelog",
+      "storybook": "Storybook",
+      "privacyPolicy": "Privacy Policy",
+      "legalNotices": "Legal Notices",
+      "copyright": "© {currentYear} Mark Systems Inc. All rights reserved."
+    },
+    "actions": {
+      "view": "View",
+      "explore": "Explore",
+      "copy": "Copy",
+      "copied": "Copied!",
+      "close": "Close",
+      "back": "Back",
+      "search": "Search",
+      "filter": "Filter",
+      "sort": "Sort",
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "edit": "Edit",
+      "create": "Create",
+      "download": "Download",
+      "export": "Export",
+      "share": "Share",
+      "preview": "Preview",
+      "fullscreen": "Fullscreen",
+      "exitFullscreen": "Exit Fullscreen",
+      "submit": "Submit",
+      "confirm": "Confirm",
+      "tryAgain": "Try Again",
+      "learnMore": "Learn More",
+      "getStarted": "Get Started"
+    },
+    "consent": {
+      "bannerTitle": "Your Privacy Matters",
+      "bannerText": "We use essential cookies for core site functionality. Analytics cookies are enabled only with your explicit consent.",
+      "accept": "Accept All",
+      "refuse": "Decline All",
+      "customize": "Customize",
+      "privacyNotice": "Your data is protected under Quebec's Law 25.",
+      "privacyLink": "Read our Privacy Policy",
+      "categories": {
+        "essential": {
+          "title": "Essential",
+          "description": "Required for the site to function. Cannot be disabled.",
+          "required": true
+        },
+        "analytics": {
+          "title": "Analytics",
+          "description": "Help us understand how you use the platform so we can improve it.",
+          "required": false
+        }
+      },
+      "savePreferences": "Save My Preferences",
+      "updatedAt": "Last updated: {date}"
+    },
+    "theme": {
+      "label": "Theme",
+      "change": "Switch Theme",
+      "minimalist": "Minimalist",
+      "bento": "Bento",
+      "glassmorphism": "Glassmorphism",
+      "cyberpunk": "Cyberpunk",
+      "lightMode": "Light Mode",
+      "darkMode": "Dark Mode",
+      "system": "System"
+    },
+    "agents": {
+      "devops": {
+        "name": "DevOps Agent",
+        "description": "Infrastructure automation and deployment"
+      },
+      "uiGenerator": {
+        "name": "UI Agent",
+        "description": "Visual component generation"
+      },
+      "businessStrategist": {
+        "name": "Strategy Agent",
+        "description": "Product analysis and monetization"
+      },
+      "inputPlaceholder": "Describe your request...",
+      "streaming": "Thinking...",
+      "copyResponse": "Copy Response"
+    },
+    "status": {
+      "loading": "Loading...",
+      "saving": "Saving...",
+      "saved": "Saved",
+      "error": "Something went wrong",
+      "success": "Operation successful",
+      "empty": "Nothing here yet",
+      "noResults": "No results for \"{query}\"",
+      "offline": "Connection lost"
+    },
+    "a11y": {
+      "skipToContent": "Skip to main content",
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu",
+      "openCommandPalette": "Open command palette",
+      "toggleSidebar": "Toggle sidebar",
+      "expandSection": "Expand section",
+      "collapseSection": "Collapse section",
+      "newWindow": "Opens in a new window",
+      "currentPage": "Current page",
+      "breadcrumb": "Breadcrumb"
+    },
+    "commandPalette": {
+      "placeholder": "Search pages, experiments, notes...",
+      "noResults": "No results",
+      "sections": {
+        "pages": "Pages",
+        "experiments": "Experiments",
+        "notes": "Notes",
+        "actions": "Actions",
+        "themes": "Themes"
+      }
+    }
+  },
+  "dashboard": {
+    "seo": {
+      "title": "Dashboard | Mark Systems",
+      "description": "Your web lab. Manage experiments, notes, and agents from one place."
+    },
+    "greeting": "Welcome back to the lab",
+    "stats": {
+      "experiments": "Experiments",
+      "notes": "Notes",
+      "showroomItems": "In Showroom",
+      "lastUpdated": "Last Updated"
+    },
+    "recent": {
+      "title": "Pick up where you left off",
+      "empty": "No recent activity. Create your first experiment to get started.",
+      "createFirst": "Create an Experiment"
+    },
+    "agentStatus": {
+      "title": "Agents",
+      "active": "Active",
+      "idle": "Idle",
+      "processing": "Processing",
+      "error": "Error"
+    },
+    "activity": {
+      "title": "Recent Activity",
+      "experimentCreated": "Experiment \"{name}\" created",
+      "experimentUpdated": "Experiment \"{name}\" updated",
+      "noteCreated": "Note \"{name}\" created",
+      "noteUpdated": "Note \"{name}\" updated",
+      "themeChanged": "Theme switched to {theme}",
+      "agentCompleted": "{agent} completed a task",
+      "showroomAdded": "Experiment \"{name}\" added to showroom"
+    }
+  },
+  "experiments": {
+    "seo": {
+      "title": "Experiments & Components | Mark Systems",
+      "description": "Explore the Mark Systems web laboratory: interactive experiments, dynamic playgrounds, and testable components with 4 themes.",
+      "h1": "Experiment Laboratory",
+      "ogTitle": "40+ Interactive Experiments | Mark Systems",
+      "ogDescription": "Explore our web lab: dynamic playgrounds, real-time theming, auto-generated documentation."
+    },
+    "index": {
+      "searchPlaceholder": "Search experiments...",
+      "filters": {
+        "all": "All",
+        "stable": "Stable",
+        "beta": "Beta",
+        "draft": "Drafts",
+        "deprecated": "Deprecated"
+      },
+      "sort": {
+        "newest": "Newest",
+        "oldest": "Oldest",
+        "name": "Name A-Z",
+        "updated": "Recently Updated"
+      },
+      "viewToggle": {
+        "grid": "Grid",
+        "list": "List"
+      },
+      "empty": "No experiments yet. Get started with the template.",
+      "createFirst": "Create from Template",
+      "resultCount": "{count} experiment | {count} experiments"
+    },
+    "detail": {
+      "tabs": {
+        "preview": "Preview",
+        "code": "Code",
+        "docs": "Documentation",
+        "pricing": "Pricing"
+      },
+      "autoDocs": {
+        "title": "Auto-Generated Documentation",
+        "overview": "Overview",
+        "props": "Props",
+        "usage": "Usage",
+        "variants": "Variants",
+        "dependencies": "Dependencies",
+        "accessibility": "Accessibility",
+        "changelog": "Changelog"
+      },
+      "propsTable": {
+        "name": "Prop",
+        "type": "Type",
+        "default": "Default",
+        "required": "Required",
+        "description": "Description"
+      },
+      "viewport": {
+        "mobile": "Mobile",
+        "tablet": "Tablet",
+        "desktop": "Desktop"
+      },
+      "actions": {
+        "copyCode": "Copy Code",
+        "openStorybook": "Open in Storybook",
+        "addToShowroom": "Add to Showroom",
+        "editExperiment": "Edit Experiment",
+        "viewInFullscreen": "View Fullscreen",
+        "compareThemes": "Compare Themes"
+      },
+      "metadata": {
+        "created": "Created on",
+        "updated": "Updated on",
+        "author": "Author",
+        "status": "Status",
+        "category": "Category",
+        "bundleSize": "Bundle Size",
+        "themeSupport": "Supported Themes"
+      }
+    },
+    "categories": {
+      "ui": "Interface",
+      "dataViz": "Data Visualization",
+      "animation": "Animation",
+      "layout": "Layout",
+      "forms": "Forms",
+      "navigation": "Navigation",
+      "feedback": "User Feedback",
+      "content": "Content"
+    }
+  },
+  "notes": {
+    "seo": {
+      "title": "Technical Notes & Journal | Mark Systems",
+      "description": "Interactive MDX notes engine. Document experiments, create a development journal, link to active components.",
+      "h1": "Lab Journal",
+      "ogTitle": "Technical Notes | Mark Systems",
+      "ogDescription": "MDX + Tiptap editor with bidirectional links to your experiments."
+    },
+    "index": {
+      "searchPlaceholder": "Search notes...",
+      "sort": {
+        "newest": "Newest",
+        "oldest": "Oldest",
+        "title": "Title A-Z",
+        "updated": "Recently Updated"
+      },
+      "newNote": "New Note",
+      "empty": "No notes yet. Start documenting your discoveries.",
+      "createFirst": "Write a Note"
+    },
+    "editor": {
+      "slashCommands": {
+        "heading1": "Heading 1",
+        "heading2": "Heading 2",
+        "heading3": "Heading 3",
+        "paragraph": "Paragraph",
+        "codeBlock": "Code Block",
+        "callout": "Callout",
+        "divider": "Divider",
+        "experimentLink": "Link Experiment",
+        "image": "Image"
+      },
+      "toolbar": {
+        "bold": "Bold",
+        "italic": "Italic",
+        "code": "Code",
+        "link": "Link",
+        "comment": "Comment",
+        "strikethrough": "Strikethrough",
+        "highlight": "Highlight"
+      },
+      "autosave": {
+        "saving": "Saving...",
+        "saved": "Saved",
+        "error": "Save failed",
+        "idle": ""
+      },
+      "frontmatter": {
+        "title": "Title",
+        "tags": "Tags",
+        "status": "Status",
+        "visibility": "Visibility",
+        "public": "Public",
+        "private": "Private"
+      },
+      "placeholder": "Start writing or type / for commands..."
+    },
+    "detail": {
+      "backToNotes": "Back to Notes",
+      "metadata": {
+        "created": "Created {date}",
+        "updated": "Modified {date}",
+        "tags": "Tags",
+        "linkedExperiments": "Linked Experiments",
+        "wordCount": "{count} words"
+      },
+      "editNote": "Edit",
+      "deleteNote": "Delete this note",
+      "deleteConfirm": "Permanently delete this note? This action cannot be undone."
+    }
+  },
+  "showroom": {
+    "seo": {
+      "title": "Interactive Component Showroom | Mark Systems",
+      "description": "Client-friendly showroom of production-ready components. 4 dynamic themes, live preview, copyable code. For teams and clients.",
+      "h1": "Showroom",
+      "ogTitle": "Component Showroom | Mark Systems",
+      "ogDescription": "Interactive gallery: 4 themes, live preview, copy-ready code, production-ready."
+    },
+    "marketing": {
+      "headline": "Production-ready components, tested across 4 visual worlds",
+      "subtitle": "Every experiment is a micro-product: tested, documented, priced. Pick a theme, explore the code, integrate in one click.",
+      "valueProps": {
+        "themes": "4 dynamic themes applied in real time",
+        "docs": "Auto-generated documentation from source code",
+        "production": "Accessible, tested, production-ready components"
+      }
+    },
+    "index": {
+      "themeSelector": "Apply a Theme",
+      "gallery": "Gallery",
+      "searchPlaceholder": "Search components...",
+      "empty": "No components in the showroom yet.",
+      "resultCount": "{count} component | {count} components"
+    },
+    "card": {
+      "preview": "Preview",
+      "code": "Code",
+      "docs": "Docs",
+      "pricing": "Pricing",
+      "requestFeature": "Request This Feature",
+      "viewDetails": "View Details"
+    },
+    "presentation": {
+      "enter": "Presentation Mode",
+      "exit": "Exit Presentation",
+      "hint": "Use arrow keys ← → to navigate. Esc to exit.",
+      "slideCount": "{current} / {total}"
+    },
+    "themeShowdown": {
+      "title": "Theme Comparison",
+      "description": "The same component rendered across all 4 themes simultaneously."
+    }
+  },
+  "settings": {
+    "seo": {
+      "title": "Settings | Mark Systems"
+    },
+    "pageTitle": "Settings",
+    "sections": {
+      "appearance": {
+        "title": "Appearance",
+        "themeLabel": "Active Theme",
+        "modeLabel": "Display Mode",
+        "previewLabel": "Preview"
+      },
+      "language": {
+        "title": "Language",
+        "currentLabel": "Active Language",
+        "french": "Francais",
+        "english": "English"
+      },
+      "agents": {
+        "title": "Agents",
+        "enableLabel": "Active Agents",
+        "configLabel": "Configuration"
+      },
+      "profile": {
+        "title": "Profile",
+        "nameLabel": "Name",
+        "emailLabel": "Email"
+      },
+      "export": {
+        "title": "Export",
+        "exportAll": "Export All Data",
+        "exportExperiments": "Export Experiments",
+        "exportNotes": "Export Notes",
+        "format": "Format"
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Have a question or a project? Drop us a line.",
+    "form": {
+      "name": "Full Name",
+      "email": "Email",
+      "message": "Message",
+      "messagePlaceholder": "Describe your project or question...",
+      "submit": "Send Message",
+      "sending": "Sending...",
+      "success": "Message sent! We'll get back to you within 48 hours.",
+      "error": "Failed to send. Try again or email us at {email}.",
+      "consent": "I agree that Mark Systems may collect my name and email to respond to my inquiry. My data will be retained for 24 months, in accordance with Quebec's Law 25.",
+      "consentRequired": "Consent is required to submit the form.",
+      "privacyLink": "Read the Privacy Policy"
+    }
+  },
+  "errors": {
+    "notFound": {
+      "title": "Page Not Found",
+      "message": "This page doesn't exist or has been moved.",
+      "cta": "Back to Dashboard"
+    },
+    "serverError": {
+      "title": "Server Error",
+      "message": "Something went wrong on our end. Try again in a moment.",
+      "cta": "Reload Page"
+    },
+    "offline": {
+      "title": "Offline",
+      "message": "Check your internet connection and try again."
+    }
+  }
+}

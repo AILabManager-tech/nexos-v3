@@ -1,0 +1,43 @@
+# Fly.io deployment config for Gencore FastAPI gateway.
+#
+# Usage:
+#   1. Install flyctl: curl -L https://fly.io/install.sh | sh
+#   2. Login: fly auth login
+#   3. Launch (first time): fly launch --no-deploy --copy-config --dockerfile infra/gencore/Dockerfile
+#   4. Set secrets:
+#        fly secrets set GENCORE_API_KEY=xxx
+#        fly secrets set ANTHROPIC_API_KEY=sk-ant-xxx
+#        fly secrets set OPENAI_API_KEY=sk-xxx
+#   5. Deploy: fly deploy
+#
+# After deploy, set GENCORE_URL=https://mark-systems-gencore.fly.dev in Vercel env.
+
+app = "mark-systems-gencore"
+primary_region = "yul"  # Montreal (Quebec)
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT = "8080"
+  PYTHONUNBUFFERED = "1"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = "stop"      # Stop when idle to save cost
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+  [[http_service.checks]]
+    grace_period = "15s"
+    interval = "30s"
+    method = "GET"
+    timeout = "5s"
+    path = "/v1/health"
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 1024  # 1GB for sentence-transformers + Playwright

@@ -21,9 +21,15 @@ from nexos.session_launcher import (
 
 def test_build_session_prompt_contains_hierarchy(tmp_path):
     prompt = build_session_prompt(tmp_path, "codex")
-    assert "CLAUDE.md" in prompt
+    assert "AGENTS.md" in prompt
     assert "ph0 → ph5" in prompt
     assert "CLI hôte détecté: codex" in prompt
+
+
+def test_build_session_prompt_claude_uses_claude_md(tmp_path):
+    prompt = build_session_prompt(tmp_path, "claude")
+    assert "CLAUDE.md" in prompt
+    assert "CLI hôte détecté: claude" in prompt
 
 
 def test_build_mode_session_prompt_contains_mode(tmp_path):

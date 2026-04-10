@@ -1,0 +1,60 @@
+:root {
+  --color-bg: #0A0A0F;
+  --color-surface: #111118;
+  --color-surface-alt: #1C1C27;
+  --color-primary: #6366F1;
+  --color-secondary: #4F46E5;
+  --color-accent: #A5B4FC;
+  --color-text: #F1F5F9;
+  --color-text-muted: #94A3B8;
+  --color-border: #1E293B;
+  --color-border-active: #6366F1;
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+  --radius-sm: 4px;
+  --radius-default: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+}
+
+[data-theme="minimalist"][data-mode="light"] {
+  --color-bg: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-surface-alt: #F1F5F9;
+  --color-text: #0F172A;
+  --color-text-muted: #475569;
+  --color-border: #E2E8F0;
+}
+
+[data-theme="bento"] {
+  --color-bg: #0C0A07;
+  --color-surface: #13110E;
+  --color-surface-alt: #1F1B14;
+  --color-primary: #F59E0B;
+  --color-secondary: #D97706;
+  --color-accent: #FBBF24;
+  --color-text-muted: #D1B88E;
+  --color-border: #292218;
+  --color-border-active: #F59E0B;
+}
+
+[data-theme="glassmorphism"] {
+  --color-surface: rgba(255,255,255,0.04);
+  --color-surface-alt: rgba(255,255,255,0.08);
+  --color-border: rgba(255,255,255,0.1);
+}
+
+[data-theme="cyberpunk"] {
+  --color-bg: #05050A;
+  --color-surface: #0D0D15;
+  --color-primary: #00F5FF;
+  --color-accent: #BF5AF2;
+  --color-text: #E0F7FF;
+  --color-text-muted: #7DD3FC;
+  --color-border: rgba(0,245,255,0.2);
+  /* Status tokens brightened for cyberpunk contrast */
+  --color-success: #34D399;
+  --color-warning: #FBBF24;
+  --color-error: #FB7185;
+}

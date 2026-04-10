@@ -1,0 +1,92 @@
+{
+  "_meta": {
+    "generator": "nexos-v3.0",
+    "created_at": "2026-04-09T00:00:00Z",
+    "mode": "create",
+    "soic_id": "WEB-2026-LAB-0409",
+    "soic_version": "3.0"
+  },
+  "client": {
+    "name": "Mark Systems Demo",
+    "slug": "mark-systems-demo"
+  },
+  "legal": {
+    "company_name": "Mark Systems Inc.",
+    "neq": "0000000000",
+    "address": "À confirmer",
+    "phone": "À confirmer",
+    "email": "contact@mark-systems.com",
+    "rpp_name": "Mark Systems — Dirigeant principal",
+    "rpp_email": "privacy@mark-systems.com",
+    "rpp_title": "Dirigeant principal",
+    "data_collected": ["nom", "courriel", "navigation"],
+    "purposes": ["formulaire-contact", "analytics"],
+    "retention": "24 mois après dernière interaction",
+    "transfer_outside_qc": true,
+    "transfer_countries": ["États-Unis (Vercel, Vercel AI SDK)"],
+    "third_parties": ["Vercel", "Vercel AI SDK", "Storybook Cloud"],
+    "cookie_consent": "opt-in",
+    "incident_process": false,
+    "incident_email": "incident@mark-systems.com"
+  },
+  "site": {
+    "stack": "nextjs",
+    "type": "application",
+    "pages": [
+      "dashboard",
+      "experiments",
+      "experiments/[category]/[feature]",
+      "notes",
+      "showroom",
+      "settings",
+      "politique-confidentialite",
+      "mentions-legales"
+    ],
+    "languages": ["fr", "en"],
+    "features": [
+      "experiments-engine",
+      "dynamic-theming",
+      "showroom-mode",
+      "notes-wiki-mdx-tiptap",
+      "agent-protocol",
+      "storybook-integration",
+      "auto-documentation",
+      "feature-wrapper-template",
+      "formulaire-contact",
+      "bandeau-cookies-loi25"
+    ],
+    "hosting": "vercel",
+    "domain": "mark-systems.com"
+  },
+  "context": {
+    "competitors": [],
+    "keywords_seo": [
+      "web laboratory",
+      "saas incubator",
+      "component showroom",
+      "design system playground",
+      "micro-product platform"
+    ],
+    "free_text": "Plateforme Mega-Lab : bibliothèque d'inspiration interactive, gestionnaire de notes techniques, showroom pour futurs clients. Chaque fonctionnalité = micro-produit testable, documenté, prêt à vendre. Architecture modulaire atomique dans /experiments/[category]/[feature]. Thémage dynamique (Bento, Glassmorphism, Minimalist, Cyberpunk). 3 agents internes : DevOps Agent, UI-Generator Agent, Business-Strategist Agent. Moteur de notes MDX + Tiptap Editor. Fichiers max 250 lignes."
+  },
+  "design": {
+    "palette": "dynamic-theming (CSS Variables/Tokens — themes: bento, glassmorphism, minimalist, cyberpunk). Direction: MODERNITÉ — lignes épurées, contrastes forts, espaces généreux.",
+    "typography": "Sans-serif moderne (Inter/Geist) — À finaliser en ph2",
+    "style": "creatif",
+    "logo_provided": false,
+    "references": []
+  },
+  "variables": {
+    "TECH_STACK": "Next.js 15+ App Router",
+    "DESIGN_SYSTEM": "Tailwind CSS 4 + Framer Motion",
+    "STORYBOOK_CONFIG": "Storybook native",
+    "AGENT_PROTOCOL": "Vercel AI SDK",
+    "NOTES_ENGINE": "MDX Local + Tiptap Editor"
+  },
+  "constraints": {
+    "max_file_lines": 250,
+    "module_isolation": true,
+    "no_hardcoding": true,
+    "auto_documentation": true
+  }
+}

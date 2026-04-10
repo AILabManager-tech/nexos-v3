@@ -1,0 +1,558 @@
+{
+  "_meta": {
+    "generator": "nexos-v3.0-brand-strategist",
+    "created_at": "2026-04-09T00:00:00Z",
+    "phase": "ph1",
+    "soic_id": "WEB-2026-LAB-0409",
+    "client": "Mark Systems Demo",
+    "version": "1.0.0"
+  },
+
+  "BRAND_VOICE": {
+    "tone": "technical-yet-approachable",
+    "tone_description": "Expert qui partage, pas expert qui surplombe. Direct, précis, sans jargon corporate. Comme un dev senior qui explique à un collègue intelligent, pas à un client.",
+    "formality_level": 2,
+    "formality_notes": "Tu est la norme (communauté dev). Vous réservé aux contextes showroom/client formels uniquement. Pas de vouvoiement systématique.",
+    "sentence_style": {
+      "length": "courtes à moyennes — max 20 mots par phrase principale",
+      "structure": "actif avant passif, verbe d'action en tête de phrase CTA",
+      "punctuation": "point-virgule acceptable en documentation technique, pas en marketing",
+      "lists": "préférer les listes à puces courtes sur les paragraphes denses",
+      "code_references": "toujours dans backticks inline, jamais en gras seul"
+    },
+    "lexicon_allowed": [
+      "expérimentation",
+      "micro-produit",
+      "labo",
+      "composant",
+      "token",
+      "atome",
+      "incubateur",
+      "pipeline",
+      "stack",
+      "monorepo",
+      "deploy",
+      "scaffold",
+      "preview",
+      "handoff",
+      "atomic",
+      "showroom",
+      "playground",
+      "fork",
+      "copier-coller",
+      "open-source"
+    ],
+    "lexicon_banned": [
+      "synergie",
+      "disruption",
+      "révolutionnaire",
+      "best-in-class",
+      "game-changer",
+      "de classe mondiale",
+      "solution",
+      "écosystème complet",
+      "turnkey",
+      "bout en bout",
+      "valeur ajoutée",
+      "robuste"
+    ],
+    "cultural_markers": {
+      "market": "Québec — Canada francophone",
+      "default_language": "fr",
+      "secondary_language": "en",
+      "pronoun_policy": "tu par défaut dans toute l'interface produit. Vous uniquement dans les pages légales (politique de confidentialité, mentions légales) et les courriels transactionnels formels.",
+      "anglicism_policy": "Les termes techniques anglais sans équivalent naturel en français québécois sont acceptés (deploy, token, stack, fork, scaffold). Les anglicismes de paresse sont bannis (utiliser 'enregistrer' et non 'sauvegarder', 'paramètres' et non 'settings' dans les labels UI). Les termes anglais dans le code (variables, composants) restent en anglais.",
+      "humor_register": "sobre et contextuel — une blague de dev acceptable dans les empty states ou les messages d'erreur, jamais dans le marketing principal",
+      "bilingual_switching": "FR/EN toggle persisté par cookie. Aucun mélange de langue dans une même surface UI. Les noms propres de produits (Mark Systems, NEXOS) restent invariables.",
+      "quebec_specifics": "Orthographe rectifiée acceptée. Courriel (non email). Clavardage (non chat). Utilisation de l'accent sur les majuscules obligatoire."
+    },
+    "voice_pillars": [
+      "Précision — chaque mot gagne sa place, aucun mot de remplissage",
+      "Transparence — montrer le travail, pas juste le résultat",
+      "Autonomie — donner les outils, pas les réponses toutes faites",
+      "Craft — la qualité du code et du design se reflète dans la qualité du texte"
+    ]
+  },
+
+  "COLOR_SYSTEM": {
+    "_note": "Contrast ratios calculés selon WCAG 2.1 contre #0A0A0F (dark) et #F8FAFC (light). AA = 4.5:1 normal, 3:1 large. AAA = 7:1 normal.",
+    "theme_baseline": "minimalist",
+
+    "minimalist": {
+      "background": {
+        "hex": "#0A0A0F",
+        "role": "App background — near-black with subtle blue cast",
+        "contrast_on_background_dark": 1.0,
+        "contrast_on_background_light": 21.0,
+        "wcag_note": "Base surface — all other ratios measured against this"
+      },
+      "surface": {
+        "hex": "#111118",
+        "role": "Cards, panels, sidebar",
+        "contrast_on_background_dark": 1.18,
+        "contrast_on_background_light": 17.78,
+        "wcag_note": "Distinction surface — not used for text backgrounds"
+      },
+      "surface_alt": {
+        "hex": "#1C1C27",
+        "role": "Nested surfaces, modals, dropdowns",
+        "contrast_on_background_dark": 1.41,
+        "contrast_on_background_light": 14.89,
+        "wcag_note": "Third-level surface — depth signal only"
+      },
+      "primary": {
+        "hex": "#6366F1",
+        "role": "CTAs, interactive elements, nav active state, focus rings",
+        "contrast_on_background_dark": 3.54,
+        "contrast_on_background_light": 5.93,
+        "wcag_note": "Passes AA for large text on dark bg. Use white text on primary buttons."
+      },
+      "secondary": {
+        "hex": "#4F46E5",
+        "role": "Hover state of primary, active nav, pressed states",
+        "contrast_on_background_dark": 2.84,
+        "contrast_on_background_light": 7.41,
+        "wcag_note": "Do not use for text on dark bg — decorative/interactive only"
+      },
+      "accent": {
+        "hex": "#A5B4FC",
+        "role": "Highlights, badges, inline links, code references, tag labels",
+        "contrast_on_background_dark": 9.03,
+        "contrast_on_background_light": 2.32,
+        "wcag_note": "AAA on dark bg — preferred for small text callouts in dark mode"
+      },
+      "text_primary": {
+        "hex": "#F1F5F9",
+        "role": "Body copy, headings, all primary readable text",
+        "contrast_on_background_dark": 18.52,
+        "contrast_on_background_light": 1.13,
+        "wcag_note": "AAA on dark bg — gold standard for all body text"
+      },
+      "text_secondary": {
+        "hex": "#64748B",
+        "role": "Captions, metadata, placeholder text, timestamps",
+        "contrast_on_background_dark": 4.10,
+        "contrast_on_background_light": 5.12,
+        "wcag_note": "Passes AA for large text on dark bg. Use only for supplementary text, not instructions."
+      },
+      "error": {
+        "hex": "#EF4444",
+        "role": "Error states, destructive action indicators, invalid form fields",
+        "contrast_on_background_dark": 4.44,
+        "contrast_on_background_light": 4.73,
+        "wcag_note": "Passes AA on dark bg. Always pair with icon + text label (never color alone)."
+      },
+      "success": {
+        "hex": "#10B981",
+        "role": "Success confirmations, save states, active/live indicators",
+        "contrast_on_background_dark": 4.22,
+        "contrast_on_background_light": 4.97,
+        "wcag_note": "Passes AA on dark bg. Pair with checkmark icon for colorblind accessibility."
+      },
+      "warning": {
+        "hex": "#F59E0B",
+        "role": "Warning banners, deprecated notices, rate limit alerts",
+        "contrast_on_background_dark": 7.36,
+        "contrast_on_background_light": 2.85,
+        "wcag_note": "AAA on dark bg. Excellent for dark mode. Insufficient on light bg — use darker variant #D97706 for light."
+      },
+      "border": {
+        "hex": "#1E293B",
+        "role": "Default borders, dividers, table rows",
+        "contrast_on_background_dark": 1.54,
+        "contrast_on_background_light": 13.66,
+        "wcag_note": "Structural separation only — never used for text"
+      },
+      "border_active": {
+        "hex": "#6366F1",
+        "role": "Focus rings, active input borders, selected states",
+        "contrast_on_background_dark": 3.54,
+        "contrast_on_background_light": 5.93,
+        "wcag_note": "Must be paired with additional non-color indicator for WCAG 2.1 Focus Visible"
+      }
+    },
+
+    "theme_overrides": {
+      "bento": {
+        "_description": "Warmer editorial tones — amber/gold primary replaces indigo. Ink-on-paper feel. Dark-first with sepia light variant.",
+        "_dark_mode": "primary",
+        "_light_mode": "sepia variant available",
+        "primary": {
+          "hex": "#F59E0B",
+          "replaces": "primary #6366F1",
+          "contrast_on_background_dark": 7.36,
+          "wcag_note": "AAA on dark bg — elevated from minimalist primary"
+        },
+        "secondary": {
+          "hex": "#D97706",
+          "replaces": "secondary #4F46E5",
+          "contrast_on_background_dark": 5.24,
+          "wcag_note": "AA+ on dark bg"
+        },
+        "accent": {
+          "hex": "#FCD34D",
+          "replaces": "accent #A5B4FC",
+          "contrast_on_background_dark": 11.82,
+          "wcag_note": "AAA — high-contrast amber highlight"
+        },
+        "surface": {
+          "hex": "#13110E",
+          "replaces": "surface #111118",
+          "note": "Warm near-black — slight brown undertone for editorial warmth"
+        },
+        "surface_alt": {
+          "hex": "#1F1B14",
+          "replaces": "surface_alt #1C1C27",
+          "note": "Warm secondary surface"
+        },
+        "background": {
+          "hex": "#0C0A07",
+          "replaces": "background #0A0A0F",
+          "note": "Warm near-black baseline for Bento theme"
+        }
+      },
+
+      "glassmorphism": {
+        "_description": "Dark only. Surfaces become translucent layers. Indigo chromatic shadows. Backdrop-blur 20px. Primary and accent colors remain close to minimalist but glow is added.",
+        "_dark_mode": "only",
+        "_light_mode": "not supported in Phase 1",
+        "primary": {
+          "hex": "#6366F1",
+          "note": "Same as minimalist — inherits hue. Add box-shadow: 0 0 24px rgba(99,102,241,0.35) on interactive elements."
+        },
+        "accent": {
+          "hex": "#818CF8",
+          "replaces": "accent #A5B4FC",
+          "contrast_on_background_dark": 7.12,
+          "note": "Slightly deeper indigo-400 for glass surfaces — #A5B4FC washes out against translucent white"
+        },
+        "surface": {
+          "hex": "rgba(17,17,24,0.55)",
+          "replaces": "surface #111118",
+          "note": "Translucent — requires backdrop-filter: blur(20px) saturate(180%). Solid fallback: #111118"
+        },
+        "surface_alt": {
+          "hex": "rgba(28,28,39,0.45)",
+          "replaces": "surface_alt #1C1C27",
+          "note": "Deep glass layer. Chromatic border: border: 1px solid rgba(99,102,241,0.18)"
+        },
+        "glass_border": {
+          "hex": "rgba(99,102,241,0.18)",
+          "note": "Signature Glassmorphism border — replaces #1E293B for this theme"
+        },
+        "glow_primary": {
+          "hex": "rgba(99,102,241,0.35)",
+          "note": "Box shadow glow for CTAs and focused inputs"
+        }
+      },
+
+      "cyberpunk": {
+        "_description": "Dark only — permanent. JetBrains Mono used for headings. Scanline CSS overlay. Glow borders. No light mode ever.",
+        "_dark_mode": "permanent",
+        "_light_mode": "blocked by design — intentional brand decision",
+        "background": {
+          "hex": "#05050A",
+          "replaces": "background #0A0A0F",
+          "note": "Deeper black for maximum neon contrast"
+        },
+        "primary": {
+          "hex": "#00F5FF",
+          "replaces": "primary #6366F1",
+          "contrast_on_background_dark": 18.15,
+          "wcag_note": "AAA — neon cyan on near-black"
+        },
+        "secondary": {
+          "hex": "#00C8D4",
+          "replaces": "secondary #4F46E5",
+          "contrast_on_background_dark": 12.43,
+          "wcag_note": "AAA — darker cyan for hover states"
+        },
+        "accent": {
+          "hex": "#BF5AF2",
+          "replaces": "accent #A5B4FC",
+          "contrast_on_background_dark": 4.22,
+          "wcag_note": "AA on dark bg — neon violet for highlights and tags"
+        },
+        "neon_green": {
+          "hex": "#39FF14",
+          "role": "Terminal success states, live indicators, agent activity feed",
+          "contrast_on_background_dark": 10.58,
+          "wcag_note": "AAA — use sparingly to preserve signal value"
+        },
+        "surface": {
+          "hex": "#0C0C14",
+          "replaces": "surface #111118",
+          "note": "Deep purple-black for cards — adds depth contrast against #05050A bg"
+        },
+        "surface_alt": {
+          "hex": "#14142A",
+          "replaces": "surface_alt #1C1C27",
+          "note": "Deep indigo-black modal surface"
+        },
+        "border_glow": {
+          "hex": "rgba(0,245,255,0.4)",
+          "note": "Cyan glow border for interactive elements. Animate opacity 0.4→0.8 on hover."
+        },
+        "text_primary": {
+          "hex": "#E0F7FF",
+          "replaces": "text_primary #F1F5F9",
+          "note": "Slight cyan tint to white — thematic coherence with neon cyan primary"
+        },
+        "heading_font_override": "JetBrains Mono — headings use mono font in Cyberpunk theme only"
+      }
+    }
+  },
+
+  "TYPOGRAPHY": {
+    "font_primary": {
+      "family": "Geist Sans",
+      "usage": "All headings H1–H6, display text, hero copy, navigation labels",
+      "loading": "next/font/google — { subsets: ['latin'], variable: '--font-geist-sans', display: 'swap' }",
+      "fallback": "system-ui, -apple-system, sans-serif",
+      "weights_used": [400, 500, 600, 700],
+      "tracking": "-0.02em on headings H1–H3, -0.01em on H4–H6"
+    },
+    "font_secondary": {
+      "family": "Inter",
+      "usage": "Body copy, captions, form labels, metadata, tooltips, all prose content",
+      "loading": "next/font/google — { subsets: ['latin'], variable: '--font-inter', display: 'swap' }",
+      "fallback": "system-ui, -apple-system, sans-serif",
+      "weights_used": [400, 500, 600],
+      "tracking": "0em (default) — no custom tracking on body"
+    },
+    "font_mono": {
+      "family": "JetBrains Mono",
+      "usage": "All code blocks, inline code, terminal output, agent activity feed, frontmatter fields, MDX code fences",
+      "loading": "next/font/google — { subsets: ['latin'], variable: '--font-jetbrains-mono', display: 'swap' }",
+      "fallback": "'Fira Code', 'Cascadia Code', monospace",
+      "weights_used": [400, 500],
+      "tracking": "0em",
+      "features": "font-feature-settings: 'liga' 1, 'calt' 1 — enable ligatures"
+    },
+    "font_mono_cyberpunk_override": {
+      "note": "In Cyberpunk theme, JetBrains Mono also serves as the heading font, replacing Geist Sans. Apply via [data-theme='cyberpunk'] h1, h2, h3, h4, h5, h6 { font-family: var(--font-jetbrains-mono); letter-spacing: 0.05em; }"
+    },
+    "scale": {
+      "base_px": 14,
+      "ratio": 1.250,
+      "ratio_name": "Major Third",
+      "note": "All rem values computed as base × ratio^n from 14px. Browser default assumed 16px — values adjusted accordingly."
+    },
+    "type_scale": {
+      "h1": {
+        "rem": "3.052rem",
+        "px_approx": "48.8px",
+        "weight": 700,
+        "line_height": 1.1,
+        "tracking": "-0.02em",
+        "font": "font_primary",
+        "usage": "Hero headlines, page titles at root level"
+      },
+      "h2": {
+        "rem": "2.441rem",
+        "px_approx": "39.1px",
+        "weight": 700,
+        "line_height": 1.15,
+        "tracking": "-0.02em",
+        "font": "font_primary",
+        "usage": "Section headers, major feature titles"
+      },
+      "h3": {
+        "rem": "1.953rem",
+        "px_approx": "31.2px",
+        "weight": 600,
+        "line_height": 1.2,
+        "tracking": "-0.015em",
+        "font": "font_primary",
+        "usage": "Sub-section headers, card feature titles, dialog titles"
+      },
+      "h4": {
+        "rem": "1.563rem",
+        "px_approx": "25.0px",
+        "weight": 600,
+        "line_height": 1.25,
+        "tracking": "-0.01em",
+        "font": "font_primary",
+        "usage": "Component group labels, sidebar section headers"
+      },
+      "h5": {
+        "rem": "1.25rem",
+        "px_approx": "20.0px",
+        "weight": 600,
+        "line_height": 1.3,
+        "tracking": "-0.01em",
+        "font": "font_primary",
+        "usage": "Card titles, table column headers, settings section labels"
+      },
+      "h6": {
+        "rem": "1rem",
+        "px_approx": "16.0px",
+        "weight": 600,
+        "line_height": 1.4,
+        "tracking": "0em",
+        "font": "font_primary",
+        "usage": "Inline section labels, metadata group headers, overlines"
+      },
+      "body_lg": {
+        "rem": "1rem",
+        "px_approx": "16.0px",
+        "weight": 400,
+        "line_height": 1.625,
+        "tracking": "0em",
+        "font": "font_secondary",
+        "usage": "Lead paragraphs, intro copy, marketing body text"
+      },
+      "body": {
+        "rem": "0.875rem",
+        "px_approx": "14.0px",
+        "weight": 400,
+        "line_height": 1.571,
+        "tracking": "0em",
+        "font": "font_secondary",
+        "usage": "Default body text, MDX prose content, documentation paragraphs"
+      },
+      "small": {
+        "rem": "0.75rem",
+        "px_approx": "12.0px",
+        "weight": 400,
+        "line_height": 1.5,
+        "tracking": "0.01em",
+        "font": "font_secondary",
+        "usage": "Metadata labels, timestamps, file sizes, secondary annotation"
+      },
+      "caption": {
+        "rem": "0.625rem",
+        "px_approx": "10.0px",
+        "weight": 500,
+        "line_height": 1.4,
+        "tracking": "0.04em",
+        "font": "font_secondary",
+        "usage": "Badges content, tags, overline labels above headings, kbd hints"
+      },
+      "code_inline": {
+        "rem": "0.8125rem",
+        "px_approx": "13.0px",
+        "weight": 400,
+        "line_height": 1.5,
+        "tracking": "0em",
+        "font": "font_mono",
+        "usage": "Inline code within body text — sized slightly smaller than body for optical alignment"
+      },
+      "code_block": {
+        "rem": "0.8125rem",
+        "px_approx": "13.0px",
+        "weight": 400,
+        "line_height": 1.7,
+        "tracking": "0em",
+        "font": "font_mono",
+        "usage": "Code fences, MDX code blocks, split-pane editor, terminal output"
+      }
+    },
+    "vertical_rhythm": {
+      "base_unit_rem": "0.25rem",
+      "paragraph_spacing": "1rem",
+      "section_spacing": "2rem",
+      "note": "All vertical spacing is a multiple of 0.25rem (4px) — aligns with Tailwind v4 default spacing scale"
+    }
+  },
+
+  "POSITIONING": {
+    "uvp_primary": {
+      "fr": "Le seul labo web où chaque expérimentation est un micro-produit.",
+      "en": "The only web lab where every experiment is a micro-product.",
+      "word_count_fr": 12,
+      "note": "12 mots — respecte la contrainte exacte"
+    },
+    "uvp_secondary": [
+      {
+        "id": "uvp_lab",
+        "fr": "Construis, documente et vends tes composants depuis une seule plateforme — sans changer d'outil.",
+        "en": "Build, document, and sell your components from a single platform — without switching tools."
+      },
+      {
+        "id": "uvp_notes",
+        "fr": "Tes notes techniques vivent à côté de ton code, pas dans un onglet Notion oublié.",
+        "en": "Your technical notes live next to your code, not in a forgotten Notion tab."
+      },
+      {
+        "id": "uvp_themes",
+        "fr": "4 thèmes runtime, 1 codebase — montre le même composant sous toutes ses identités visuelles.",
+        "en": "4 runtime themes, 1 codebase — show the same component across all its visual identities."
+      }
+    ],
+    "differentiator_vs_competition": {
+      "vs_v0": "v0 génère — Mark Systems incube. L'IA ici est un agent interne, pas le produit principal.",
+      "vs_shadcn": "shadcn documente des composants; Mark Systems documente des micro-produits prêts à revendre.",
+      "vs_aceternity": "Aceternity impressionne visuellement; Mark Systems vend le code derrière l'impression.",
+      "vs_storybook": "Storybook est un outil de dev; Mark Systems est un showroom client avec un moteur de notes intégré.",
+      "vs_notion": "Notion gère du texte; Mark Systems gère du texte qui vit à côté de composants fonctionnels.",
+      "unique_gap": "Aucune plateforme existante ne combine lab interactif + notes techniques + showroom client + incubateur SaaS dans une surface unifiée avec 4 thèmes runtime et conformité Loi 25 native."
+    },
+    "target_persona": {
+      "primary": {
+        "label": "Dev-Entrepreneur Québécois",
+        "demographic": {
+          "age_range": "28–42",
+          "location": "Québec (Montréal, Québec City, télétravail)",
+          "role": "Développeur fullstack ou frontend senior, freelance ou associé fondateur d'un studio numérique",
+          "income": "75 000–140 000 CAD/an",
+          "education": "DEC technique ou baccalauréat en informatique / génie logiciel",
+          "languages": "Bilingue FR/EN — travaille en anglais, vit en français"
+        },
+        "psychographic": {
+          "motivations": [
+            "Transformer ses expérimentations en sources de revenus passifs",
+            "Maintenir un portfolio technique qui prouve les compétences sans CV",
+            "Construire en public — apprendre, documenter, monétiser",
+            "Éliminer la friction entre 'idée de composant' et 'démonstration client'"
+          ],
+          "frustrations": [
+            "Passer d'un outil à l'autre (Figma → code → Notion → Storybook → Vercel) pour un seul composant",
+            "Les plateformes de composants n'ont pas de context québécois (Loi 25, bilinguisme)",
+            "Les outils de notes ne comprennent pas le code; les outils de code ne prennent pas de notes",
+            "L'IA génère du starter code mais jamais du code prêt-client"
+          ],
+          "values": [
+            "Craft et qualité d'exécution",
+            "Propriété du code source (anti-vendor-lock-in)",
+            "Autonomie et indépendance professionnelle",
+            "Communauté dev francophone sous-servie"
+          ],
+          "tools_used_daily": ["VS Code", "Figma", "Vercel", "GitHub", "Notion", "Raycast"],
+          "content_consumption": ["Twitter/X dev community", "YouTube (Theo t3.gg, Fireship)", "Dev.to", "Reddit r/nextjs"],
+          "buying_behavior": "Prêt à payer pour des outils qui économisent des heures. Évalue en free tier d'abord. Converti par la qualité de l'expérience, pas par les features list."
+        }
+      },
+      "secondary": {
+        "label": "Studio Numérique Québécois",
+        "demographic": {
+          "size": "2–15 personnes",
+          "location": "Québec — agences créatives, studios de développement web",
+          "role": "Lead dev ou directeur technique cherchant à standardiser les livrables clients"
+        },
+        "psychographic": {
+          "motivations": [
+            "Présenter les réalisations passées dans un showroom client professionnel",
+            "Standardiser le design system et les composants entre projets clients",
+            "Réduire le temps de découverte client (démos en direct plutôt que PDF)"
+          ]
+        }
+      }
+    },
+    "brand_promise": {
+      "fr": "Mark Systems transforme chaque ligne de code expérimental en micro-produit documenté, démontrable et vendable — sans jamais quitter la plateforme.",
+      "en": "Mark Systems turns every line of experimental code into a documented, demonstrable, and sellable micro-product — without ever leaving the platform."
+    },
+    "positioning_statement": {
+      "fr": "Pour les développeurs-entrepreneurs québécois qui construisent en public, Mark Systems est la seule plateforme qui unit labo interactif, notes techniques et showroom client — là où chaque expérimentation devient un micro-produit.",
+      "en": "For Quebec developer-entrepreneurs who build in public, Mark Systems is the only platform uniting interactive lab, technical notes, and client showroom — where every experiment becomes a micro-product."
+    },
+    "tagline_candidates": [
+      { "fr": "Ton labo. Tes produits.", "en": "Your lab. Your products." },
+      { "fr": "Code. Documente. Vends.", "en": "Build. Document. Sell." },
+      { "fr": "Chaque expérimentation mérite d'être un produit.", "en": "Every experiment deserves to be a product." }
+    ],
+    "recommended_tagline": "Chaque expérimentation mérite d'être un produit.",
+    "recommended_tagline_rationale": "Encapsule la promesse de transformation (expérimentation → produit) et résonne avec la frustration cible (les expérimentations qui restent dans un repo GitHub et ne deviennent jamais rien)."
+  }
+}

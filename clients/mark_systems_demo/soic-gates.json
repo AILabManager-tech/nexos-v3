@@ -1,0 +1,178 @@
+{
+  "client": "mark-systems-demo",
+  "soic_id": "WEB-2026-LAB-0409",
+  "gates": [
+    {
+      "transition": "ph0→ph1",
+      "threshold": 7.0,
+      "score": 8.2,
+      "status": "PASS",
+      "evaluated_at": "2026-04-09T00:00:00Z",
+      "dimensions": {
+        "D1_architecture": 9.0,
+        "D2_content": 8.0,
+        "D3_performance": 7.0,
+        "D5_design": 9.0,
+        "D6_ux": 8.0,
+        "D7_seo": 8.0,
+        "D8_legal": 8.0,
+        "D9_quality": 8.0
+      },
+      "notes": "Creation mode — no existing site. 5 reference platforms benchmarked. 4 theme moodboards defined. Content architecture complete with i18n plan."
+    }
+    ,
+    {
+      "transition": "ph1→ph2",
+      "threshold": 8.0,
+      "score": 8.5,
+      "status": "PASS",
+      "evaluated_at": "2026-04-09T01:00:00Z",
+      "dimensions": {
+        "D1_architecture": 9.0,
+        "D2_typescript": 9.0,
+        "D3_performance": 8.0,
+        "D4_security": 9.0,
+        "D5_i18n": 8.0,
+        "D6_accessibility": 8.0,
+        "D7_seo": 9.0,
+        "D8_legal": 8.0,
+        "D9_quality": 9.0
+      },
+      "notes": "4 JSON artifacts produced and validated. 152-file scaffold planned. 9 ADRs documented. Brand identity with 4-theme color system. 11 routes with full i18n mapping. SEO strategy with structured data per page type.",
+      "artifacts": [
+        "brand-identity.json",
+        "site-map-logic.json",
+        "seo-strategy (agent output)",
+        "stack-decision.json",
+        "scaffold-plan.json"
+      ]
+    },
+    {
+      "transition": "ph2→ph3",
+      "threshold": 8.0,
+      "score": 8.6,
+      "status": "PASS",
+      "evaluated_at": "2026-04-09T02:00:00Z",
+      "dimensions": {
+        "D1_architecture": 9.0,
+        "D2_typescript": 8.0,
+        "D3_performance": 9.0,
+        "D4_security": 8.0,
+        "D5_i18n": 8.0,
+        "D6_accessibility": 9.0,
+        "D7_seo": 8.0,
+        "D8_legal": 8.0,
+        "D9_quality": 9.0
+      },
+      "notes": "Design system complete: 8 token categories across 4 themes, 647-line interaction spec with 100% reduced-motion coverage, responsive strategy with clamp() typography, 5 wireframes. All JSON validated.",
+      "artifacts": [
+        "design-tokens.json",
+        "interactions.json",
+        "responsive-strategy.json",
+        "wireframes.md"
+      ]
+    },
+    {
+      "transition": "ph3→ph4",
+      "threshold": 8.0,
+      "score": 8.8,
+      "status": "PASS",
+      "evaluated_at": "2026-04-09T03:00:00Z",
+      "dimensions": {
+        "D1_architecture": 8.0,
+        "D2_typescript": 8.0,
+        "D3_performance": 9.0,
+        "D4_security": 8.0,
+        "D5_i18n": 10.0,
+        "D6_accessibility": 9.0,
+        "D7_seo": 9.0,
+        "D8_legal": 9.0,
+        "D9_quality": 9.0
+      },
+      "notes": "304 i18n keys FR/EN with 100% parity. Loi 25 legal pages FR+EN complete. Content QA pass at 9.1. Brand voice consistent (tu, level 2, dev-peer).",
+      "artifacts": [
+        "messages/fr.json",
+        "messages/en.json",
+        "legal/privacy-policy-fr.md",
+        "legal/privacy-policy-en.md",
+        "legal/mentions-legales-fr.md",
+        "legal/mentions-legales-en.md"
+      ]
+    },
+    {
+      "transition": "ph4→tooling",
+      "threshold": "BUILD_PASS",
+      "score": "BUILD_PASS",
+      "status": "PASS",
+      "evaluated_at": "2026-04-09T04:00:00Z",
+      "dimensions": {
+        "typescript": "0 errors",
+        "build": "Next.js 16.2.3 Turbopack — success",
+        "npm_audit": "0 HIGH/CRITICAL",
+        "security_headers": "5/5 in next.config + vercel.json",
+        "loi25": "CookieConsent + privacy page + legal page",
+        "routes": "11 (3 static + 8 dynamic + 1 API)"
+      },
+      "notes": "Foundation build: 27 files, 19 deps, 12 devDeps. All security and Loi 25 requirements met. Remaining 125 component files for incremental build.",
+      "artifacts": [
+        "site/ (complete Next.js project)",
+        "ph4-build-log.md"
+      ]
+    },
+    {
+      "transition": "ph5→deploy",
+      "threshold": 8.5,
+      "score": 9.39,
+      "status": "PASS",
+      "evaluated_at": "2026-04-09T05:30:00Z",
+      "dimensions": {
+        "D1_architecture": 9.5,
+        "D2_typescript": 9.5,
+        "D3_performance": 9.0,
+        "D4_security": 9.5,
+        "D5_i18n": 9.5,
+        "D6_accessibility": 9.5,
+        "D7_seo": 9.0,
+        "D8_legal": 9.5,
+        "D9_code_quality": 9.5
+      },
+      "fixes_applied_v1": [
+        "Root page.tsx redirect /fr",
+        "Legal pages full Loi 25 content",
+        "globals.css cleaned",
+        "generateMetadata on showroom + experiments"
+      ],
+      "fixes_applied_v2": [
+        "CSP header (report-only, 9 directives)",
+        "Rate limiting /api/contact (3 req / 15 min / IP)",
+        "Honeypot field in contact schema",
+        "Cookie revocation mechanism + Settings page button",
+        "tailwind-merge in cn()",
+        "Contrast fix: text-muted to WCAG AAA",
+        "Skip link via getTranslations",
+        "Vitest setup + 6 passing tests",
+        "test scripts in package.json"
+      ],
+      "progression": {
+        "initial": 7.59,
+        "post_fix_v1": 8.38,
+        "post_fix_v2": 9.07,
+        "post_revision_v3": 9.39
+      },
+      "revision_v3": {
+        "files_before": 19,
+        "files_after": 38,
+        "new_components": [
+          "AppShell + Sidebar + Header + Footer + MobileNav + LocaleSwitcher",
+          "Button + Card + Badge + ThemeSwitcher (4 themes fonctionnels)",
+          "StatsStrip + AgentStatusPanel + RecentExperiments + ExperimentCard",
+          "types/index.ts + lib/data/experiments.ts (6 mock)",
+          "Pages enrichies: Dashboard + Experiments + Showroom + Notes + Settings"
+        ]
+      },
+      "artifacts": [
+        "ph5-qa-report.md"
+      ]
+    }
+  ]
+}

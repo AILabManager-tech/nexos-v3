@@ -1,0 +1,1608 @@
+{
+  "_meta": {
+    "generator": "nexos-v3.0/scaffold-planner",
+    "soic_id": "WEB-2026-LAB-0409",
+    "client": "mark-systems-demo",
+    "created_at": "2026-04-09T00:00:00Z",
+    "phase": "ph1-strategy"
+  },
+  "project_name": "mark-systems-demo",
+  "framework": "Next.js 15",
+  "package_manager": "npm",
+  "total_files": 152,
+  "directory_structure": {
+    ".storybook/": "Storybook 8 configuration — main.ts, preview.ts, theme decorator for 4-theme switching",
+    "app/": "Next.js App Router root — sitemap.ts, robots.ts, global layout",
+    "app/[locale]/": "Locale-scoped pages and layouts (FR/EN via next-intl)",
+    "app/[locale]/experiments/": "Experiments engine — category index and dynamic [category]/[feature] routes",
+    "app/[locale]/notes/": "Notes engine — MDX editor (Tiptap) + viewer + note listing",
+    "app/[locale]/showroom/": "Client-facing gallery with live previews and CTAs",
+    "app/[locale]/settings/": "User preferences — theme picker, language toggle, agent config",
+    "app/[locale]/politique-confidentialite/": "Loi 25 privacy policy (templated MDX)",
+    "app/[locale]/mentions-legales/": "Legal notices (templated MDX)",
+    "app/api/": "API route handlers — agents, contact form, experiment metadata",
+    "components/": "Shared React components organized by domain",
+    "components/ui/": "Atomic UI primitives built on Radix — Button, Card, Dialog, Input, etc.",
+    "components/layout/": "App shell — Sidebar, Header, Footer, CommandPalette, Breadcrumbs, MobileNav",
+    "components/experiments/": "Experiment-specific UI — ExperimentCard, ExperimentGrid, PropsPlayground, AutoDocs",
+    "components/notes/": "Notes engine UI — TiptapEditor, MDXViewer, NoteSidebar, NoteCard",
+    "components/showroom/": "Showroom UI — ShowroomCard, LivePreview, ThemeShowdown, PresentationMode",
+    "components/agents/": "AI agent UI — ChatPanel, AgentCard, MessageBubble, StreamingIndicator",
+    "components/legal/": "Legal compliance — CookieConsent, ConsentPreferences",
+    "config/": "Application configuration constants and static data",
+    "config/themes/": "CSS theme files — one per theme, CSS custom properties definitions",
+    "config/agents/": "Agent system prompts and configuration as TypeScript constants",
+    "experiments/": "Experiment source files — isolated modules following /[category]/[feature]/ pattern",
+    "hooks/": "Custom React hooks — useTheme, useAgent, useExperiments, useAutosave, etc.",
+    "lib/": "Utility libraries and service modules",
+    "lib/ai/": "AI agent client utilities — createAgent, streaming helpers, rate limiting",
+    "lib/mdx/": "MDX processing — compilation, component registry, frontmatter extraction",
+    "lib/utils/": "General utilities — cn(), formatDate, debounce, etc.",
+    "lib/validations/": "Zod schemas for forms, API routes, experiment metadata, agent outputs",
+    "messages/": "i18n translation dictionaries — fr.json, en.json (~363 keys each)",
+    "public/": "Static assets — favicon, og-image, robots.txt fallback",
+    "styles/": "Global CSS — Tailwind imports, theme token definitions, base styles",
+    "types/": "Shared TypeScript type definitions — experiments, notes, agents, themes"
+  },
+  "files": [
+    {
+      "path": ".storybook/main.ts",
+      "type": "config",
+      "description": "Storybook 8 main config — Next.js framework, addon registration (essentials, a11y, themes, interactions), story glob patterns including /experiments/",
+      "dependencies": ["@storybook/nextjs", "@storybook/addon-essentials", "@storybook/addon-a11y", "@storybook/addon-themes"],
+      "priority": "high"
+    },
+    {
+      "path": ".storybook/preview.ts",
+      "type": "config",
+      "description": "Storybook preview config — global decorators for ThemeProvider, i18n, viewport presets (375/768/1280), theme toolbar with 4 themes",
+      "dependencies": ["next-themes", "next-intl"],
+      "priority": "high"
+    },
+    {
+      "path": ".storybook/theme-decorator.tsx",
+      "type": "component",
+      "description": "Storybook decorator that wraps stories with data-theme attribute and CSS custom properties matching runtime behavior",
+      "priority": "high"
+    },
+
+    {
+      "path": "app/sitemap.ts",
+      "type": "seo",
+      "description": "Dynamic sitemap generator — enumerates all locale-prefixed pages, experiment detail pages, and notes (public only)",
+      "priority": "high"
+    },
+    {
+      "path": "app/robots.ts",
+      "type": "seo",
+      "description": "Dynamic robots.txt — allows all crawlers, references sitemap URL, disallows /api/ and /settings/",
+      "priority": "high"
+    },
+    {
+      "path": "app/api/agents/[agentId]/route.ts",
+      "type": "api-route",
+      "description": "AI agent streaming endpoint — validates agentId (devops|ui-generator|business-strategist), loads system prompt from config, streams response via Vercel AI SDK",
+      "dependencies": ["ai", "@ai-sdk/openai", "zod"],
+      "priority": "high"
+    },
+    {
+      "path": "app/api/contact/route.ts",
+      "type": "api-route",
+      "description": "Contact form submission handler — Zod validation, rate limiting, email dispatch (or webhook)",
+      "dependencies": ["zod"],
+      "priority": "medium"
+    },
+    {
+      "path": "app/api/experiments/route.ts",
+      "type": "api-route",
+      "description": "Experiments metadata API — lists all experiments with category, status, tags. Used by search and showroom",
+      "dependencies": ["zod"],
+      "priority": "high"
+    },
+
+    {
+      "path": "app/[locale]/layout.tsx",
+      "type": "layout",
+      "description": "Root locale layout — html lang attribute, ThemeProvider (next-themes with data-theme), NextIntlClientProvider, font injection (Geist, Inter, JetBrains Mono), global metadata, CSP nonce injection",
+      "dependencies": ["next-intl", "next-themes", "next/font"],
+      "priority": "critical"
+    },
+    {
+      "path": "app/[locale]/page.tsx",
+      "type": "page",
+      "description": "Dashboard — hero metrics (total experiments, notes count, agent activity), recent experiments grid, quick actions panel, agent status cards",
+      "i18n_namespace": "dashboard",
+      "sections": ["DashboardMetrics", "RecentExperiments", "QuickActions", "AgentStatusPanel"],
+      "priority": "critical"
+    },
+    {
+      "path": "app/[locale]/loading.tsx",
+      "type": "loading",
+      "description": "Root loading state — skeleton layout matching dashboard structure with pulsing placeholders",
+      "priority": "high"
+    },
+    {
+      "path": "app/[locale]/not-found.tsx",
+      "type": "page",
+      "description": "Custom 404 — themed empty state with search suggestion and navigation back to dashboard",
+      "i18n_namespace": "errors",
+      "priority": "high"
+    },
+    {
+      "path": "app/[locale]/error.tsx",
+      "type": "error-boundary",
+      "description": "Client error boundary — catches runtime errors, displays themed error state with retry action, logs to console in dev",
+      "priority": "high"
+    },
+
+    {
+      "path": "app/[locale]/experiments/page.tsx",
+      "type": "page",
+      "description": "Experiments index — category grid with search/filter bar, sorting controls (date, name, status), list/grid toggle (persisted in localStorage), experiment cards with theme-aware styling",
+      "i18n_namespace": "experiments",
+      "sections": ["ExperimentSearchBar", "CategoryFilter", "ExperimentGrid"],
+      "priority": "critical"
+    },
+    {
+      "path": "app/[locale]/experiments/loading.tsx",
+      "type": "loading",
+      "description": "Experiments loading state — skeleton grid of experiment cards",
+      "priority": "medium"
+    },
+    {
+      "path": "app/[locale]/experiments/[category]/page.tsx",
+      "type": "page",
+      "description": "Category index — filtered experiments within a category, breadcrumb navigation, category description header",
+      "i18n_namespace": "experiments",
+      "priority": "high"
+    },
+    {
+      "path": "app/[locale]/experiments/[category]/[feature]/page.tsx",
+      "type": "page",
+      "description": "Experiment detail — live demo area, props playground (interactive controls), code preview (syntax highlighted), auto-docs panel, pricing badge, 'Request this feature' CTA, theme comparison toggle",
+      "i18n_namespace": "experiments",
+      "sections": ["ExperimentDemo", "PropsPlayground", "CodePreview", "AutoDocsPanel", "PricingBadge", "ThemeShowdown"],
+      "priority": "critical"
+    },
+    {
+      "path": "app/[locale]/experiments/[category]/[feature]/loading.tsx",
+      "type": "loading",
+      "description": "Experiment detail loading — skeleton matching demo + docs split layout",
+      "priority": "medium"
+    },
+
+    {
+      "path": "app/[locale]/notes/page.tsx",
+      "type": "page",
+      "description": "Notes index — notes sidebar listing, MDX viewer for selected note, create new note FAB, search notes, tag filtering",
+      "i18n_namespace": "notes",
+      "sections": ["NoteSidebar", "NoteViewer", "NoteSearch"],
+      "priority": "critical"
+    },
+    {
+      "path": "app/[locale]/notes/[noteId]/page.tsx",
+      "type": "page",
+      "description": "Note detail/editor — Tiptap editor (write mode) or MDX rendered view (read mode), frontmatter display, linked experiments (backlinks), autosave indicator",
+      "i18n_namespace": "notes",
+      "sections": ["NoteEditor", "NoteFrontmatter", "NoteBacklinks"],
+      "priority": "critical"
+    },
+    {
+      "path": "app/[locale]/notes/loading.tsx",
+      "type": "loading",
+      "description": "Notes loading state — skeleton sidebar + content area",
+      "priority": "medium"
+    },
+
+    {
+      "path": "app/[locale]/showroom/page.tsx",
+      "type": "page",
+      "description": "Showroom gallery — client-facing view with live previews, theme selector scoped per preview, CTA per experiment ('Request this feature'), presentation mode button, QR code for mobile preview",
+      "i18n_namespace": "showroom",
+      "sections": ["ShowroomHero", "ShowroomGallery", "ShowroomThemeSelector"],
+      "priority": "critical"
+    },
+    {
+      "path": "app/[locale]/showroom/[experimentId]/page.tsx",
+      "type": "page",
+      "description": "Showroom detail — fullscreen experiment preview, theme comparison (side-by-side 4 themes), experiment business card, CTA panel",
+      "i18n_namespace": "showroom",
+      "sections": ["ShowroomPreview", "ExperimentBusinessCard", "ShowroomCTA"],
+      "priority": "high"
+    },
+    {
+      "path": "app/[locale]/showroom/loading.tsx",
+      "type": "loading",
+      "description": "Showroom loading state — skeleton gallery grid",
+      "priority": "medium"
+    },
+
+    {
+      "path": "app/[locale]/settings/page.tsx",
+      "type": "page",
+      "description": "Settings — theme picker (4-card visual grid), language toggle (FR/EN), agent configuration panel, profile preferences, data export",
+      "i18n_namespace": "settings",
+      "sections": ["ThemePicker", "LanguageToggle", "AgentConfig", "ProfileSettings", "DataExport"],
+      "priority": "high"
+    },
+    {
+      "path": "app/[locale]/settings/loading.tsx",
+      "type": "loading",
+      "description": "Settings loading state",
+      "priority": "low"
+    },
+
+    {
+      "path": "app/[locale]/politique-confidentialite/page.tsx",
+      "type": "page",
+      "description": "Privacy policy — Loi 25 compliant, rendered from MDX template populated with brief-client.json legal variables. Bilingual content via next-intl.",
+      "i18n_namespace": "legal",
+      "priority": "high"
+    },
+    {
+      "path": "app/[locale]/mentions-legales/page.tsx",
+      "type": "page",
+      "description": "Legal notices — company info, hosting provider (Vercel), intellectual property, liability limitations. Rendered from MDX template.",
+      "i18n_namespace": "legal",
+      "priority": "high"
+    },
+
+    {
+      "path": "components/ui/Button.tsx",
+      "type": "component",
+      "description": "Button primitive — variants (primary, secondary, ghost, destructive), sizes (sm, md, lg), asChild pattern via Radix Slot, theme-aware via CSS custom properties",
+      "props": ["variant", "size", "disabled", "asChild", "loading"],
+      "priority": "critical"
+    },
+    {
+      "path": "components/ui/Button.stories.tsx",
+      "type": "story",
+      "description": "Storybook stories for Button — all variants, sizes, states, theme combinations",
+      "priority": "high"
+    },
+    {
+      "path": "components/ui/Button.test.tsx",
+      "type": "test",
+      "description": "Button tests — render, click, disabled state, loading state, asChild rendering",
+      "priority": "high"
+    },
+    {
+      "path": "components/ui/Card.tsx",
+      "type": "component",
+      "description": "Card container — header, content, footer slots, theme-aware border and surface colors, hover lift animation option",
+      "props": ["variant", "hoverable", "className"],
+      "priority": "critical"
+    },
+    {
+      "path": "components/ui/Card.stories.tsx",
+      "type": "story",
+      "description": "Card stories — default, hoverable, with header/footer, per-theme rendering",
+      "priority": "high"
+    },
+    {
+      "path": "components/ui/Input.tsx",
+      "type": "component",
+      "description": "Input with label — error message display, required indicator, disabled state, theme-aware focus ring via CSS custom properties",
+      "props": ["label", "error", "required", "disabled", "type"],
+      "priority": "critical"
+    },
+    {
+      "path": "components/ui/Input.stories.tsx",
+      "type": "story",
+      "description": "Input stories — default, with error, disabled, various types",
+      "priority": "high"
+    },
+    {
+      "path": "components/ui/Dialog.tsx",
+      "type": "component",
+      "description": "Dialog built on @radix-ui/react-dialog — overlay, content, title, description, close button, theme-aware surface and overlay colors, focus trap, keyboard escape",
+      "props": ["open", "onOpenChange", "title", "description"],
+      "priority": "high"
+    },
+    {
+      "path": "components/ui/Dialog.stories.tsx",
+      "type": "story",
+      "description": "Dialog stories — default, with form content, nested content",
+      "priority": "medium"
+    },
+    {
+      "path": "components/ui/DropdownMenu.tsx",
+      "type": "component",
+      "description": "Dropdown menu built on @radix-ui/react-dropdown-menu — trigger, content, items, separators, keyboard navigation",
+      "props": ["trigger", "items"],
+      "priority": "high"
+    },
+    {
+      "path": "components/ui/Tabs.tsx",
+      "type": "component",
+      "description": "Tabs built on @radix-ui/react-tabs — list, trigger, content, theme-aware active indicator",
+      "props": ["defaultValue", "tabs"],
+      "priority": "high"
+    },
+    {
+      "path": "components/ui/Tooltip.tsx",
+      "type": "component",
+      "description": "Tooltip built on @radix-ui/react-tooltip — provider, trigger, content, configurable delay and side",
+      "props": ["content", "side", "delayDuration"],
+      "priority": "high"
+    },
+    {
+      "path": "components/ui/Select.tsx",
+      "type": "component",
+      "description": "Select built on @radix-ui/react-select — trigger, content, items, theme-aware styling",
+      "props": ["value", "onValueChange", "options", "placeholder"],
+      "priority": "high"
+    },
+    {
+      "path": "components/ui/Switch.tsx",
+      "type": "component",
+      "description": "Toggle switch built on @radix-ui/react-switch — theme-aware track and thumb colors",
+      "props": ["checked", "onCheckedChange", "disabled", "label"],
+      "priority": "medium"
+    },
+    {
+      "path": "components/ui/Toast.tsx",
+      "type": "component",
+      "description": "Toast notification system built on @radix-ui/react-toast — provider, viewport, variants (success, error, warning, info), auto-dismiss, theme-aware colors",
+      "props": ["variant", "title", "description", "duration"],
+      "priority": "high"
+    },
+    {
+      "path": "components/ui/ScrollArea.tsx",
+      "type": "component",
+      "description": "Custom scrollbar built on @radix-ui/react-scroll-area — themed scrollbar track and thumb, used in sidebar and code preview panels",
+      "props": ["className", "orientation"],
+      "priority": "medium"
+    },
+    {
+      "path": "components/ui/Badge.tsx",
+      "type": "component",
+      "description": "Status badge — variants (default, success, warning, error, outline), used for experiment status and pricing tiers",
+      "props": ["variant", "children"],
+      "priority": "high"
+    },
+    {
+      "path": "components/ui/Skeleton.tsx",
+      "type": "component",
+      "description": "Loading skeleton — pulsing placeholder matching theme surface colors, configurable width/height/shape",
+      "props": ["width", "height", "rounded"],
+      "priority": "high"
+    },
+    {
+      "path": "components/ui/Separator.tsx",
+      "type": "component",
+      "description": "Visual separator built on @radix-ui/react-separator — horizontal/vertical, theme-aware border color",
+      "props": ["orientation", "decorative"],
+      "priority": "low"
+    },
+    {
+      "path": "components/ui/CodeBlock.tsx",
+      "type": "component",
+      "description": "Syntax-highlighted code block — copy button, language label, line numbers, theme-aware syntax colors via CSS custom properties",
+      "props": ["code", "language", "showLineNumbers", "filename"],
+      "priority": "high"
+    },
+    {
+      "path": "components/ui/EmptyState.tsx",
+      "type": "component",
+      "description": "Empty state pattern — icon, title, description, action button. Used for no-experiments, no-notes, no-results states",
+      "props": ["icon", "title", "description", "action"],
+      "priority": "medium"
+    },
+    {
+      "path": "components/ui/index.ts",
+      "type": "barrel",
+      "description": "Barrel export for all UI primitives — enables import { Button, Card, Input } from '@/components/ui'",
+      "priority": "critical"
+    },
+
+    {
+      "path": "components/layout/Sidebar.tsx",
+      "type": "component",
+      "description": "Sidebar navigation — icon rail (64px) + expandable panel (200px), collapsible, 5 primary nav items (Dashboard, Experiments, Notes, Showroom, Settings), active state indicator, theme-aware colors",
+      "props": ["collapsed", "onToggle"],
+      "priority": "critical"
+    },
+    {
+      "path": "components/layout/Sidebar.stories.tsx",
+      "type": "story",
+      "description": "Sidebar stories — expanded, collapsed, with active item, per-theme",
+      "priority": "high"
+    },
+    {
+      "path": "components/layout/Header.tsx",
+      "type": "component",
+      "description": "Top header bar — breadcrumbs slot, search trigger (CMD+K), theme indicator, language toggle, responsive",
+      "props": ["breadcrumbs"],
+      "priority": "critical"
+    },
+    {
+      "path": "components/layout/Footer.tsx",
+      "type": "component",
+      "description": "Footer — legal links (privacy policy, legal notices), copyright, language switcher, Mark Systems branding",
+      "priority": "high"
+    },
+    {
+      "path": "components/layout/CommandPalette.tsx",
+      "type": "component",
+      "description": "CMD+K command palette — global search across experiments, notes, and settings. Built on Radix Dialog with custom search input, keyboard navigation, grouped results",
+      "dependencies": ["@radix-ui/react-dialog"],
+      "priority": "high"
+    },
+    {
+      "path": "components/layout/CommandPalette.stories.tsx",
+      "type": "story",
+      "description": "CommandPalette stories — empty, with results, keyboard navigation",
+      "priority": "medium"
+    },
+    {
+      "path": "components/layout/Breadcrumbs.tsx",
+      "type": "component",
+      "description": "Breadcrumb navigation — auto-generated from route segments, i18n-aware labels, truncation for deep paths, schema.org BreadcrumbList structured data",
+      "props": ["items"],
+      "priority": "high"
+    },
+    {
+      "path": "components/layout/MobileNav.tsx",
+      "type": "component",
+      "description": "Bottom navigation for mobile (<768px) — 5 icon items matching sidebar, active indicator, bottom-sheet drawer for secondary navigation",
+      "priority": "high"
+    },
+    {
+      "path": "components/layout/AppShell.tsx",
+      "type": "component",
+      "description": "App shell wrapper — orchestrates Sidebar + Header + main content area + MobileNav. Handles responsive layout switching (sidebar on desktop, bottom nav on mobile)",
+      "priority": "critical"
+    },
+
+    {
+      "path": "components/experiments/ExperimentCard.tsx",
+      "type": "component",
+      "description": "Experiment preview card — thumbnail, title, category badge, status badge, theme-aware hover animation (lift + shadow), link to detail page",
+      "props": ["experiment", "viewMode"],
+      "priority": "critical"
+    },
+    {
+      "path": "components/experiments/ExperimentCard.stories.tsx",
+      "type": "story",
+      "description": "ExperimentCard stories — grid view, list view, various statuses, per-theme",
+      "priority": "high"
+    },
+    {
+      "path": "components/experiments/ExperimentCard.test.tsx",
+      "type": "test",
+      "description": "ExperimentCard tests — renders metadata, link navigation, status badge display",
+      "priority": "high"
+    },
+    {
+      "path": "components/experiments/ExperimentGrid.tsx",
+      "type": "component",
+      "description": "Experiment grid/list layout — responsive grid with Framer Motion layout animations, stagger on enter, view mode toggle (grid/list)",
+      "props": ["experiments", "viewMode"],
+      "dependencies": ["framer-motion"],
+      "priority": "critical"
+    },
+    {
+      "path": "components/experiments/PropsPlayground.tsx",
+      "type": "component",
+      "description": "Interactive props playground — auto-generates controls from TypeScript interface (toggle, select, text input, color picker per prop type), live preview updates",
+      "props": ["propsSchema", "onPropsChange"],
+      "priority": "high"
+    },
+    {
+      "path": "components/experiments/AutoDocsPanel.tsx",
+      "type": "component",
+      "description": "Auto-documentation panel — renders props table, usage examples, dependencies, bundle size from experiment metadata.json. Tabbed interface (Overview, Props, Usage, Pricing)",
+      "props": ["metadata"],
+      "priority": "high"
+    },
+    {
+      "path": "components/experiments/CodePreview.tsx",
+      "type": "component",
+      "description": "Code preview panel — syntax highlighted source code of the experiment component, copy button, filename tab, line numbers",
+      "props": ["code", "language", "filename"],
+      "priority": "high"
+    },
+    {
+      "path": "components/experiments/ExperimentSearchBar.tsx",
+      "type": "component",
+      "description": "Search and filter bar — text search with debounce, category chip filters, status filters, sort by (date, name, status)",
+      "props": ["onSearch", "onFilter", "onSort"],
+      "priority": "high"
+    },
+    {
+      "path": "components/experiments/ViewToggle.tsx",
+      "type": "component",
+      "description": "Grid/List view toggle — persists preference to localStorage, built on Radix ToggleGroup",
+      "props": ["viewMode", "onViewModeChange"],
+      "priority": "medium"
+    },
+
+    {
+      "path": "components/notes/TiptapEditor.tsx",
+      "type": "component",
+      "description": "Tiptap rich-text editor — client-only (dynamic import), slash commands, inline floating toolbar (bold, italic, code, link, heading — max 7 actions), code blocks with syntax highlighting via lowlight, task lists, autosave with debounce (300ms)",
+      "dependencies": ["@tiptap/react", "@tiptap/starter-kit", "@tiptap/extension-placeholder", "@tiptap/extension-link", "@tiptap/extension-code-block-lowlight", "@tiptap/extension-task-list", "@tiptap/extension-task-item"],
+      "priority": "critical"
+    },
+    {
+      "path": "components/notes/TiptapEditor.stories.tsx",
+      "type": "story",
+      "description": "TiptapEditor stories — empty, with content, with slash command open, per-theme",
+      "priority": "high"
+    },
+    {
+      "path": "components/notes/TiptapEditor.test.tsx",
+      "type": "test",
+      "description": "TiptapEditor tests — renders, types text, applies formatting, autosave triggers",
+      "priority": "high"
+    },
+    {
+      "path": "components/notes/MDXViewer.tsx",
+      "type": "component",
+      "description": "MDX rendered view — compiles and renders MDX content with custom component mapping (headings, code blocks, links, images all themed), frontmatter display",
+      "dependencies": ["next-mdx-remote"],
+      "priority": "critical"
+    },
+    {
+      "path": "components/notes/NoteSidebar.tsx",
+      "type": "component",
+      "description": "Notes sidebar panel — note listing with search, tag filtering, sort by date/title, create new note button, active note highlight",
+      "props": ["notes", "activeNoteId", "onSelectNote"],
+      "priority": "high"
+    },
+    {
+      "path": "components/notes/NoteCard.tsx",
+      "type": "component",
+      "description": "Note list item — title, excerpt, date, tags, linked experiment indicator",
+      "props": ["note", "active"],
+      "priority": "high"
+    },
+    {
+      "path": "components/notes/SlashCommandMenu.tsx",
+      "type": "component",
+      "description": "Tiptap slash command dropdown — triggered by '/', lists available block types (heading, list, code, task, divider), keyboard navigable",
+      "priority": "high"
+    },
+    {
+      "path": "components/notes/FloatingToolbar.tsx",
+      "type": "component",
+      "description": "Inline floating toolbar — appears on text selection, max 7 actions (bold, italic, code, link, heading toggle, strikethrough, clear formatting)",
+      "priority": "high"
+    },
+
+    {
+      "path": "components/showroom/ShowroomCard.tsx",
+      "type": "component",
+      "description": "Showroom gallery card — live preview thumbnail, title, value proposition, pricing badge, 'Request this feature' CTA button",
+      "props": ["experiment", "theme"],
+      "priority": "critical"
+    },
+    {
+      "path": "components/showroom/ShowroomCard.stories.tsx",
+      "type": "story",
+      "description": "ShowroomCard stories — with pricing, without pricing, various themes",
+      "priority": "high"
+    },
+    {
+      "path": "components/showroom/LivePreview.tsx",
+      "type": "component",
+      "description": "Isolated live preview frame — renders experiment component in a scoped container with independent theme, viewport toggle (375/768/1280), fullscreen mode button",
+      "props": ["experimentId", "theme", "viewport"],
+      "priority": "critical"
+    },
+    {
+      "path": "components/showroom/ThemeShowdown.tsx",
+      "type": "component",
+      "description": "Side-by-side theme comparison — renders same experiment in all 4 themes simultaneously, responsive grid (2x2 or 1x4)",
+      "props": ["experimentId"],
+      "priority": "high"
+    },
+    {
+      "path": "components/showroom/PresentationMode.tsx",
+      "type": "component",
+      "description": "Fullscreen presentation mode — no sidebar/chrome, keyboard navigation (arrow keys for next/prev experiment), escape to exit, theme selector overlay",
+      "props": ["experiments", "startIndex"],
+      "priority": "medium"
+    },
+    {
+      "path": "components/showroom/ExperimentBusinessCard.tsx",
+      "type": "component",
+      "description": "One-page experiment summary — live preview, props doc summary, pricing tiers, Business-Strategist-written value proposition. Unique differentiator content piece.",
+      "props": ["experiment", "businessCase"],
+      "priority": "high"
+    },
+    {
+      "path": "components/showroom/QRCodePreview.tsx",
+      "type": "component",
+      "description": "QR code generator — generates QR code linking to mobile-optimized experiment preview URL",
+      "props": ["experimentUrl"],
+      "priority": "low"
+    },
+    {
+      "path": "components/showroom/ViewportToggle.tsx",
+      "type": "component",
+      "description": "Viewport size toggle — 375px (mobile), 768px (tablet), 1280px (desktop) presets for live preview",
+      "props": ["viewport", "onViewportChange"],
+      "priority": "medium"
+    },
+
+    {
+      "path": "components/agents/ChatPanel.tsx",
+      "type": "component",
+      "description": "Agent chat panel — streaming message display, input area with submit, agent avatar and name, message history, auto-scroll, theme-aware message bubbles",
+      "props": ["agentId", "systemPrompt"],
+      "dependencies": ["ai"],
+      "priority": "critical"
+    },
+    {
+      "path": "components/agents/ChatPanel.stories.tsx",
+      "type": "story",
+      "description": "ChatPanel stories — empty, with messages, streaming state, per-agent",
+      "priority": "high"
+    },
+    {
+      "path": "components/agents/ChatPanel.test.tsx",
+      "type": "test",
+      "description": "ChatPanel tests — renders messages, handles submit, displays streaming indicator",
+      "priority": "high"
+    },
+    {
+      "path": "components/agents/AgentCard.tsx",
+      "type": "component",
+      "description": "Agent summary card — avatar, name, 1-line description, capability list (5-7 bullets), status indicator (online/busy/offline), open chat action",
+      "props": ["agent"],
+      "priority": "high"
+    },
+    {
+      "path": "components/agents/MessageBubble.tsx",
+      "type": "component",
+      "description": "Chat message bubble — user vs agent styling, MDX rendering for agent responses (code blocks, lists), timestamp, copy button",
+      "props": ["message", "role", "timestamp"],
+      "priority": "high"
+    },
+    {
+      "path": "components/agents/StreamingIndicator.tsx",
+      "type": "component",
+      "description": "Streaming response indicator — animated dots or cursor, shown while agent is generating response",
+      "priority": "medium"
+    },
+
+    {
+      "path": "components/legal/CookieConsent.tsx",
+      "type": "component",
+      "description": "Loi 25 cookie consent banner — opt-in by default, accept/refuse/customize buttons, stores consent in cookie (strict SameSite), blocks analytics until accepted",
+      "props": ["onAccept", "onRefuse", "onCustomize"],
+      "priority": "critical"
+    },
+    {
+      "path": "components/legal/CookieConsent.test.tsx",
+      "type": "test",
+      "description": "CookieConsent tests — renders banner, handles accept/refuse, persists cookie, respects existing consent",
+      "priority": "high"
+    },
+    {
+      "path": "components/legal/ConsentPreferences.tsx",
+      "type": "component",
+      "description": "Cookie preferences modal — granular consent toggles (necessary, analytics, functional), save preferences button, linked from consent banner 'customize'",
+      "props": ["preferences", "onSave"],
+      "priority": "high"
+    },
+
+    {
+      "path": "config/themes/bento.css",
+      "type": "theme",
+      "description": "Bento theme CSS custom properties — grid-focused layout tokens, editorial card borders (1.5px), warm surface colors, dark-first with light sepia variant",
+      "priority": "critical"
+    },
+    {
+      "path": "config/themes/cyberpunk.css",
+      "type": "theme",
+      "description": "Cyberpunk theme CSS custom properties — background #05050A, neon cyan #00F5FF, violet #BF5AF2, green #39FF14, JetBrains Mono headings, glow borders, scanlines, dark-only enforced",
+      "priority": "critical"
+    },
+    {
+      "path": "config/themes/glassmorphism.css",
+      "type": "theme",
+      "description": "Glassmorphism theme CSS custom properties — translucent surfaces (rgba 0.04-0.08), backdrop-blur 20px, chromatic indigo shadows, parallax depth tokens, dark-only",
+      "priority": "critical"
+    },
+    {
+      "path": "config/themes/minimalist.css",
+      "type": "theme",
+      "description": "Minimalist theme CSS custom properties — baseline theme, indigo primary palette (#6366F1), maximum whitespace, minimal decorative elements, full dark + light mode support",
+      "priority": "critical"
+    },
+    {
+      "path": "config/themes/tokens.css",
+      "type": "theme",
+      "description": "Global design tokens shared across all themes — spacing scale, border-radius scale, typography scale (1.25 Major Third from 14px), z-index scale, transition durations, breakpoints",
+      "priority": "critical"
+    },
+
+    {
+      "path": "config/agents/devops.ts",
+      "type": "config",
+      "description": "DevOps Agent system prompt and configuration — ~300 words defining role as infrastructure/CI/CD specialist, constraints (250 lines max, Vercel-first), capability definitions",
+      "priority": "high"
+    },
+    {
+      "path": "config/agents/ui-generator.ts",
+      "type": "config",
+      "description": "UI-Generator Agent system prompt and configuration — ~400 words defining role as component designer, knowledge of 4 themes, Tailwind CSS 4 + Framer Motion output constraints",
+      "priority": "high"
+    },
+    {
+      "path": "config/agents/business-strategist.ts",
+      "type": "config",
+      "description": "Business-Strategist Agent system prompt and configuration — ~350 words defining role as product/market analyst, pricing generation, go-to-market brief output format",
+      "priority": "high"
+    },
+    {
+      "path": "config/agents/index.ts",
+      "type": "config",
+      "description": "Agent registry — exports all agent configs with ID, name, description, system prompt, capabilities array, model configuration",
+      "priority": "high"
+    },
+
+    {
+      "path": "experiments/_template/component.tsx",
+      "type": "template",
+      "description": "Experiment component template — standard boilerplate for new experiments: typed props interface, default export, max 250 lines, theme-aware styling via CSS custom properties",
+      "priority": "critical"
+    },
+    {
+      "path": "experiments/_template/component.stories.tsx",
+      "type": "template",
+      "description": "Experiment Storybook story template — default story, variants, theme decorator, controls matching props interface",
+      "priority": "high"
+    },
+    {
+      "path": "experiments/_template/component.test.tsx",
+      "type": "template",
+      "description": "Experiment test template — render test, props test, accessibility test (axe-core), snapshot test",
+      "priority": "high"
+    },
+    {
+      "path": "experiments/_template/metadata.json",
+      "type": "template",
+      "description": "Experiment metadata template — title, category, status (draft|beta|stable|deprecated), description, tags, theme_support array, created date, author, bundle_size, pricing config",
+      "priority": "critical"
+    },
+
+    {
+      "path": "hooks/useTheme.ts",
+      "type": "hook",
+      "description": "Extended theme hook — wraps next-themes useTheme with typed theme values (bento|glassmorphism|minimalist|cyberpunk), dark-mode enforcement for cyberpunk, theme-specific CSS class helpers",
+      "priority": "critical"
+    },
+    {
+      "path": "hooks/useAgent.ts",
+      "type": "hook",
+      "description": "Agent chat hook — wraps Vercel AI SDK useChat with agent-specific config, handles streaming, error states, rate limiting feedback, message history management",
+      "dependencies": ["ai"],
+      "priority": "critical"
+    },
+    {
+      "path": "hooks/useExperiments.ts",
+      "type": "hook",
+      "description": "Experiments data hook — fetches and caches experiment metadata, supports filtering by category/status/tag, sorting, search",
+      "priority": "high"
+    },
+    {
+      "path": "hooks/useAutosave.ts",
+      "type": "hook",
+      "description": "Autosave hook — debounced save (300ms), localStorage persistence, conflict detection for multi-tab editing, save status indicator (saving|saved|error)",
+      "priority": "high"
+    },
+    {
+      "path": "hooks/useCommandPalette.ts",
+      "type": "hook",
+      "description": "Command palette hook — CMD+K listener, search index across experiments + notes + settings, keyboard navigation state",
+      "priority": "high"
+    },
+    {
+      "path": "hooks/useViewPreference.ts",
+      "type": "hook",
+      "description": "View preference hook — persists grid/list view mode to localStorage, returns current mode and toggle function",
+      "priority": "medium"
+    },
+    {
+      "path": "hooks/useMediaQuery.ts",
+      "type": "hook",
+      "description": "Responsive media query hook — SSR-safe, returns boolean for breakpoint matches, used for mobile nav switching",
+      "priority": "medium"
+    },
+
+    {
+      "path": "lib/ai/create-agent.ts",
+      "type": "utility",
+      "description": "Agent factory — creates Vercel AI SDK agent instance from agent config, configures model, temperature, max tokens, streaming options",
+      "dependencies": ["ai", "@ai-sdk/openai"],
+      "priority": "critical"
+    },
+    {
+      "path": "lib/ai/rate-limiter.ts",
+      "type": "utility",
+      "description": "Agent rate limiter — token bucket per agent per session, configurable burst limit and refill rate, returns 429 with retry-after header",
+      "priority": "high"
+    },
+    {
+      "path": "lib/ai/structured-output.ts",
+      "type": "utility",
+      "description": "Zod schemas for agent structured outputs — pricing tiers, business case, component code, deployment config. Used with Vercel AI SDK structured output mode.",
+      "dependencies": ["zod"],
+      "priority": "high"
+    },
+
+    {
+      "path": "lib/mdx/compile.ts",
+      "type": "utility",
+      "description": "MDX compilation utility — compiles MDX string to renderable component, configures remark/rehype plugins, frontmatter extraction",
+      "dependencies": ["next-mdx-remote"],
+      "priority": "critical"
+    },
+    {
+      "path": "lib/mdx/components.tsx",
+      "type": "utility",
+      "description": "MDX component registry — maps MDX elements (h1-h6, p, a, code, img, table) to themed UI components, ensures consistent rendering across notes and auto-docs",
+      "priority": "critical"
+    },
+    {
+      "path": "lib/mdx/frontmatter.ts",
+      "type": "utility",
+      "description": "Frontmatter parser — extracts and validates frontmatter from MDX files using Zod schema, returns typed metadata object",
+      "dependencies": ["zod"],
+      "priority": "high"
+    },
+
+    {
+      "path": "lib/utils/cn.ts",
+      "type": "utility",
+      "description": "Class name utility — merges Tailwind classes with conflict resolution (clsx + tailwind-merge pattern)",
+      "priority": "critical"
+    },
+    {
+      "path": "lib/utils/format-date.ts",
+      "type": "utility",
+      "description": "Date formatting utility — locale-aware date formatting (FR/EN), relative time ('il y a 2h' / '2h ago')",
+      "priority": "medium"
+    },
+    {
+      "path": "lib/utils/debounce.ts",
+      "type": "utility",
+      "description": "Debounce utility — generic debounce function used by autosave, search, and resize handlers",
+      "priority": "medium"
+    },
+    {
+      "path": "lib/utils/generate-nonce.ts",
+      "type": "utility",
+      "description": "CSP nonce generator — crypto.randomUUID() based nonce for Content-Security-Policy header, used in middleware",
+      "priority": "high"
+    },
+
+    {
+      "path": "lib/validations/experiment.ts",
+      "type": "validation",
+      "description": "Experiment metadata Zod schema — validates metadata.json structure: title, category, status enum, tags array, theme_support, pricing optional",
+      "dependencies": ["zod"],
+      "priority": "high"
+    },
+    {
+      "path": "lib/validations/note.ts",
+      "type": "validation",
+      "description": "Note Zod schema — validates note frontmatter: title, tags, linked experiments, created/updated dates, visibility (public/private)",
+      "dependencies": ["zod"],
+      "priority": "high"
+    },
+    {
+      "path": "lib/validations/contact.ts",
+      "type": "validation",
+      "description": "Contact form Zod schema — validates name, email, message, honeypot field for spam prevention",
+      "dependencies": ["zod"],
+      "priority": "medium"
+    },
+    {
+      "path": "lib/validations/agent.ts",
+      "type": "validation",
+      "description": "Agent input/output Zod schemas — validates user prompt input (max length, sanitization), agent response structure per agent type",
+      "dependencies": ["zod"],
+      "priority": "high"
+    },
+
+    {
+      "path": "messages/fr.json",
+      "type": "i18n",
+      "description": "French translation dictionary — ~363 keys organized by namespace (dashboard, experiments, notes, showroom, settings, legal, agents, common, errors, toasts)",
+      "priority": "critical"
+    },
+    {
+      "path": "messages/en.json",
+      "type": "i18n",
+      "description": "English translation dictionary — ~363 keys, exact mirror of fr.json structure",
+      "priority": "critical"
+    },
+
+    {
+      "path": "public/favicon.ico",
+      "type": "asset",
+      "description": "Favicon — Mark Systems logo, multi-size ICO",
+      "priority": "high"
+    },
+    {
+      "path": "public/og-image.png",
+      "type": "asset",
+      "description": "Open Graph default image — 1200x630, Mark Systems branding, used in social media previews",
+      "priority": "medium"
+    },
+
+    {
+      "path": "styles/globals.css",
+      "type": "stylesheet",
+      "description": "Global CSS entrypoint — Tailwind v4 @import directives, @theme token definitions referencing CSS custom properties, base reset, scrollbar styling, selection colors, prefers-reduced-motion global disable",
+      "priority": "critical"
+    },
+
+    {
+      "path": "types/experiment.ts",
+      "type": "type",
+      "description": "Experiment types — Experiment, ExperimentMetadata, ExperimentCategory, ExperimentStatus (draft|beta|stable|deprecated), ExperimentPricing, ExperimentThemeSupport",
+      "priority": "critical"
+    },
+    {
+      "path": "types/note.ts",
+      "type": "type",
+      "description": "Note types — Note, NoteFrontmatter, NoteVisibility (public|private), NoteTag, LinkedExperiment",
+      "priority": "critical"
+    },
+    {
+      "path": "types/agent.ts",
+      "type": "type",
+      "description": "Agent types — AgentId ('devops'|'ui-generator'|'business-strategist'), AgentConfig, AgentMessage, AgentCapability, AgentStatus",
+      "priority": "critical"
+    },
+    {
+      "path": "types/theme.ts",
+      "type": "type",
+      "description": "Theme types — ThemeName ('bento'|'glassmorphism'|'minimalist'|'cyberpunk'), ThemeMode ('light'|'dark'), ThemeTokens (typed CSS custom property keys)",
+      "priority": "critical"
+    },
+    {
+      "path": "types/i18n.ts",
+      "type": "type",
+      "description": "i18n types — Locale ('fr'|'en'), typed message keys (auto-generated from fr.json structure via next-intl)",
+      "priority": "high"
+    },
+    {
+      "path": "types/navigation.ts",
+      "type": "type",
+      "description": "Navigation types — NavItem, BreadcrumbItem, CommandPaletteResult, ViewMode ('grid'|'list')",
+      "priority": "high"
+    },
+
+    {
+      "path": "middleware.ts",
+      "type": "middleware",
+      "description": "Next.js middleware — i18n locale detection and routing (next-intl), CSP nonce generation and header injection, theme cookie reading for FOWT prevention, security headers application",
+      "dependencies": ["next-intl/middleware"],
+      "priority": "critical"
+    },
+    {
+      "path": "i18n/request.ts",
+      "type": "config",
+      "description": "next-intl request configuration — getRequestConfig with locale validation, message loading from /messages/, time zone and number format defaults",
+      "dependencies": ["next-intl"],
+      "priority": "critical"
+    },
+    {
+      "path": "i18n/routing.ts",
+      "type": "config",
+      "description": "next-intl routing configuration — defineRouting with locales ['fr', 'en'], defaultLocale 'fr', pathnames mapping for localized slugs",
+      "dependencies": ["next-intl"],
+      "priority": "critical"
+    },
+    {
+      "path": "i18n/navigation.ts",
+      "type": "config",
+      "description": "next-intl navigation utilities — createNavigation export providing Link, redirect, usePathname, useRouter with locale-aware behavior",
+      "dependencies": ["next-intl"],
+      "priority": "critical"
+    },
+
+    {
+      "path": "next.config.mjs",
+      "type": "config",
+      "description": "Next.js configuration — App Router, poweredByHeader: false, security headers (X-Frame-Options DENY, X-Content-Type-Options nosniff, Referrer-Policy, HSTS, Permissions-Policy), next-intl plugin, image domains, experimental features",
+      "priority": "critical"
+    },
+    {
+      "path": "tsconfig.json",
+      "type": "config",
+      "description": "TypeScript configuration — strict: true, noUncheckedIndexedAccess: true, exactOptionalPropertyTypes: true, paths alias @/ for absolute imports, include/exclude patterns",
+      "priority": "critical"
+    },
+    {
+      "path": "package.json",
+      "type": "config",
+      "description": "Package manifest — dependencies, devDependencies, scripts (dev, build, start, lint, test, storybook, storybook:build)",
+      "priority": "critical"
+    },
+    {
+      "path": ".eslintrc.json",
+      "type": "config",
+      "description": "ESLint configuration — extends eslint-config-next and plugin:jsx-a11y/recommended, custom rules for import ordering and unused variables",
+      "priority": "critical"
+    },
+    {
+      "path": ".prettierrc",
+      "type": "config",
+      "description": "Prettier configuration — singleQuote, trailingComma 'all', semi true, tabWidth 2, printWidth 100",
+      "priority": "high"
+    },
+    {
+      "path": ".env.example",
+      "type": "config",
+      "description": "Environment variables template — OPENAI_API_KEY (for agents), NEXT_PUBLIC_SITE_URL, NEXT_PUBLIC_DEFAULT_LOCALE. No actual secrets committed.",
+      "priority": "critical"
+    },
+    {
+      "path": ".env.local",
+      "type": "config",
+      "description": "Local environment variables — gitignored, developer populates from .env.example",
+      "priority": "critical"
+    },
+    {
+      "path": ".gitignore",
+      "type": "config",
+      "description": "Git ignore — node_modules, .next, .env.local, .env*.local, storybook-static, coverage, .vercel",
+      "priority": "critical"
+    },
+    {
+      "path": "vitest.config.ts",
+      "type": "config",
+      "description": "Vitest configuration — jsdom environment, setup files, path aliases matching tsconfig, coverage thresholds",
+      "priority": "high"
+    },
+    {
+      "path": "vitest.setup.ts",
+      "type": "config",
+      "description": "Vitest setup — @testing-library/jest-dom matchers, mock next/router, mock next-intl, mock next-themes",
+      "priority": "high"
+    }
+  ],
+  "section_manifest": [
+    {
+      "id": "S-001",
+      "page": "dashboard",
+      "page_route": "/[locale]",
+      "name": "Dashboard Metrics",
+      "component_name": "DashboardMetrics",
+      "i18n_namespace": "dashboard.metrics",
+      "order": 1,
+      "status": "planned",
+      "description": "Hero metrics panel — total experiments count, notes count, agent activity summary, quick stats",
+      "dimensions": ["D1", "D5", "D6"],
+      "priority": "critical",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-002",
+      "page": "dashboard",
+      "page_route": "/[locale]",
+      "name": "Recent Experiments",
+      "component_name": "RecentExperiments",
+      "i18n_namespace": "dashboard.recentExperiments",
+      "order": 2,
+      "status": "planned",
+      "description": "Bento grid of recently updated/created experiments with quick preview thumbnails",
+      "dimensions": ["D1", "D5", "D6"],
+      "priority": "critical",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-003",
+      "page": "dashboard",
+      "page_route": "/[locale]",
+      "name": "Quick Actions",
+      "component_name": "QuickActions",
+      "i18n_namespace": "dashboard.quickActions",
+      "order": 3,
+      "status": "planned",
+      "description": "Quick action buttons — new experiment, new note, open showroom, agent panel",
+      "dimensions": ["D1", "D6"],
+      "priority": "high",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-004",
+      "page": "dashboard",
+      "page_route": "/[locale]",
+      "name": "Agent Status Panel",
+      "component_name": "AgentStatusPanel",
+      "i18n_namespace": "dashboard.agentStatus",
+      "order": 4,
+      "status": "planned",
+      "description": "Agent activity feed — status of 3 agents (online/busy/offline), recent agent interactions summary",
+      "dimensions": ["D1", "D5", "D6"],
+      "priority": "high",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-005",
+      "page": "experiments",
+      "page_route": "/[locale]/experiments",
+      "name": "Experiment Search Bar",
+      "component_name": "ExperimentSearchBar",
+      "i18n_namespace": "experiments.searchBar",
+      "order": 1,
+      "status": "planned",
+      "description": "Search input with debounce + category chip filters + status filters + sort controls",
+      "dimensions": ["D1", "D6", "D7"],
+      "priority": "critical",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-006",
+      "page": "experiments",
+      "page_route": "/[locale]/experiments",
+      "name": "Category Filter",
+      "component_name": "CategoryFilter",
+      "i18n_namespace": "experiments.categoryFilter",
+      "order": 2,
+      "status": "planned",
+      "description": "Category grid cards for browsing experiments by category",
+      "dimensions": ["D1", "D6"],
+      "priority": "high",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-007",
+      "page": "experiments",
+      "page_route": "/[locale]/experiments",
+      "name": "Experiment Grid",
+      "component_name": "ExperimentGrid",
+      "i18n_namespace": "experiments.grid",
+      "order": 3,
+      "status": "planned",
+      "description": "Responsive grid/list of experiment cards with Framer Motion stagger animation, view toggle",
+      "dimensions": ["D1", "D3", "D5", "D6"],
+      "priority": "critical",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-008",
+      "page": "experiment-detail",
+      "page_route": "/[locale]/experiments/[category]/[feature]",
+      "name": "Experiment Demo",
+      "component_name": "ExperimentDemo",
+      "i18n_namespace": "experiments.demo",
+      "order": 1,
+      "status": "planned",
+      "description": "Live demo area rendering the experiment component with interactive controls",
+      "dimensions": ["D1", "D3", "D5", "D6"],
+      "priority": "critical",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-009",
+      "page": "experiment-detail",
+      "page_route": "/[locale]/experiments/[category]/[feature]",
+      "name": "Props Playground",
+      "component_name": "PropsPlayground",
+      "i18n_namespace": "experiments.propsPlayground",
+      "order": 2,
+      "status": "planned",
+      "description": "Interactive props control panel — auto-generated from TypeScript interface, real-time preview updates",
+      "dimensions": ["D1", "D6"],
+      "priority": "high",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-010",
+      "page": "experiment-detail",
+      "page_route": "/[locale]/experiments/[category]/[feature]",
+      "name": "Code Preview",
+      "component_name": "CodePreview",
+      "i18n_namespace": "experiments.codePreview",
+      "order": 3,
+      "status": "planned",
+      "description": "Syntax-highlighted source code panel with copy button and file tabs",
+      "dimensions": ["D1", "D6"],
+      "priority": "high",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-011",
+      "page": "experiment-detail",
+      "page_route": "/[locale]/experiments/[category]/[feature]",
+      "name": "Auto Docs Panel",
+      "component_name": "AutoDocsPanel",
+      "i18n_namespace": "experiments.autoDocs",
+      "order": 4,
+      "status": "planned",
+      "description": "Auto-generated documentation — props table, usage examples, dependencies, bundle size. Tabbed (Overview, Props, Usage, Pricing)",
+      "dimensions": ["D1", "D2", "D6", "D7"],
+      "priority": "high",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-012",
+      "page": "experiment-detail",
+      "page_route": "/[locale]/experiments/[category]/[feature]",
+      "name": "Pricing Badge",
+      "component_name": "PricingBadge",
+      "i18n_namespace": "experiments.pricing",
+      "order": 5,
+      "status": "planned",
+      "description": "Pricing tier display — free/pro/enterprise badges with feature comparison",
+      "dimensions": ["D1", "D5"],
+      "priority": "medium",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-013",
+      "page": "experiment-detail",
+      "page_route": "/[locale]/experiments/[category]/[feature]",
+      "name": "Theme Showdown",
+      "component_name": "ThemeShowdown",
+      "i18n_namespace": "experiments.themeShowdown",
+      "order": 6,
+      "status": "planned",
+      "description": "Side-by-side comparison of the experiment rendered in all 4 themes (2x2 grid or 1x4 strip)",
+      "dimensions": ["D1", "D5", "D6"],
+      "priority": "high",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-014",
+      "page": "notes",
+      "page_route": "/[locale]/notes",
+      "name": "Note Sidebar",
+      "component_name": "NoteSidebar",
+      "i18n_namespace": "notes.sidebar",
+      "order": 1,
+      "status": "planned",
+      "description": "Notes listing sidebar — search, tag filter, sort, create button, active note highlight",
+      "dimensions": ["D1", "D6"],
+      "priority": "critical",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-015",
+      "page": "notes",
+      "page_route": "/[locale]/notes",
+      "name": "Note Viewer",
+      "component_name": "NoteViewer",
+      "i18n_namespace": "notes.viewer",
+      "order": 2,
+      "status": "planned",
+      "description": "MDX rendered view of selected note — themed typography, code blocks, linked experiments",
+      "dimensions": ["D1", "D5", "D6"],
+      "priority": "critical",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-016",
+      "page": "notes",
+      "page_route": "/[locale]/notes",
+      "name": "Note Search",
+      "component_name": "NoteSearch",
+      "i18n_namespace": "notes.search",
+      "order": 3,
+      "status": "planned",
+      "description": "Full-text search across notes content with highlighted results",
+      "dimensions": ["D1", "D6"],
+      "priority": "high",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-017",
+      "page": "note-detail",
+      "page_route": "/[locale]/notes/[noteId]",
+      "name": "Note Editor",
+      "component_name": "NoteEditor",
+      "i18n_namespace": "notes.editor",
+      "order": 1,
+      "status": "planned",
+      "description": "Tiptap editor — slash commands, floating toolbar, code blocks, task lists, autosave",
+      "dimensions": ["D1", "D6"],
+      "priority": "critical",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-018",
+      "page": "note-detail",
+      "page_route": "/[locale]/notes/[noteId]",
+      "name": "Note Frontmatter",
+      "component_name": "NoteFrontmatter",
+      "i18n_namespace": "notes.frontmatter",
+      "order": 2,
+      "status": "planned",
+      "description": "Structured frontmatter form — title, tags, visibility, linked experiments (not raw YAML)",
+      "dimensions": ["D1", "D6"],
+      "priority": "high",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-019",
+      "page": "note-detail",
+      "page_route": "/[locale]/notes/[noteId]",
+      "name": "Note Backlinks",
+      "component_name": "NoteBacklinks",
+      "i18n_namespace": "notes.backlinks",
+      "order": 3,
+      "status": "planned",
+      "description": "Bi-directional links panel — shows experiments and other notes that reference this note",
+      "dimensions": ["D1", "D6"],
+      "priority": "medium",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-020",
+      "page": "showroom",
+      "page_route": "/[locale]/showroom",
+      "name": "Showroom Hero",
+      "component_name": "ShowroomHero",
+      "i18n_namespace": "showroom.hero",
+      "order": 1,
+      "status": "planned",
+      "description": "Showroom intro section — headline, value proposition, presentation mode CTA",
+      "dimensions": ["D1", "D5", "D6", "D7"],
+      "priority": "critical",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-021",
+      "page": "showroom",
+      "page_route": "/[locale]/showroom",
+      "name": "Showroom Gallery",
+      "component_name": "ShowroomGallery",
+      "i18n_namespace": "showroom.gallery",
+      "order": 2,
+      "status": "planned",
+      "description": "Client-facing gallery grid — ShowroomCards with live previews, CTAs, pricing badges",
+      "dimensions": ["D1", "D5", "D6", "D7"],
+      "priority": "critical",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-022",
+      "page": "showroom",
+      "page_route": "/[locale]/showroom",
+      "name": "Showroom Theme Selector",
+      "component_name": "ShowroomThemeSelector",
+      "i18n_namespace": "showroom.themeSelector",
+      "order": 3,
+      "status": "planned",
+      "description": "Theme picker scoped to showroom previews — 4-card visual grid, does not affect global app theme",
+      "dimensions": ["D1", "D5", "D6"],
+      "priority": "high",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-023",
+      "page": "showroom-detail",
+      "page_route": "/[locale]/showroom/[experimentId]",
+      "name": "Showroom Preview",
+      "component_name": "ShowroomPreview",
+      "i18n_namespace": "showroom.preview",
+      "order": 1,
+      "status": "planned",
+      "description": "Fullscreen experiment preview with viewport toggle and theme switcher",
+      "dimensions": ["D1", "D5", "D6"],
+      "priority": "high",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-024",
+      "page": "showroom-detail",
+      "page_route": "/[locale]/showroom/[experimentId]",
+      "name": "Experiment Business Card",
+      "component_name": "ExperimentBusinessCard",
+      "i18n_namespace": "showroom.businessCard",
+      "order": 2,
+      "status": "planned",
+      "description": "One-page experiment summary — preview, docs, pricing, value prop. Unique differentiator.",
+      "dimensions": ["D1", "D2", "D5", "D6", "D7"],
+      "priority": "high",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-025",
+      "page": "showroom-detail",
+      "page_route": "/[locale]/showroom/[experimentId]",
+      "name": "Showroom CTA",
+      "component_name": "ShowroomCTA",
+      "i18n_namespace": "showroom.cta",
+      "order": 3,
+      "status": "planned",
+      "description": "Call-to-action panel — 'Request this feature' button, contact form trigger, QR code for mobile",
+      "dimensions": ["D1", "D5", "D6"],
+      "priority": "high",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-026",
+      "page": "settings",
+      "page_route": "/[locale]/settings",
+      "name": "Theme Picker",
+      "component_name": "ThemePicker",
+      "i18n_namespace": "settings.themePicker",
+      "order": 1,
+      "status": "planned",
+      "description": "Visual theme selector — 4 cards with color swatches, active indicator, instant preview",
+      "dimensions": ["D1", "D5", "D6"],
+      "priority": "high",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-027",
+      "page": "settings",
+      "page_route": "/[locale]/settings",
+      "name": "Language Toggle",
+      "component_name": "LanguageToggle",
+      "i18n_namespace": "settings.languageToggle",
+      "order": 2,
+      "status": "planned",
+      "description": "FR/EN language switcher with locale redirect",
+      "dimensions": ["D1", "D5", "D6"],
+      "priority": "high",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-028",
+      "page": "settings",
+      "page_route": "/[locale]/settings",
+      "name": "Agent Config",
+      "component_name": "AgentConfig",
+      "i18n_namespace": "settings.agentConfig",
+      "order": 3,
+      "status": "planned",
+      "description": "Agent configuration panel — model selection, temperature slider, max tokens per agent",
+      "dimensions": ["D1", "D6"],
+      "priority": "medium",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-029",
+      "page": "settings",
+      "page_route": "/[locale]/settings",
+      "name": "Profile Settings",
+      "component_name": "ProfileSettings",
+      "i18n_namespace": "settings.profile",
+      "order": 4,
+      "status": "planned",
+      "description": "User profile preferences — display name, notification preferences",
+      "dimensions": ["D1", "D6"],
+      "priority": "low",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-030",
+      "page": "settings",
+      "page_route": "/[locale]/settings",
+      "name": "Data Export",
+      "component_name": "DataExport",
+      "i18n_namespace": "settings.dataExport",
+      "order": 5,
+      "status": "planned",
+      "description": "Export panel — export experiments + docs + pricing as deliverable package (JSON + MDX)",
+      "dimensions": ["D1", "D6"],
+      "priority": "low",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-031",
+      "page": "privacy-policy",
+      "page_route": "/[locale]/politique-confidentialite",
+      "name": "Privacy Policy Content",
+      "component_name": "PrivacyPolicyContent",
+      "i18n_namespace": "legal.privacyPolicy",
+      "order": 1,
+      "status": "planned",
+      "description": "Full Loi 25 privacy policy — templated MDX with variables from brief-client.json",
+      "dimensions": ["D1", "D8"],
+      "priority": "high",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-032",
+      "page": "legal-notices",
+      "page_route": "/[locale]/mentions-legales",
+      "name": "Legal Notices Content",
+      "component_name": "LegalNoticesContent",
+      "i18n_namespace": "legal.legalNotices",
+      "order": 1,
+      "status": "planned",
+      "description": "Legal notices — company info, hosting, IP, liability. Templated MDX.",
+      "dimensions": ["D1", "D8"],
+      "priority": "high",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-033",
+      "page": "global",
+      "page_route": "*",
+      "name": "Cookie Consent Banner",
+      "component_name": "CookieConsent",
+      "i18n_namespace": "legal.cookieConsent",
+      "order": 1,
+      "status": "planned",
+      "description": "Loi 25 cookie consent — opt-in banner with accept/refuse/customize, blocks analytics until consent",
+      "dimensions": ["D1", "D6", "D8"],
+      "priority": "critical",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-034",
+      "page": "global",
+      "page_route": "*",
+      "name": "App Sidebar Navigation",
+      "component_name": "Sidebar",
+      "i18n_namespace": "common.navigation",
+      "order": 2,
+      "status": "planned",
+      "description": "Icon rail (64px) + expandable panel (200px), 5 primary nav items, collapsible",
+      "dimensions": ["D1", "D5", "D6"],
+      "priority": "critical",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-035",
+      "page": "global",
+      "page_route": "*",
+      "name": "Command Palette",
+      "component_name": "CommandPalette",
+      "i18n_namespace": "common.commandPalette",
+      "order": 3,
+      "status": "planned",
+      "description": "CMD+K global search — experiments, notes, settings, keyboard navigable results",
+      "dimensions": ["D1", "D6"],
+      "priority": "high",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-036",
+      "page": "global",
+      "page_route": "*",
+      "name": "Header Bar",
+      "component_name": "Header",
+      "i18n_namespace": "common.header",
+      "order": 4,
+      "status": "planned",
+      "description": "Top bar — breadcrumbs, search trigger, theme indicator, language toggle",
+      "dimensions": ["D1", "D5", "D6"],
+      "priority": "critical",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-037",
+      "page": "global",
+      "page_route": "*",
+      "name": "Footer",
+      "component_name": "Footer",
+      "i18n_namespace": "common.footer",
+      "order": 5,
+      "status": "planned",
+      "description": "Footer — legal links, copyright, language switcher, branding",
+      "dimensions": ["D1", "D5", "D8"],
+      "priority": "high",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    },
+    {
+      "id": "S-038",
+      "page": "global",
+      "page_route": "*",
+      "name": "Mobile Bottom Navigation",
+      "component_name": "MobileNav",
+      "i18n_namespace": "common.mobileNav",
+      "order": 6,
+      "status": "planned",
+      "description": "Bottom nav for <768px — 5 icon items, bottom-sheet drawer for secondary nav",
+      "dimensions": ["D1", "D6"],
+      "priority": "high",
+      "lifecycle": { "ph1_planned": "2026-04-09T00:00:00Z", "ph2_designed": null, "ph3_content_ready": null, "ph4_built": null, "ph5_audited": null }
+    }
+  ],
+  "total_sections": 38
+}

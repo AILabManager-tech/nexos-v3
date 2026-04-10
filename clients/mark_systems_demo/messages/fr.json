@@ -1,0 +1,446 @@
+{
+  "common": {
+    "siteName": "Mark Systems",
+    "siteDescription": "Le labo web ou chaque experimentation devient un micro-produit.",
+    "nav": {
+      "dashboard": "Tableau de bord",
+      "experiments": "Experiences",
+      "notes": "Notes",
+      "showroom": "Showroom",
+      "settings": "Parametres"
+    },
+    "footer": {
+      "platform": "Plateforme",
+      "resources": "Ressources",
+      "legal": "Legal",
+      "experiments": "Experiences",
+      "notes": "Notes",
+      "showroom": "Showroom",
+      "documentation": "Documentation",
+      "changelog": "Journal des modifications",
+      "storybook": "Storybook",
+      "privacyPolicy": "Politique de confidentialite",
+      "legalNotices": "Mentions legales",
+      "copyright": "\u00a9 {currentYear} Mark Systems Inc. Tous droits reserves."
+    },
+    "actions": {
+      "view": "Voir",
+      "explore": "Explorer",
+      "copy": "Copier",
+      "copied": "Copie !",
+      "close": "Fermer",
+      "back": "Retour",
+      "search": "Rechercher",
+      "filter": "Filtrer",
+      "sort": "Trier",
+      "save": "Enregistrer",
+      "cancel": "Annuler",
+      "delete": "Supprimer",
+      "edit": "Modifier",
+      "create": "Creer",
+      "download": "Telecharger",
+      "export": "Exporter",
+      "share": "Partager",
+      "preview": "Apercu",
+      "fullscreen": "Plein ecran",
+      "exitFullscreen": "Quitter le plein ecran",
+      "submit": "Envoyer",
+      "confirm": "Confirmer",
+      "tryAgain": "Reessayer",
+      "learnMore": "En decouvrir plus",
+      "getStarted": "Commencer"
+    },
+    "consent": {
+      "bannerTitle": "Respect de ta vie privee",
+      "bannerText": "Nous utilisons des temoins (cookies) essentiels pour le fonctionnement du site. Les temoins d'analyse sont actives uniquement avec ton consentement explicite.",
+      "accept": "Tout accepter",
+      "refuse": "Tout refuser",
+      "customize": "Personnaliser",
+      "privacyNotice": "Tes donnees sont protegees conformement a la Loi 25 du Quebec.",
+      "privacyLink": "Consulter notre politique de confidentialite",
+      "categories": {
+        "essential": {
+          "title": "Essentiels",
+          "description": "Necessaires au fonctionnement du site. Ne peuvent pas etre desactives.",
+          "required": true
+        },
+        "analytics": {
+          "title": "Analyse",
+          "description": "Nous aident a comprendre comment tu utilises la plateforme pour l'ameliorer.",
+          "required": false
+        }
+      },
+      "savePreferences": "Enregistrer mes choix",
+      "updatedAt": "Derniere mise a jour : {date}"
+    },
+    "theme": {
+      "label": "Theme",
+      "change": "Changer de theme",
+      "minimalist": "Minimaliste",
+      "bento": "Bento",
+      "glassmorphism": "Glassmorphism",
+      "cyberpunk": "Cyberpunk",
+      "lightMode": "Mode clair",
+      "darkMode": "Mode sombre",
+      "system": "Systeme"
+    },
+    "agents": {
+      "devops": {
+        "name": "Agent DevOps",
+        "description": "Automatisation d'infrastructure et deploiement"
+      },
+      "uiGenerator": {
+        "name": "Agent UI",
+        "description": "Generation de composants visuels"
+      },
+      "businessStrategist": {
+        "name": "Agent Strategie",
+        "description": "Analyse produit et monetisation"
+      },
+      "inputPlaceholder": "Decris ta demande...",
+      "streaming": "En cours de reflexion...",
+      "copyResponse": "Copier la reponse"
+    },
+    "status": {
+      "loading": "Chargement...",
+      "saving": "Enregistrement...",
+      "saved": "Enregistre",
+      "error": "Une erreur est survenue",
+      "success": "Operation reussie",
+      "empty": "Rien ici pour l'instant",
+      "noResults": "Aucun resultat pour \u00ab {query} \u00bb",
+      "offline": "Connexion perdue"
+    },
+    "a11y": {
+      "skipToContent": "Aller au contenu principal",
+      "openMenu": "Ouvrir le menu",
+      "closeMenu": "Fermer le menu",
+      "openCommandPalette": "Ouvrir la palette de commandes",
+      "toggleSidebar": "Basculer la barre laterale",
+      "expandSection": "Developper la section",
+      "collapseSection": "Reduire la section",
+      "newWindow": "Ouvre dans une nouvelle fenetre",
+      "currentPage": "Page actuelle",
+      "breadcrumb": "Fil d'Ariane"
+    },
+    "commandPalette": {
+      "placeholder": "Rechercher des pages, experiences, notes...",
+      "noResults": "Aucun resultat",
+      "sections": {
+        "pages": "Pages",
+        "experiments": "Experiences",
+        "notes": "Notes",
+        "actions": "Actions",
+        "themes": "Themes"
+      }
+    }
+  },
+  "dashboard": {
+    "seo": {
+      "title": "Tableau de bord | Mark Systems",
+      "description": "Ton labo web. Gere tes experiences, notes et agents depuis un seul endroit."
+    },
+    "greeting": "Bon retour dans le labo",
+    "stats": {
+      "experiments": "Experiences",
+      "notes": "Notes",
+      "showroomItems": "Au showroom",
+      "lastUpdated": "Derniere mise a jour"
+    },
+    "recent": {
+      "title": "Reprends ou tu en etais",
+      "empty": "Aucune activite recente. Cree ta premiere experience pour commencer.",
+      "createFirst": "Creer une experience"
+    },
+    "agentStatus": {
+      "title": "Agents",
+      "active": "Actif",
+      "idle": "En attente",
+      "processing": "En traitement",
+      "error": "Erreur"
+    },
+    "activity": {
+      "title": "Activite recente",
+      "experimentCreated": "Experience \u00ab {name} \u00bb creee",
+      "experimentUpdated": "Experience \u00ab {name} \u00bb mise a jour",
+      "noteCreated": "Note \u00ab {name} \u00bb creee",
+      "noteUpdated": "Note \u00ab {name} \u00bb mise a jour",
+      "themeChanged": "Theme change pour {theme}",
+      "agentCompleted": "{agent} a termine une tache",
+      "showroomAdded": "Experience \u00ab {name} \u00bb ajoutee au showroom"
+    }
+  },
+  "experiments": {
+    "seo": {
+      "title": "Experiences et composants | Mark Systems",
+      "description": "Explore le laboratoire web Mark Systems : experiences interactives, playgrounds dynamiques et composants testables avec 4 themes.",
+      "h1": "Laboratoire d'experiences",
+      "ogTitle": "40+ experiences interactives | Mark Systems",
+      "ogDescription": "Explore notre labo web : playgrounds dynamiques, themage en temps reel, documentation auto-generee."
+    },
+    "index": {
+      "searchPlaceholder": "Rechercher une experience...",
+      "filters": {
+        "all": "Toutes",
+        "stable": "Stables",
+        "beta": "Beta",
+        "draft": "Brouillons",
+        "deprecated": "Deprecies"
+      },
+      "sort": {
+        "newest": "Plus recentes",
+        "oldest": "Plus anciennes",
+        "name": "Nom A-Z",
+        "updated": "Recemment modifiees"
+      },
+      "viewToggle": {
+        "grid": "Grille",
+        "list": "Liste"
+      },
+      "empty": "Aucune experience pour l'instant. Lance-toi avec le template.",
+      "createFirst": "Creer depuis le template",
+      "resultCount": "{count} experience | {count} experiences"
+    },
+    "detail": {
+      "tabs": {
+        "preview": "Apercu",
+        "code": "Code",
+        "docs": "Documentation",
+        "pricing": "Tarification"
+      },
+      "autoDocs": {
+        "title": "Documentation auto-generee",
+        "overview": "Vue d'ensemble",
+        "props": "Proprietes",
+        "usage": "Utilisation",
+        "variants": "Variantes",
+        "dependencies": "Dependances",
+        "accessibility": "Accessibilite",
+        "changelog": "Historique"
+      },
+      "propsTable": {
+        "name": "Propriete",
+        "type": "Type",
+        "default": "Defaut",
+        "required": "Requis",
+        "description": "Description"
+      },
+      "viewport": {
+        "mobile": "Mobile",
+        "tablet": "Tablette",
+        "desktop": "Bureau"
+      },
+      "actions": {
+        "copyCode": "Copier le code",
+        "openStorybook": "Ouvrir dans Storybook",
+        "addToShowroom": "Ajouter au showroom",
+        "editExperiment": "Modifier l'experience",
+        "viewInFullscreen": "Voir en plein ecran",
+        "compareThemes": "Comparer les themes"
+      },
+      "metadata": {
+        "created": "Cree le {date}",
+        "updated": "Mis a jour le {date}",
+        "author": "Par {author}",
+        "status": "Statut",
+        "category": "Categorie",
+        "bundleSize": "Taille du bundle",
+        "themeSupport": "Themes supportes"
+      }
+    },
+    "categories": {
+      "ui": "Interface",
+      "dataViz": "Visualisation de donnees",
+      "animation": "Animation",
+      "layout": "Mise en page",
+      "forms": "Formulaires",
+      "navigation": "Navigation",
+      "feedback": "Retour utilisateur",
+      "content": "Contenu"
+    }
+  },
+  "notes": {
+    "seo": {
+      "title": "Notes techniques et journal | Mark Systems",
+      "description": "Carnet de notes interactif MDX. Documente tes experiences, cree un journal de developpement, lie-le a tes composants.",
+      "h1": "Carnet de laboratoire",
+      "ogTitle": "Notes techniques | Mark Systems",
+      "ogDescription": "Editeur MDX + Tiptap avec liens bidirectionnels vers tes experiences."
+    },
+    "index": {
+      "searchPlaceholder": "Rechercher dans les notes...",
+      "sort": {
+        "newest": "Plus recentes",
+        "oldest": "Plus anciennes",
+        "title": "Titre A-Z",
+        "updated": "Recemment modifiees"
+      },
+      "newNote": "Nouvelle note",
+      "empty": "Aucune note pour l'instant. Commence a documenter tes decouvertes.",
+      "createFirst": "Ecrire une note"
+    },
+    "editor": {
+      "slashCommands": {
+        "heading1": "Titre 1",
+        "heading2": "Titre 2",
+        "heading3": "Titre 3",
+        "paragraph": "Paragraphe",
+        "codeBlock": "Bloc de code",
+        "callout": "Encadre",
+        "divider": "Separateur",
+        "experimentLink": "Lier une experience",
+        "image": "Image"
+      },
+      "toolbar": {
+        "bold": "Gras",
+        "italic": "Italique",
+        "code": "Code",
+        "link": "Lien",
+        "comment": "Commentaire",
+        "strikethrough": "Barre",
+        "highlight": "Surligner"
+      },
+      "autosave": {
+        "saving": "Enregistrement...",
+        "saved": "Enregistre",
+        "error": "Echec de l'enregistrement",
+        "idle": ""
+      },
+      "frontmatter": {
+        "title": "Titre",
+        "tags": "Etiquettes",
+        "status": "Statut",
+        "visibility": "Visibilite",
+        "public": "Publique",
+        "private": "Privee"
+      },
+      "placeholder": "Commence a ecrire ou tape / pour les commandes..."
+    },
+    "detail": {
+      "backToNotes": "Retour aux notes",
+      "metadata": {
+        "created": "Cree le {date}",
+        "updated": "Modifie le {date}",
+        "tags": "Etiquettes",
+        "linkedExperiments": "Experiences liees",
+        "wordCount": "{count} mots"
+      },
+      "editNote": "Modifier",
+      "deleteNote": "Supprimer cette note",
+      "deleteConfirm": "Supprimer definitivement cette note ? Cette action est irreversible."
+    }
+  },
+  "showroom": {
+    "seo": {
+      "title": "Showroom composants interactifs | Mark Systems",
+      "description": "Galerie interactive de composants production-ready. 4 themes dynamiques, apercu en direct, code copiable. Pour equipes et clients.",
+      "h1": "Showroom",
+      "ogTitle": "Component Showroom | Mark Systems",
+      "ogDescription": "Galerie interactive : 4 themes, apercu live, code copiable, pret pour production."
+    },
+    "marketing": {
+      "headline": "Des composants prets a deployer, testes dans 4 univers visuels",
+      "subtitle": "Chaque experience est un micro-produit : teste, documente, tarife. Choisis un theme, explore le code, integre en un clic.",
+      "valueProps": {
+        "themes": "4 themes dynamiques appliques en temps reel",
+        "docs": "Documentation auto-generee depuis le code source",
+        "production": "Composants accessibles, testes, prets pour production"
+      }
+    },
+    "index": {
+      "themeSelector": "Appliquer un theme",
+      "gallery": "Galerie",
+      "searchPlaceholder": "Rechercher un composant...",
+      "empty": "Aucun composant au showroom pour l'instant.",
+      "resultCount": "{count} composant | {count} composants"
+    },
+    "card": {
+      "preview": "Apercu",
+      "code": "Code",
+      "docs": "Docs",
+      "pricing": "Tarifs",
+      "requestFeature": "Demander cette fonctionnalite",
+      "viewDetails": "Voir les details"
+    },
+    "presentation": {
+      "enter": "Mode presentation",
+      "exit": "Quitter la presentation",
+      "hint": "Utilise les fleches \u2190 \u2192 pour naviguer. Echap pour quitter.",
+      "slideCount": "{current} / {total}"
+    },
+    "themeShowdown": {
+      "title": "Comparaison de themes",
+      "description": "Le meme composant rendu dans les 4 themes simultanement."
+    }
+  },
+  "settings": {
+    "seo": {
+      "title": "Parametres | Mark Systems"
+    },
+    "pageTitle": "Parametres",
+    "sections": {
+      "appearance": {
+        "title": "Apparence",
+        "themeLabel": "Theme actif",
+        "modeLabel": "Mode d'affichage",
+        "previewLabel": "Apercu"
+      },
+      "language": {
+        "title": "Langue",
+        "currentLabel": "Langue active",
+        "french": "Francais",
+        "english": "English"
+      },
+      "agents": {
+        "title": "Agents",
+        "enableLabel": "Agents actifs",
+        "configLabel": "Configuration"
+      },
+      "profile": {
+        "title": "Profil",
+        "nameLabel": "Nom",
+        "emailLabel": "Courriel"
+      },
+      "export": {
+        "title": "Export",
+        "exportAll": "Exporter toutes les donnees",
+        "exportExperiments": "Exporter les experiences",
+        "exportNotes": "Exporter les notes",
+        "format": "Format"
+      }
+    }
+  },
+  "contact": {
+    "title": "Nous joindre",
+    "subtitle": "Une question, un projet ? Ecris-nous.",
+    "form": {
+      "name": "Nom complet",
+      "email": "Courriel",
+      "message": "Message",
+      "messagePlaceholder": "Decris ton projet ou ta question...",
+      "submit": "Envoyer le message",
+      "sending": "Envoi en cours...",
+      "success": "Message envoye ! Nous te repondrons sous 48 h.",
+      "error": "Echec de l'envoi. Reessaie ou ecris-nous a {email}.",
+      "consent": "J'accepte que Mark Systems collecte mon nom et courriel pour repondre a ma demande. Mes donnees seront conservees 24 mois, conformement a la Loi 25.",
+      "consentRequired": "Le consentement est requis pour envoyer le formulaire.",
+      "privacyLink": "Lire la politique de confidentialite"
+    }
+  },
+  "errors": {
+    "notFound": {
+      "title": "Page introuvable",
+      "message": "Cette page n'existe pas ou a ete deplacee.",
+      "cta": "Retour au tableau de bord"
+    },
+    "serverError": {
+      "title": "Erreur du serveur",
+      "message": "Quelque chose s'est mal passe de notre cote. Reessaie dans un instant.",
+      "cta": "Recharger la page"
+    },
+    "offline": {
+      "title": "Hors connexion",
+      "message": "Verifie ta connexion internet et reessaie."
+    }
+  }
+}

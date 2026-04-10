@@ -1,0 +1,648 @@
+{
+  "_meta": {
+    "generator": "nexos-v3.0/interaction-designer",
+    "soic_id": "WEB-2026-LAB-0409",
+    "client": "mark-systems-demo",
+    "created_at": "2026-04-09T00:00:00Z",
+    "phase": "ph2-design",
+    "output": "interactions.json",
+    "version": "1.0.0"
+  },
+
+  "global": {
+    "animation_library": "framer-motion",
+    "framer_motion_version": "^12.x",
+    "secondary_api": "ViewTransitions API (Next.js 15 native)",
+    "duration_scale": {
+      "instant": 80,
+      "fast": 150,
+      "normal": 300,
+      "slow": 400,
+      "emphasis": 600,
+      "unit": "ms"
+    },
+    "easing": {
+      "default": [0.25, 0.1, 0.25, 1.0],
+      "ease_out": [0.0, 0.0, 0.2, 1.0],
+      "ease_in": [0.4, 0.0, 1.0, 1.0],
+      "ease_in_out": [0.4, 0.0, 0.2, 1.0],
+      "spring": { "stiffness": 400, "damping": 30 },
+      "spring_gentle": { "stiffness": 260, "damping": 25 },
+      "spring_bouncy": { "stiffness": 500, "damping": 22 }
+    },
+    "reduced_motion_policy": {
+      "strategy": "respect prefers-reduced-motion: reduce at OS level",
+      "implementation": "Global MotionConfig wrapper with reducedMotion='user'. All framer-motion animations automatically suppressed. CSS animations use @media (prefers-reduced-motion: reduce) to set animation-duration: 0.01ms.",
+      "fallback_behavior": "Opacity transitions remain (0->1 over 0ms) for content visibility. No transform, no spring, no layout animation. Focus rings remain unchanged.",
+      "skip_link": "Always visible on focus regardless of motion preference"
+    },
+    "css_custom_properties": {
+      "--duration-instant": "80ms",
+      "--duration-fast": "150ms",
+      "--duration-normal": "300ms",
+      "--duration-slow": "400ms",
+      "--duration-emphasis": "600ms",
+      "--ease-default": "cubic-bezier(0.25, 0.1, 0.25, 1.0)",
+      "--ease-out": "cubic-bezier(0.0, 0.0, 0.2, 1.0)",
+      "--ease-in-out": "cubic-bezier(0.4, 0.0, 0.2, 1.0)"
+    }
+  },
+
+  "page_transitions": {
+    "strategy": "ViewTransitions API with framer-motion AnimatePresence fallback",
+    "view_transitions": {
+      "enabled": true,
+      "next_config": "experimental.viewTransition: true (Next.js 15)",
+      "css_rules": {
+        "::view-transition-old(root)": "animation: fade-out 200ms var(--ease-out)",
+        "::view-transition-new(root)": "animation: fade-in 200ms var(--ease-out)",
+        "::view-transition-group(root)": "animation-duration: 200ms"
+      }
+    },
+    "animate_presence_fallback": {
+      "mode": "wait",
+      "initial": { "opacity": 0 },
+      "animate": { "opacity": 1 },
+      "exit": { "opacity": 0 },
+      "transition": { "duration": 0.2, "ease": [0.0, 0.0, 0.2, 1.0] }
+    },
+    "shared_layout_transitions": {
+      "enabled": true,
+      "use_case": "Experiment card -> experiment detail page (layoutId on card image/title)",
+      "transition": { "type": "spring", "stiffness": 400, "damping": 30 }
+    },
+    "reduced_motion": {
+      "view_transitions": "animation-duration: 0.01ms",
+      "animate_presence": "instant opacity swap, no transform"
+    }
+  },
+
+  "scroll_animations": {
+    "fade_in_up": {
+      "trigger": "whileInView",
+      "viewport": { "once": true, "amount": 0.15 },
+      "initial": { "opacity": 0, "y": 16 },
+      "animate": { "opacity": 1, "y": 0 },
+      "transition": { "duration": 0.4, "ease": [0.0, 0.0, 0.2, 1.0] },
+      "usage": "Cards, sections, stat blocks, activity feed items",
+      "reduced_motion": { "initial": { "opacity": 0 }, "animate": { "opacity": 1 }, "transition": { "duration": 0.01 } }
+    },
+    "stagger_children": {
+      "container_variant": {
+        "hidden": {},
+        "visible": {
+          "transition": { "staggerChildren": 0.06, "delayChildren": 0.1 }
+        }
+      },
+      "child_variant": {
+        "hidden": { "opacity": 0, "y": 16 },
+        "visible": { "opacity": 1, "y": 0, "transition": { "duration": 0.4, "ease": [0.0, 0.0, 0.2, 1.0] } }
+      },
+      "usage": "Card grids, list items, dashboard widgets, experiment index",
+      "max_stagger_items": 12,
+      "note": "Beyond 12 items, remaining items appear instantly to avoid perceived delay",
+      "reduced_motion": { "staggerChildren": 0, "child_variant_hidden": { "opacity": 0 }, "child_variant_visible": { "opacity": 1 } }
+    },
+    "count_up": {
+      "trigger": "whileInView",
+      "viewport": { "once": true, "amount": 0.5 },
+      "duration_ms": 800,
+      "easing": "ease_out",
+      "usage": "Dashboard stat numbers (experiment count, note count, agent calls)",
+      "reduced_motion": "Instant display of final value, no counting animation"
+    }
+  },
+
+  "hover_interactions": {
+    "card_hover": {
+      "default": { "y": 0, "boxShadow": "0 1px 3px rgba(0,0,0,0.1)" },
+      "hover": { "y": -2, "boxShadow": "0 8px 25px rgba(0,0,0,0.25)" },
+      "transition": { "duration": 0.15, "ease": [0.0, 0.0, 0.2, 1.0] },
+      "usage": "ExperimentCard, ShowroomCard, NoteCard, AgentCard",
+      "reduced_motion": { "hover": { "boxShadow": "0 8px 25px rgba(0,0,0,0.25)" }, "no_transform": true }
+    },
+    "button_hover": {
+      "default": { "scale": 1 },
+      "hover": { "scale": 1.02 },
+      "tap": { "scale": 0.97 },
+      "transition_hover": { "duration": 0.15, "ease": [0.0, 0.0, 0.2, 1.0] },
+      "transition_tap": { "duration": 0.08 },
+      "usage": "All Button variants (primary, secondary, ghost, destructive)",
+      "reduced_motion": { "hover": { "scale": 1 }, "tap": { "scale": 1 }, "rely_on_background_color_change": true }
+    },
+    "sidebar_item_hover": {
+      "default": { "backgroundColor": "transparent", "x": 0 },
+      "hover": { "backgroundColor": "var(--surface-alt)", "x": 2 },
+      "transition": { "duration": 0.15 },
+      "active_state": { "backgroundColor": "var(--primary)", "color": "white", "x": 0 },
+      "usage": "Sidebar nav items in expanded panel",
+      "reduced_motion": { "hover": { "backgroundColor": "var(--surface-alt)" }, "no_x_shift": true }
+    },
+    "icon_button_hover": {
+      "default": { "scale": 1, "rotate": 0 },
+      "hover": { "scale": 1.08 },
+      "tap": { "scale": 0.92 },
+      "transition": { "type": "spring", "stiffness": 400, "damping": 30 },
+      "usage": "Sidebar rail icons, toolbar icons, close buttons",
+      "reduced_motion": { "no_scale": true, "background_highlight_only": true }
+    },
+    "link_hover": {
+      "css_only": true,
+      "default": { "textDecorationColor": "transparent" },
+      "hover": { "textDecorationColor": "var(--accent)", "textUnderlineOffset": "4px" },
+      "transition": "color var(--duration-fast) var(--ease-default)",
+      "usage": "Inline text links, breadcrumb items",
+      "reduced_motion": "No change needed (color transition is subtle enough)"
+    }
+  },
+
+  "focus_interactions": {
+    "strategy": ":focus-visible only — no visible ring on mouse click",
+    "ring_style": {
+      "minimalist": {
+        "outline": "2px solid var(--primary)",
+        "outline-offset": "2px",
+        "border-radius": "inherit"
+      },
+      "bento": {
+        "outline": "2px solid var(--primary)",
+        "outline-offset": "2px",
+        "border-radius": "inherit"
+      },
+      "glassmorphism": {
+        "outline": "2px solid var(--primary)",
+        "outline-offset": "2px",
+        "box-shadow": "0 0 0 4px var(--glow-primary)",
+        "border-radius": "inherit"
+      },
+      "cyberpunk": {
+        "outline": "2px solid var(--primary)",
+        "outline-offset": "2px",
+        "box-shadow": "0 0 8px var(--border-glow), 0 0 16px var(--border-glow)",
+        "border-radius": "inherit"
+      }
+    },
+    "skip_link": {
+      "position": "Fixed top-left, z-50",
+      "hidden": { "transform": "translateY(-100%)", "opacity": 0 },
+      "visible_on_focus": { "transform": "translateY(0)", "opacity": 1 },
+      "target": "#main-content",
+      "text_fr": "Aller au contenu principal",
+      "text_en": "Skip to main content",
+      "style": "bg-primary text-white px-4 py-2 rounded-b-md font-medium"
+    },
+    "focus_trap": {
+      "applies_to": ["CommandPalette", "Dialog", "CookieConsent modal", "PresentationMode"],
+      "library": "Radix UI built-in focus trap",
+      "escape_key": "Closes component and returns focus to trigger element"
+    },
+    "reduced_motion": "Focus rings are not animated — no change needed"
+  },
+
+  "loading_states": {
+    "skeleton_shimmer": {
+      "type": "CSS gradient animation",
+      "background": "linear-gradient(90deg, var(--surface) 0%, var(--surface-alt) 50%, var(--surface) 100%)",
+      "background_size": "200% 100%",
+      "animation": "shimmer 1.5s ease-in-out infinite",
+      "keyframes": {
+        "0%": { "backgroundPosition": "200% 0" },
+        "100%": { "backgroundPosition": "-200% 0" }
+      },
+      "border_radius": "var(--radius-md)",
+      "usage": "ExperimentCard skeleton, NoteCard skeleton, Dashboard stat blocks",
+      "variants": {
+        "text_line": { "height": "14px", "width": "randomized 60-90%", "margin_bottom": "8px" },
+        "title": { "height": "20px", "width": "70%", "margin_bottom": "12px" },
+        "avatar": { "height": "40px", "width": "40px", "border_radius": "50%" },
+        "card": { "height": "200px", "width": "100%", "border_radius": "var(--radius-lg)" },
+        "image": { "aspect_ratio": "16/9", "width": "100%", "border_radius": "var(--radius-md)" }
+      },
+      "reduced_motion": "Static background at var(--surface-alt), no shimmer animation"
+    },
+    "streaming_indicator": {
+      "type": "Pulsing dots + streaming text cursor",
+      "dots": {
+        "count": 3,
+        "size": "6px",
+        "color": "var(--primary)",
+        "animation": "pulse 1.2s ease-in-out infinite",
+        "stagger": "0.15s between dots"
+      },
+      "cursor": {
+        "type": "Blinking block cursor after last streamed character",
+        "width": "2px",
+        "height": "1em",
+        "color": "var(--primary)",
+        "animation": "blink 1s step-end infinite"
+      },
+      "usage": "Agent ChatPanel during streaming response, auto-docs generation",
+      "reduced_motion": "Static dots (no pulse), cursor visible but not blinking"
+    },
+    "page_loading": {
+      "type": "Top progress bar (NProgress style)",
+      "position": "Fixed top, z-50, full width",
+      "height": "2px",
+      "color": "var(--primary)",
+      "animation": "Indeterminate left-to-right with ease-in-out",
+      "trigger": "Next.js router navigation start/complete events",
+      "reduced_motion": "Static thin bar visible during load, no animation"
+    },
+    "empty_states": {
+      "strategy": "Illustration (SVG) + heading + description + primary CTA",
+      "animation": { "initial": { "opacity": 0, "scale": 0.95 }, "animate": { "opacity": 1, "scale": 1 }, "transition": { "duration": 0.4, "ease": "ease_out" } },
+      "examples": {
+        "no_experiments": { "heading_fr": "Ton labo est vide", "cta_fr": "Creer ta premiere experimentation" },
+        "no_notes": { "heading_fr": "Aucune note pour l'instant", "cta_fr": "Ouvrir l'editeur" },
+        "no_search_results": { "heading_fr": "Rien ici", "description_fr": "Essaie un autre terme de recherche" }
+      },
+      "reduced_motion": { "scale": 1, "opacity_instant": true }
+    }
+  },
+
+  "form_interactions": {
+    "input_focus": {
+      "default_border": "1px solid var(--border)",
+      "focus_border": "1px solid var(--primary)",
+      "focus_ring": "0 0 0 3px rgba(99,102,241,0.15)",
+      "transition": "border-color var(--duration-fast) var(--ease-default), box-shadow var(--duration-fast) var(--ease-default)",
+      "label_behavior": "Static above input (not floating — avoids a11y issues with floating labels)",
+      "reduced_motion": "Instant border/shadow change, no transition"
+    },
+    "validation_success": {
+      "border_color": "var(--success)",
+      "icon": "CheckCircle2 (lucide) positioned right inside input",
+      "icon_animation": { "initial": { "scale": 0, "opacity": 0 }, "animate": { "scale": 1, "opacity": 1 }, "transition": { "type": "spring", "stiffness": 500, "damping": 22 } },
+      "message": { "color": "var(--success)", "font_size": "var(--small)" },
+      "reduced_motion": "Icon appears instantly, no spring"
+    },
+    "validation_error": {
+      "border_color": "var(--error)",
+      "icon": "AlertCircle (lucide) positioned right inside input",
+      "icon_animation": { "initial": { "x": 0 }, "animate": { "x": [0, -4, 4, -2, 2, 0] }, "transition": { "duration": 0.4 } },
+      "message": { "color": "var(--error)", "font_size": "var(--small)", "role": "alert", "aria-live": "polite" },
+      "reduced_motion": "Icon appears instantly, no shake. Error message still displayed."
+    },
+    "submit_loading": {
+      "button_state": "disabled, opacity 0.7",
+      "spinner": { "size": "16px", "color": "currentColor", "animation": "spin 0.6s linear infinite" },
+      "text_change": "Submit label replaced with loading text (e.g., 'Envoi...')",
+      "reduced_motion": "Spinner replaced with static ellipsis text '...'"
+    }
+  },
+
+  "navigation_interactions": {
+    "sidebar": {
+      "expand_collapse": {
+        "trigger": "Hover on rail (desktop) or toggle button",
+        "rail_width": "64px",
+        "panel_width": "200px",
+        "total_expanded": "264px",
+        "animation": {
+          "type": "spring",
+          "stiffness": 400,
+          "damping": 30,
+          "property": "width"
+        },
+        "content_push": "Main content area adjusts via CSS grid template (no absolute positioning)",
+        "icon_tooltip": "Shown on rail-only state via Radix Tooltip, 200ms delay",
+        "reduced_motion": "Instant width change, no spring"
+      },
+      "item_active_indicator": {
+        "type": "Vertical bar 3px on left edge of active item",
+        "color": "var(--primary)",
+        "animation": { "layoutId": "sidebar-active-indicator", "transition": { "type": "spring", "stiffness": 400, "damping": 30 } },
+        "reduced_motion": "Indicator jumps instantly, no layout animation"
+      }
+    },
+    "command_palette": {
+      "trigger": "CMD+K (macOS) / Ctrl+K (Windows/Linux)",
+      "open_animation": {
+        "overlay": { "initial": { "opacity": 0 }, "animate": { "opacity": 1 }, "transition": { "duration": 0.15 } },
+        "panel": {
+          "initial": { "opacity": 0, "scale": 0.96, "y": -8 },
+          "animate": { "opacity": 1, "scale": 1, "y": 0 },
+          "transition": { "type": "spring", "stiffness": 500, "damping": 30 }
+        }
+      },
+      "close_animation": {
+        "overlay": { "exit": { "opacity": 0 }, "transition": { "duration": 0.1 } },
+        "panel": { "exit": { "opacity": 0, "scale": 0.96 }, "transition": { "duration": 0.1 } }
+      },
+      "result_highlight": {
+        "type": "Background color on active result",
+        "color": "var(--surface-alt)",
+        "transition": "background-color var(--duration-instant) var(--ease-default)"
+      },
+      "categories": ["Pages", "Experiments", "Notes", "Actions", "Agents", "Themes"],
+      "reduced_motion": "Instant appear/disappear, no scale/translate"
+    },
+    "mobile_bottom_nav": {
+      "items": 5,
+      "height": "64px",
+      "safe_area": "env(safe-area-inset-bottom) padding",
+      "active_indicator": {
+        "type": "Filled circle 4px under active icon",
+        "color": "var(--primary)",
+        "animation": { "layoutId": "mobile-nav-indicator", "transition": { "type": "spring", "stiffness": 400, "damping": 30 } }
+      },
+      "icon_tap": { "scale": 0.9, "transition": { "duration": 0.08 } },
+      "hide_on_scroll_down": true,
+      "show_on_scroll_up": true,
+      "scroll_animation": {
+        "hide": { "y": "100%", "transition": { "duration": 0.2, "ease": "ease_in" } },
+        "show": { "y": 0, "transition": { "duration": 0.2, "ease": "ease_out" } }
+      },
+      "reduced_motion": "Always visible (no scroll hide/show), no scale on tap"
+    },
+    "mobile_drawer": {
+      "type": "Bottom sheet (Radix Dialog with custom positioning)",
+      "open_animation": {
+        "overlay": { "initial": { "opacity": 0 }, "animate": { "opacity": 1 } },
+        "sheet": { "initial": { "y": "100%" }, "animate": { "y": 0 }, "transition": { "type": "spring", "stiffness": 400, "damping": 35 } }
+      },
+      "drag_to_dismiss": { "enabled": true, "threshold": "40% of sheet height", "velocity_threshold": 500 },
+      "reduced_motion": "Instant appear/disappear, no drag physics"
+    },
+    "breadcrumbs": {
+      "appear_animation": {
+        "initial": { "opacity": 0, "x": -8 },
+        "animate": { "opacity": 1, "x": 0 },
+        "transition": { "duration": 0.3, "ease": "ease_out" }
+      },
+      "separator": "ChevronRight icon, 12px, text-secondary",
+      "truncation": "Middle segments collapsed to '...' if depth > 3",
+      "reduced_motion": "Instant appear, no x translate"
+    }
+  },
+
+  "theme_specific_animations": {
+    "minimalist": {
+      "philosophy": "Barely there. Only opacity and subtle scale. No decorative motion.",
+      "overrides": {
+        "card_hover_y": 0,
+        "card_hover_shadow": "0 4px 12px rgba(0,0,0,0.15)",
+        "stagger_children_delay": 0.04,
+        "fade_in_up_y": 8,
+        "button_hover_scale": 1.0,
+        "button_tap_scale": 0.98,
+        "page_transition_duration": 0.15
+      },
+      "unique_effects": [],
+      "reduced_motion": "Already minimal — reduced mode nearly identical"
+    },
+    "bento": {
+      "philosophy": "Snappy layout motion. Cards feel like physical tiles rearranging. No fade stagger on grids.",
+      "overrides": {
+        "card_hover_y": -3,
+        "card_hover_shadow": "0 12px 30px rgba(0,0,0,0.3)",
+        "stagger_children_delay": 0,
+        "fade_in_up_enabled": false,
+        "layout_animation_enabled": true,
+        "button_hover_scale": 1.03,
+        "card_border_on_hover": "1.5px solid var(--primary)"
+      },
+      "unique_effects": {
+        "layout_reorder": {
+          "description": "Cards animate position when filters/sort change (framer layout animation)",
+          "transition": { "type": "spring", "stiffness": 400, "damping": 30 },
+          "property": "layout"
+        },
+        "grid_snap": {
+          "description": "Cards snap to grid positions with spring physics, no fade",
+          "transition": { "type": "spring", "stiffness": 350, "damping": 28 }
+        }
+      },
+      "reduced_motion": "Instant layout repositioning, no spring"
+    },
+    "glassmorphism": {
+      "philosophy": "Layered depth with parallax. Subtle tilt on mouse move. Chromatic glow pulses.",
+      "overrides": {
+        "card_hover_y": -4,
+        "card_hover_shadow": "0 8px 32px rgba(99,102,241,0.2), 0 0 0 1px rgba(99,102,241,0.15)",
+        "backdrop_blur": "blur(20px) saturate(180%)",
+        "surface_opacity": 0.55
+      },
+      "unique_effects": {
+        "parallax_depth": {
+          "description": "Background layer moves at 0.3x scroll speed, foreground at 1x. Creates depth.",
+          "implementation": "useTransform(scrollY, [0, 1000], [0, -300]) on background layer",
+          "layers": { "background": 0.3, "midground": 0.6, "foreground": 1.0 }
+        },
+        "tilt_on_mouse": {
+          "description": "Cards tilt 3-5 degrees toward cursor position on hover",
+          "max_rotation_deg": 5,
+          "perspective": "1000px",
+          "implementation": "useMotionValue for mouseX/mouseY, useTransform to rotateX/rotateY",
+          "transition": { "type": "spring", "stiffness": 260, "damping": 25 },
+          "reset_on_leave": { "rotateX": 0, "rotateY": 0, "transition": { "duration": 0.4 } }
+        },
+        "glow_pulse": {
+          "description": "Subtle chromatic glow on interactive elements pulses gently",
+          "keyframes": {
+            "0%": { "boxShadow": "0 0 20px rgba(99,102,241,0.25)" },
+            "50%": { "boxShadow": "0 0 30px rgba(99,102,241,0.4)" },
+            "100%": { "boxShadow": "0 0 20px rgba(99,102,241,0.25)" }
+          },
+          "duration": "3s",
+          "iteration": "infinite",
+          "applies_to": "Primary CTA buttons, active sidebar item"
+        }
+      },
+      "reduced_motion": "No parallax, no tilt, no glow pulse. Static glass surfaces with blur retained (visual only, not motion)."
+    },
+    "cyberpunk": {
+      "philosophy": "Aggressive. Skew on entry. Cursor glow trail. Glitch effects on hero. Everything feels electric.",
+      "overrides": {
+        "card_hover_y": -3,
+        "card_hover_shadow": "0 0 20px rgba(0,245,255,0.3), 0 0 40px rgba(0,245,255,0.1)",
+        "border_on_hover": "1px solid rgba(0,245,255,0.6)",
+        "heading_font": "var(--font-jetbrains-mono)",
+        "heading_tracking": "0.05em"
+      },
+      "unique_effects": {
+        "skew_enter": {
+          "description": "Elements enter with slight skewX, then settle to 0",
+          "initial": { "opacity": 0, "skewX": 1, "x": -12 },
+          "animate": { "opacity": 1, "skewX": 0, "x": 0 },
+          "transition": { "duration": 0.5, "ease": [0.0, 0.0, 0.2, 1.0] },
+          "applies_to": "Cards, sections, page content blocks"
+        },
+        "cursor_glow": {
+          "description": "Radial gradient follows cursor position on page background",
+          "implementation": "CSS radial-gradient positioned via JS mousemove. No framer-motion needed.",
+          "gradient": "radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(0,245,255,0.06), transparent 70%)",
+          "performance": "Will-change: background on body. GPU composited.",
+          "mobile": "Disabled — no cursor on touch devices"
+        },
+        "glitch_on_hover": {
+          "description": "Hero text glitches on hover with RGB split + clip-path slices",
+          "applies_to": "H1 hero text only (not all headings)",
+          "implementation": "CSS @keyframes with clip-path inset slices and text-shadow RGB offset",
+          "keyframes": {
+            "0%": { "clip-path": "inset(40% 0 61% 0)", "text-shadow": "-2px 0 #00F5FF, 2px 0 #BF5AF2" },
+            "20%": { "clip-path": "inset(92% 0 1% 0)", "text-shadow": "2px 0 #00F5FF, -2px 0 #BF5AF2" },
+            "40%": { "clip-path": "inset(43% 0 1% 0)", "text-shadow": "-1px 0 #00F5FF, 1px 0 #39FF14" },
+            "60%": { "clip-path": "inset(25% 0 58% 0)" },
+            "80%": { "clip-path": "inset(54% 0 7% 0)", "text-shadow": "2px 0 #BF5AF2, -2px 0 #39FF14" },
+            "100%": { "clip-path": "inset(58% 0 43% 0)" }
+          },
+          "duration": "400ms",
+          "trigger": "hover",
+          "iteration": 1
+        },
+        "scanlines": {
+          "description": "CSS pseudo-element overlay with horizontal scanline pattern",
+          "implementation": "::after on body with repeating-linear-gradient",
+          "gradient": "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px)",
+          "pointer_events": "none",
+          "z_index": 9999,
+          "opacity": 0.3
+        },
+        "neon_border_animate": {
+          "description": "Border glow opacity animates 0.4 -> 0.8 on hover for interactive elements",
+          "default": "rgba(0,245,255,0.4)",
+          "hover": "rgba(0,245,255,0.8)",
+          "transition": "border-color var(--duration-fast) var(--ease-default), box-shadow var(--duration-fast) var(--ease-default)"
+        }
+      },
+      "reduced_motion": "No skew entry, no glitch, no scanline animation. Cursor glow disabled. Neon borders remain static at default opacity. Visual identity preserved through color/glow, not motion."
+    }
+  },
+
+  "editor_interactions": {
+    "slash_command_menu": {
+      "trigger": "Type '/' at start of new line or after space",
+      "appear_animation": {
+        "initial": { "opacity": 0, "y": 8, "scale": 0.96 },
+        "animate": { "opacity": 1, "y": 0, "scale": 1 },
+        "transition": { "type": "spring", "stiffness": 500, "damping": 30 }
+      },
+      "dismiss": "Escape key, click outside, or continue typing non-matching text",
+      "dismiss_animation": { "exit": { "opacity": 0, "scale": 0.96 }, "transition": { "duration": 0.1 } },
+      "item_highlight": "Background color var(--surface-alt) on keyboard nav",
+      "max_visible_items": 8,
+      "scroll_within": true,
+      "position": "Below cursor, caret-aligned",
+      "reduced_motion": "Instant appear/disappear"
+    },
+    "inline_toolbar": {
+      "trigger": "Text selection (minimum 1 character)",
+      "appear_animation": {
+        "initial": { "opacity": 0, "y": 4, "scale": 0.96 },
+        "animate": { "opacity": 1, "y": 0, "scale": 1 },
+        "transition": { "duration": 0.15, "ease": "ease_out" }
+      },
+      "position": "Floating above selection, centered horizontally",
+      "max_actions": 7,
+      "actions": ["Bold", "Italic", "Code", "Link", "Heading", "Quote", "Comment"],
+      "dismiss": "Click outside selection or selection cleared",
+      "reduced_motion": "Instant appear"
+    },
+    "autosave_indicator": {
+      "states": {
+        "idle": { "visible": false },
+        "saving": {
+          "icon": "Loader2 (lucide) with spin animation",
+          "text": "Saving...",
+          "color": "var(--text-secondary)"
+        },
+        "saved": {
+          "icon": "Check (lucide)",
+          "text": "Saved",
+          "color": "var(--success)",
+          "animation": { "initial": { "opacity": 0, "scale": 0.9 }, "animate": { "opacity": 1, "scale": 1 } },
+          "auto_hide_after_ms": 2000,
+          "hide_animation": { "exit": { "opacity": 0 }, "transition": { "duration": 0.3 } }
+        },
+        "error": {
+          "icon": "AlertCircle (lucide)",
+          "text": "Error saving",
+          "color": "var(--error)",
+          "persistent": true,
+          "retry_action": true
+        }
+      },
+      "position": "Top-right of editor area",
+      "debounce_ms": 1000,
+      "reduced_motion": "No spin on saving icon (static icon), instant transitions"
+    }
+  },
+
+  "showroom_interactions": {
+    "viewport_resize": {
+      "presets": [
+        { "label": "Mobile", "width": 375, "icon": "Smartphone" },
+        { "label": "Tablet", "width": 768, "icon": "Tablet" },
+        { "label": "Desktop", "width": 1280, "icon": "Monitor" }
+      ],
+      "animation": {
+        "property": "width",
+        "transition": { "type": "spring", "stiffness": 300, "damping": 28 }
+      },
+      "preview_frame": "iframe with responsive wrapper div",
+      "reduced_motion": "Instant width change"
+    },
+    "theme_switch_preview": {
+      "description": "Theme toggle within showroom preview pane (scoped to iframe)",
+      "animation": {
+        "type": "Cross-fade between themes",
+        "duration": 0.3,
+        "implementation": "Opacity transition on data-theme attribute change"
+      },
+      "theme_showdown_mode": {
+        "description": "Side-by-side 2x2 grid showing same component in all 4 themes",
+        "layout": "CSS grid 2fr 2fr / 2fr 2fr",
+        "enter_animation": { "initial": { "opacity": 0, "scale": 0.95 }, "animate": { "opacity": 1, "scale": 1 }, "stagger": 0.08 }
+      },
+      "reduced_motion": "Instant theme swap, no cross-fade"
+    },
+    "fullscreen_transition": {
+      "trigger": "Fullscreen button or F key",
+      "animation": {
+        "initial": { "borderRadius": "var(--radius-lg)" },
+        "animate": { "borderRadius": 0 },
+        "transition": { "duration": 0.3, "ease": "ease_in_out" }
+      },
+      "overlay": {
+        "initial": { "opacity": 0 },
+        "animate": { "opacity": 1, "backgroundColor": "var(--background)" }
+      },
+      "exit_hint": "Press Escape or click X — tooltip shown for 3s on enter",
+      "keyboard_nav": "ArrowLeft/ArrowRight to navigate experiments in fullscreen",
+      "reduced_motion": "Instant fullscreen, no border-radius animation"
+    },
+    "code_preview_split": {
+      "resizable": true,
+      "drag_handle_width": "4px",
+      "drag_handle_hover": { "backgroundColor": "var(--primary)", "transition": "background-color var(--duration-fast)" },
+      "min_pane_width": "280px",
+      "default_split": "50/50",
+      "animation_on_toggle": { "transition": { "type": "spring", "stiffness": 300, "damping": 28 } },
+      "reduced_motion": "Instant resize"
+    }
+  },
+
+  "toast_notifications": {
+    "position": "bottom-right (desktop), bottom-center (mobile)",
+    "max_visible": 3,
+    "enter_animation": {
+      "initial": { "opacity": 0, "y": 16, "scale": 0.95 },
+      "animate": { "opacity": 1, "y": 0, "scale": 1 },
+      "transition": { "type": "spring", "stiffness": 400, "damping": 30 }
+    },
+    "exit_animation": {
+      "exit": { "opacity": 0, "x": 100 },
+      "transition": { "duration": 0.2, "ease": "ease_in" }
+    },
+    "auto_dismiss_ms": 5000,
+    "variants": {
+      "success": { "icon": "CheckCircle2", "accent_color": "var(--success)" },
+      "error": { "icon": "AlertCircle", "accent_color": "var(--error)", "auto_dismiss": false },
+      "warning": { "icon": "AlertTriangle", "accent_color": "var(--warning)" },
+      "info": { "icon": "Info", "accent_color": "var(--primary)" }
+    },
+    "stacking": "Most recent at bottom, older shift up with layout animation",
+    "reduced_motion": "Instant appear/disappear, no spring or slide"
+  }
+}

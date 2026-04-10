@@ -38,7 +38,7 @@ REQUIRED_TOOLS: dict[str, dict] = {
         "cmd": ["codex", "--version"],
         "min_version": None,
         "install": "npm i -g @openai/codex",
-        "critical": True,
+        "critical": False,
     },
     "lighthouse": {
         "cmd": ["lighthouse", "--version"],
@@ -56,7 +56,7 @@ REQUIRED_TOOLS: dict[str, dict] = {
         "cmd": ["claude", "--version"],
         "min_version": None,
         "install": "npm i -g @anthropic-ai/claude-code",
-        "critical": False,
+        "critical": True,
     },
     "gemini": {
         "cmd": ["gemini", "--version"],

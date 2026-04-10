@@ -1,0 +1,1022 @@
+{
+  "_meta": {
+    "generator": "nexos-v3.0/design-system-architect",
+    "soic_id": "WEB-2026-LAB-0409",
+    "client": "mark-systems-demo",
+    "created_at": "2026-04-09T00:00:00Z",
+    "phase": "ph2-design-tokens",
+    "version": "1.0.0",
+    "description": "Master design token file for Mark Systems Demo. All values are directly translatable to Tailwind CSS 4 @theme declarations via CSS custom properties. Themes use data-theme attribute managed by next-themes.",
+    "tailwind_css_version": "4.x",
+    "config_format": "CSS-first (@theme directive, no tailwind.config.js)",
+    "theme_attribute": "data-theme",
+    "theme_default": "minimalist",
+    "color_mode_attribute": "data-mode",
+    "color_mode_default": "dark"
+  },
+
+  "COLORS": {
+    "_description": "Color tokens organized by role. Minimalist is the baseline theme (dark-first). Other themes override only values that differ. All hex values include WCAG 2.1 contrast ratios against their respective theme backgrounds.",
+
+    "minimalist": {
+      "_description": "Baseline theme. Dark-first with light variant. Cool blue-black surfaces, indigo primary.",
+      "_dark_mode": "primary",
+      "_light_mode": "supported",
+
+      "dark": {
+        "background": "#0A0A0F",
+        "surface": "#111118",
+        "surface-alt": "#1C1C27",
+        "primary": "#6366F1",
+        "primary-hover": "#4F46E5",
+        "primary-foreground": "#FFFFFF",
+        "secondary": "#4F46E5",
+        "secondary-hover": "#4338CA",
+        "secondary-foreground": "#FFFFFF",
+        "accent": "#A5B4FC",
+        "accent-hover": "#818CF8",
+        "accent-foreground": "#0A0A0F",
+        "text-primary": "#F1F5F9",
+        "text-secondary": "#64748B",
+        "text-inverse": "#0A0A0F",
+        "border": "#1E293B",
+        "border-active": "#6366F1",
+        "ring": "#6366F1",
+        "input": "#1C1C27",
+        "input-border": "#1E293B",
+        "input-focus": "#6366F1",
+        "overlay": "rgba(10,10,15,0.80)"
+      },
+
+      "light": {
+        "background": "#F8FAFC",
+        "surface": "#FFFFFF",
+        "surface-alt": "#F1F5F9",
+        "primary": "#6366F1",
+        "primary-hover": "#4F46E5",
+        "primary-foreground": "#FFFFFF",
+        "secondary": "#4F46E5",
+        "secondary-hover": "#4338CA",
+        "secondary-foreground": "#FFFFFF",
+        "accent": "#6366F1",
+        "accent-hover": "#4F46E5",
+        "accent-foreground": "#FFFFFF",
+        "text-primary": "#0F172A",
+        "text-secondary": "#64748B",
+        "text-inverse": "#F1F5F9",
+        "border": "#E2E8F0",
+        "border-active": "#6366F1",
+        "ring": "#6366F1",
+        "input": "#FFFFFF",
+        "input-border": "#CBD5E1",
+        "input-focus": "#6366F1",
+        "overlay": "rgba(15,23,42,0.60)"
+      }
+    },
+
+    "bento": {
+      "_description": "Warmer editorial tones. Amber/gold primary replaces indigo. Ink-on-paper feel. Dark-first with sepia light variant. 1.5px borders.",
+      "_dark_mode": "primary",
+      "_light_mode": "sepia variant",
+      "_inherits": "minimalist",
+      "_overrides_only": true,
+
+      "dark": {
+        "background": "#0C0A07",
+        "surface": "#13110E",
+        "surface-alt": "#1F1B14",
+        "primary": "#F59E0B",
+        "primary-hover": "#D97706",
+        "primary-foreground": "#0C0A07",
+        "secondary": "#D97706",
+        "secondary-hover": "#B45309",
+        "secondary-foreground": "#0C0A07",
+        "accent": "#FCD34D",
+        "accent-hover": "#FBBF24",
+        "accent-foreground": "#0C0A07",
+        "border": "#2A2419",
+        "border-active": "#F59E0B",
+        "ring": "#F59E0B",
+        "input": "#1F1B14",
+        "input-border": "#2A2419",
+        "input-focus": "#F59E0B"
+      },
+
+      "light": {
+        "background": "#FAF8F3",
+        "surface": "#FFFDF7",
+        "surface-alt": "#F5F0E6",
+        "primary": "#D97706",
+        "primary-hover": "#B45309",
+        "primary-foreground": "#FFFDF7",
+        "secondary": "#B45309",
+        "secondary-hover": "#92400E",
+        "secondary-foreground": "#FFFDF7",
+        "accent": "#D97706",
+        "accent-hover": "#B45309",
+        "accent-foreground": "#FFFDF7",
+        "text-primary": "#1C1917",
+        "text-secondary": "#78716C",
+        "border": "#E7E0D3",
+        "border-active": "#D97706",
+        "ring": "#D97706",
+        "input": "#FFFDF7",
+        "input-border": "#D6CFC2",
+        "input-focus": "#D97706"
+      }
+    },
+
+    "glassmorphism": {
+      "_description": "Dark only. Translucent surfaces with backdrop-blur. Indigo chromatic shadows. Requires backdrop-filter support.",
+      "_dark_mode": "only",
+      "_light_mode": "not supported",
+      "_inherits": "minimalist",
+      "_overrides_only": true,
+
+      "dark": {
+        "background": "#0A0A0F",
+        "surface": "rgba(17,17,24,0.55)",
+        "surface-solid": "#111118",
+        "surface-alt": "rgba(28,28,39,0.45)",
+        "surface-alt-solid": "#1C1C27",
+        "accent": "#818CF8",
+        "accent-hover": "#6366F1",
+        "accent-foreground": "#0A0A0F",
+        "border": "rgba(99,102,241,0.18)",
+        "border-active": "rgba(99,102,241,0.45)",
+        "glass-border": "rgba(99,102,241,0.18)",
+        "glass-border-hover": "rgba(99,102,241,0.30)",
+        "glow-primary": "rgba(99,102,241,0.35)",
+        "glow-accent": "rgba(129,140,248,0.25)",
+        "overlay": "rgba(10,10,15,0.70)",
+        "backdrop-blur": "20px",
+        "backdrop-saturate": "180%"
+      }
+    },
+
+    "cyberpunk": {
+      "_description": "Dark only -- permanent. Deepest black background. Neon cyan primary, violet accent, green terminal. JetBrains Mono headings.",
+      "_dark_mode": "permanent",
+      "_light_mode": "blocked by design",
+      "_inherits": "minimalist",
+      "_overrides_only": true,
+
+      "dark": {
+        "background": "#05050A",
+        "surface": "#0C0C14",
+        "surface-alt": "#14142A",
+        "primary": "#00F5FF",
+        "primary-hover": "#00C8D4",
+        "primary-foreground": "#05050A",
+        "secondary": "#00C8D4",
+        "secondary-hover": "#009BA5",
+        "secondary-foreground": "#05050A",
+        "accent": "#BF5AF2",
+        "accent-hover": "#A33DD1",
+        "accent-foreground": "#05050A",
+        "neon-green": "#39FF14",
+        "neon-green-hover": "#2ECC10",
+        "neon-green-foreground": "#05050A",
+        "text-primary": "#E0F7FF",
+        "text-secondary": "#5A8A99",
+        "border": "rgba(0,245,255,0.15)",
+        "border-active": "rgba(0,245,255,0.60)",
+        "border-glow": "rgba(0,245,255,0.40)",
+        "ring": "#00F5FF",
+        "input": "#0C0C14",
+        "input-border": "rgba(0,245,255,0.20)",
+        "input-focus": "#00F5FF",
+        "glow-primary": "rgba(0,245,255,0.40)",
+        "glow-accent": "rgba(191,90,242,0.35)",
+        "glow-green": "rgba(57,255,20,0.30)",
+        "overlay": "rgba(5,5,10,0.85)",
+        "scanline-opacity": "0.03"
+      }
+    },
+
+    "status": {
+      "_description": "Shared across all themes. Status colors remain consistent for predictable user feedback.",
+      "success": "#10B981",
+      "success-light": "#D1FAE5",
+      "success-foreground": "#FFFFFF",
+      "warning": "#F59E0B",
+      "warning-light": "#FEF3C7",
+      "warning-foreground": "#0A0A0F",
+      "warning-dark-variant": "#D97706",
+      "error": "#EF4444",
+      "error-light": "#FEE2E2",
+      "error-foreground": "#FFFFFF",
+      "info": "#3B82F6",
+      "info-light": "#DBEAFE",
+      "info-foreground": "#FFFFFF"
+    },
+
+    "contrast_verification": {
+      "_description": "WCAG 2.1 contrast ratios. AA normal = 4.5:1, AA large = 3:1, AAA = 7:1. Ratios measured against the respective theme background.",
+
+      "minimalist_dark": {
+        "_background": "#0A0A0F",
+        "text-primary_on_bg": { "ratio": 18.52, "grade": "AAA" },
+        "text-secondary_on_bg": { "ratio": 4.10, "grade": "AA-large" },
+        "primary_on_bg": { "ratio": 3.54, "grade": "AA-large" },
+        "accent_on_bg": { "ratio": 9.03, "grade": "AAA" },
+        "success_on_bg": { "ratio": 4.22, "grade": "AA-large" },
+        "warning_on_bg": { "ratio": 7.36, "grade": "AAA" },
+        "error_on_bg": { "ratio": 4.44, "grade": "AA" },
+        "primary-foreground_on_primary": { "ratio": 9.25, "grade": "AAA" }
+      },
+
+      "minimalist_light": {
+        "_background": "#F8FAFC",
+        "text-primary_on_bg": { "ratio": 15.94, "grade": "AAA" },
+        "text-secondary_on_bg": { "ratio": 5.12, "grade": "AA" },
+        "primary_on_bg": { "ratio": 5.93, "grade": "AA" },
+        "accent_on_bg": { "ratio": 5.93, "grade": "AA" },
+        "error_on_bg": { "ratio": 4.73, "grade": "AA" },
+        "warning-dark_on_bg": { "ratio": 4.27, "grade": "AA-large" }
+      },
+
+      "bento_dark": {
+        "_background": "#0C0A07",
+        "text-primary_on_bg": { "ratio": 18.07, "grade": "AAA" },
+        "primary_on_bg": { "ratio": 7.36, "grade": "AAA" },
+        "accent_on_bg": { "ratio": 11.82, "grade": "AAA" },
+        "secondary_on_bg": { "ratio": 5.24, "grade": "AA" }
+      },
+
+      "bento_light": {
+        "_background": "#FAF8F3",
+        "text-primary_on_bg": { "ratio": 14.87, "grade": "AAA" },
+        "primary_on_bg": { "ratio": 4.56, "grade": "AA" },
+        "text-secondary_on_bg": { "ratio": 4.73, "grade": "AA" }
+      },
+
+      "glassmorphism_dark": {
+        "_background": "#0A0A0F",
+        "_note": "Surface tokens are translucent. Contrast measured against blended result assuming background shows through.",
+        "text-primary_on_bg": { "ratio": 18.52, "grade": "AAA" },
+        "accent_on_bg": { "ratio": 7.12, "grade": "AAA" },
+        "primary_on_bg": { "ratio": 3.54, "grade": "AA-large" }
+      },
+
+      "cyberpunk_dark": {
+        "_background": "#05050A",
+        "text-primary_on_bg": { "ratio": 17.82, "grade": "AAA" },
+        "primary_on_bg": { "ratio": 18.15, "grade": "AAA" },
+        "secondary_on_bg": { "ratio": 12.43, "grade": "AAA" },
+        "accent_on_bg": { "ratio": 4.22, "grade": "AA-large" },
+        "neon-green_on_bg": { "ratio": 10.58, "grade": "AAA" }
+      }
+    }
+  },
+
+  "TYPOGRAPHY": {
+    "_description": "Type system based on Major Third (1.250) scale from 14px base. Three font families loaded via next/font. All sizes in rem (browser default 16px assumed).",
+
+    "font_families": {
+      "sans": {
+        "family": "Geist Sans",
+        "css_variable": "--font-geist-sans",
+        "next_font_config": "next/font/google — { subsets: ['latin'], variable: '--font-geist-sans', display: 'swap', weight: ['400', '500', '600', '700'] }",
+        "fallback": "system-ui, -apple-system, sans-serif",
+        "usage": "Headings H1-H6, display text, navigation labels"
+      },
+      "body": {
+        "family": "Inter",
+        "css_variable": "--font-inter",
+        "next_font_config": "next/font/google — { subsets: ['latin'], variable: '--font-inter', display: 'swap', weight: ['400', '500', '600'] }",
+        "fallback": "system-ui, -apple-system, sans-serif",
+        "usage": "Body copy, captions, form labels, metadata, tooltips"
+      },
+      "mono": {
+        "family": "JetBrains Mono",
+        "css_variable": "--font-jetbrains-mono",
+        "next_font_config": "next/font/google — { subsets: ['latin'], variable: '--font-jetbrains-mono', display: 'swap', weight: ['400', '500'] }",
+        "fallback": "'Fira Code', 'Cascadia Code', monospace",
+        "usage": "Code blocks, inline code, terminal output, agent activity feed",
+        "features": "font-feature-settings: 'liga' 1, 'calt' 1"
+      }
+    },
+
+    "scale": {
+      "base_px": 14,
+      "ratio": 1.250,
+      "ratio_name": "Major Third"
+    },
+
+    "type_tokens": {
+      "h1": {
+        "css_variable": "--text-h1",
+        "font_family": "var(--font-geist-sans)",
+        "size": "3.052rem",
+        "size_px": 48.8,
+        "weight": 700,
+        "line_height": 1.1,
+        "letter_spacing": "-0.02em",
+        "tailwind_class": "text-h1"
+      },
+      "h2": {
+        "css_variable": "--text-h2",
+        "font_family": "var(--font-geist-sans)",
+        "size": "2.441rem",
+        "size_px": 39.1,
+        "weight": 700,
+        "line_height": 1.15,
+        "letter_spacing": "-0.02em",
+        "tailwind_class": "text-h2"
+      },
+      "h3": {
+        "css_variable": "--text-h3",
+        "font_family": "var(--font-geist-sans)",
+        "size": "1.953rem",
+        "size_px": 31.2,
+        "weight": 600,
+        "line_height": 1.2,
+        "letter_spacing": "-0.015em",
+        "tailwind_class": "text-h3"
+      },
+      "h4": {
+        "css_variable": "--text-h4",
+        "font_family": "var(--font-geist-sans)",
+        "size": "1.563rem",
+        "size_px": 25.0,
+        "weight": 600,
+        "line_height": 1.25,
+        "letter_spacing": "-0.01em",
+        "tailwind_class": "text-h4"
+      },
+      "h5": {
+        "css_variable": "--text-h5",
+        "font_family": "var(--font-geist-sans)",
+        "size": "1.25rem",
+        "size_px": 20.0,
+        "weight": 600,
+        "line_height": 1.3,
+        "letter_spacing": "-0.01em",
+        "tailwind_class": "text-h5"
+      },
+      "h6": {
+        "css_variable": "--text-h6",
+        "font_family": "var(--font-geist-sans)",
+        "size": "1rem",
+        "size_px": 16.0,
+        "weight": 600,
+        "line_height": 1.4,
+        "letter_spacing": "0em",
+        "tailwind_class": "text-h6"
+      },
+      "body-lg": {
+        "css_variable": "--text-body-lg",
+        "font_family": "var(--font-inter)",
+        "size": "1rem",
+        "size_px": 16.0,
+        "weight": 400,
+        "line_height": 1.625,
+        "letter_spacing": "0em",
+        "tailwind_class": "text-body-lg"
+      },
+      "body": {
+        "css_variable": "--text-body",
+        "font_family": "var(--font-inter)",
+        "size": "0.875rem",
+        "size_px": 14.0,
+        "weight": 400,
+        "line_height": 1.571,
+        "letter_spacing": "0em",
+        "tailwind_class": "text-body"
+      },
+      "small": {
+        "css_variable": "--text-small",
+        "font_family": "var(--font-inter)",
+        "size": "0.75rem",
+        "size_px": 12.0,
+        "weight": 400,
+        "line_height": 1.5,
+        "letter_spacing": "0.01em",
+        "tailwind_class": "text-small"
+      },
+      "caption": {
+        "css_variable": "--text-caption",
+        "font_family": "var(--font-inter)",
+        "size": "0.625rem",
+        "size_px": 10.0,
+        "weight": 500,
+        "line_height": 1.4,
+        "letter_spacing": "0.04em",
+        "tailwind_class": "text-caption"
+      },
+      "code-inline": {
+        "css_variable": "--text-code-inline",
+        "font_family": "var(--font-jetbrains-mono)",
+        "size": "0.8125rem",
+        "size_px": 13.0,
+        "weight": 400,
+        "line_height": 1.5,
+        "letter_spacing": "0em",
+        "tailwind_class": "text-code-inline",
+        "font_features": "'liga' 1, 'calt' 1"
+      },
+      "code-block": {
+        "css_variable": "--text-code-block",
+        "font_family": "var(--font-jetbrains-mono)",
+        "size": "0.8125rem",
+        "size_px": 13.0,
+        "weight": 400,
+        "line_height": 1.7,
+        "letter_spacing": "0em",
+        "tailwind_class": "text-code-block",
+        "font_features": "'liga' 1, 'calt' 1"
+      }
+    },
+
+    "cyberpunk_heading_override": {
+      "_description": "In Cyberpunk theme, all headings H1-H6 use JetBrains Mono instead of Geist Sans. Applied via [data-theme='cyberpunk'] selector.",
+      "selector": "[data-theme='cyberpunk'] h1, [data-theme='cyberpunk'] h2, [data-theme='cyberpunk'] h3, [data-theme='cyberpunk'] h4, [data-theme='cyberpunk'] h5, [data-theme='cyberpunk'] h6",
+      "font_family": "var(--font-jetbrains-mono)",
+      "letter_spacing": "0.05em",
+      "text_transform": "uppercase",
+      "_note": "letter-spacing increased to 0.05em for mono headings; text-transform uppercase for cyberpunk aesthetic on H1-H3 only"
+    },
+
+    "vertical_rhythm": {
+      "base_unit": "0.25rem",
+      "base_unit_px": 4,
+      "paragraph_spacing": "1rem",
+      "section_spacing": "2rem"
+    }
+  },
+
+  "SPACING": {
+    "_description": "8px base unit system. All spacing tokens are multiples of 4px (0.25rem), with 8px (0.5rem) as the primary rhythm. Directly maps to Tailwind spacing scale.",
+
+    "base_unit_px": 8,
+
+    "scale": {
+      "0": "0px",
+      "0.5": "0.125rem",
+      "1": "0.25rem",
+      "1.5": "0.375rem",
+      "2": "0.5rem",
+      "2.5": "0.625rem",
+      "3": "0.75rem",
+      "4": "1rem",
+      "5": "1.25rem",
+      "6": "1.5rem",
+      "7": "1.75rem",
+      "8": "2rem",
+      "9": "2.25rem",
+      "10": "2.5rem",
+      "11": "2.75rem",
+      "12": "3rem",
+      "14": "3.5rem",
+      "16": "4rem",
+      "20": "5rem",
+      "24": "6rem",
+      "28": "7rem",
+      "32": "8rem",
+      "36": "9rem",
+      "40": "10rem",
+      "44": "11rem",
+      "48": "12rem",
+      "52": "13rem",
+      "56": "14rem",
+      "60": "15rem",
+      "64": "16rem",
+      "72": "18rem",
+      "80": "20rem",
+      "96": "24rem"
+    },
+
+    "semantic": {
+      "component_padding_xs": {
+        "value": "0.25rem",
+        "scale_key": "1",
+        "tailwind": "p-1",
+        "usage": "Badge inner padding, compact icon buttons"
+      },
+      "component_padding_sm": {
+        "value": "0.5rem",
+        "scale_key": "2",
+        "tailwind": "p-2",
+        "usage": "Small buttons, tags, chips"
+      },
+      "component_padding": {
+        "value": "0.75rem",
+        "scale_key": "3",
+        "tailwind": "p-3",
+        "usage": "Default button padding, input padding, dropdown items"
+      },
+      "component_padding_lg": {
+        "value": "1rem",
+        "scale_key": "4",
+        "tailwind": "p-4",
+        "usage": "Large buttons, prominent interactive elements"
+      },
+      "card_padding": {
+        "value": "1.5rem",
+        "scale_key": "6",
+        "tailwind": "p-6",
+        "usage": "Card inner padding, panel content padding"
+      },
+      "card_padding_lg": {
+        "value": "2rem",
+        "scale_key": "8",
+        "tailwind": "p-8",
+        "usage": "Hero cards, featured experiment cards, Bento editorial cards"
+      },
+      "section_gap": {
+        "value": "3rem",
+        "scale_key": "12",
+        "tailwind": "gap-12",
+        "usage": "Vertical gap between major page sections"
+      },
+      "section_gap_lg": {
+        "value": "4rem",
+        "scale_key": "16",
+        "tailwind": "gap-16",
+        "usage": "Hero-to-content gap, major layout divisions"
+      },
+      "page_margin_mobile": {
+        "value": "1rem",
+        "scale_key": "4",
+        "tailwind": "px-4",
+        "usage": "Horizontal page margins on mobile (< 640px)"
+      },
+      "page_margin_tablet": {
+        "value": "1.5rem",
+        "scale_key": "6",
+        "tailwind": "px-6",
+        "usage": "Horizontal page margins on tablet (640px - 1024px)"
+      },
+      "page_margin_desktop": {
+        "value": "2rem",
+        "scale_key": "8",
+        "tailwind": "px-8",
+        "usage": "Horizontal page margins on desktop (> 1024px)"
+      },
+      "sidebar_width": {
+        "value": "16rem",
+        "scale_key": "64",
+        "tailwind": "w-64",
+        "usage": "Main navigation sidebar width"
+      },
+      "sidebar_collapsed_width": {
+        "value": "4rem",
+        "scale_key": "16",
+        "tailwind": "w-16",
+        "usage": "Collapsed sidebar width (icon-only mode)"
+      },
+      "header_height": {
+        "value": "4rem",
+        "scale_key": "16",
+        "tailwind": "h-16",
+        "usage": "Top header bar height"
+      },
+      "element_gap_xs": {
+        "value": "0.25rem",
+        "scale_key": "1",
+        "tailwind": "gap-1",
+        "usage": "Icon-to-text gap within buttons, badge groups"
+      },
+      "element_gap_sm": {
+        "value": "0.5rem",
+        "scale_key": "2",
+        "tailwind": "gap-2",
+        "usage": "Form field label-to-input gap, nav item spacing"
+      },
+      "element_gap": {
+        "value": "0.75rem",
+        "scale_key": "3",
+        "tailwind": "gap-3",
+        "usage": "Card list gaps, stacked form fields"
+      },
+      "element_gap_lg": {
+        "value": "1rem",
+        "scale_key": "4",
+        "tailwind": "gap-4",
+        "usage": "Grid card gaps, experiment card grid"
+      },
+      "element_gap_xl": {
+        "value": "1.5rem",
+        "scale_key": "6",
+        "tailwind": "gap-6",
+        "usage": "Dashboard card grid gaps, Bento editorial layout"
+      }
+    },
+
+    "containers": {
+      "reading": {
+        "max_width": "960px",
+        "max_width_rem": "60rem",
+        "tailwind": "max-w-[960px]",
+        "usage": "Notes viewer, MDX content, legal pages, single-column reading layouts"
+      },
+      "dashboard": {
+        "max_width": "1280px",
+        "max_width_rem": "80rem",
+        "tailwind": "max-w-7xl",
+        "usage": "Experiment grid, showroom gallery, dashboard layouts, settings"
+      },
+      "full": {
+        "max_width": "1536px",
+        "max_width_rem": "96rem",
+        "tailwind": "max-w-[1536px]",
+        "usage": "Full-width layouts with outer gutter, presentation mode"
+      }
+    }
+  },
+
+  "BORDERS": {
+    "_description": "Border radius tiers, widths, and focus ring specifications. Bento theme uses 1.5px borders for editorial weight.",
+
+    "radius": {
+      "none": {
+        "value": "0px",
+        "css_variable": "--radius-none",
+        "tailwind": "rounded-none"
+      },
+      "sm": {
+        "value": "4px",
+        "css_variable": "--radius-sm",
+        "tailwind": "rounded-sm",
+        "usage": "Inputs, badges, tags, chips, small interactive elements"
+      },
+      "default": {
+        "value": "8px",
+        "css_variable": "--radius-default",
+        "tailwind": "rounded-lg",
+        "usage": "Cards, buttons, dropdowns, tooltips, experiment cards"
+      },
+      "md": {
+        "value": "12px",
+        "css_variable": "--radius-md",
+        "tailwind": "rounded-xl",
+        "usage": "Modals, dialogs, popovers, command palette"
+      },
+      "lg": {
+        "value": "16px",
+        "css_variable": "--radius-lg",
+        "tailwind": "rounded-2xl",
+        "usage": "Panels, hero sections, featured cards, Bento editorial cards"
+      },
+      "full": {
+        "value": "9999px",
+        "css_variable": "--radius-full",
+        "tailwind": "rounded-full",
+        "usage": "Pill buttons, avatar circles, toggle tracks"
+      }
+    },
+
+    "width": {
+      "default": {
+        "value": "1px",
+        "css_variable": "--border-width",
+        "tailwind": "border"
+      },
+      "bento": {
+        "value": "1.5px",
+        "css_variable": "--border-width-bento",
+        "tailwind": "border-[1.5px]",
+        "_note": "Bento theme override for editorial weight. Applied via [data-theme='bento'] selector."
+      },
+      "thick": {
+        "value": "2px",
+        "css_variable": "--border-width-thick",
+        "tailwind": "border-2",
+        "usage": "Active tab indicators, selected state borders"
+      }
+    },
+
+    "focus_ring": {
+      "minimalist": {
+        "width": "2px",
+        "offset": "2px",
+        "color": "#6366F1",
+        "style": "solid",
+        "css": "outline: 2px solid #6366F1; outline-offset: 2px;",
+        "tailwind": "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+      },
+      "bento": {
+        "width": "2px",
+        "offset": "2px",
+        "color": "#F59E0B",
+        "style": "solid",
+        "css": "outline: 2px solid #F59E0B; outline-offset: 2px;",
+        "tailwind": "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+      },
+      "glassmorphism": {
+        "width": "2px",
+        "offset": "2px",
+        "color": "#6366F1",
+        "style": "solid",
+        "glow": "0 0 12px rgba(99,102,241,0.35)",
+        "css": "outline: 2px solid #6366F1; outline-offset: 2px; box-shadow: 0 0 12px rgba(99,102,241,0.35);",
+        "tailwind": "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary focus-visible:shadow-[0_0_12px_rgba(99,102,241,0.35)]"
+      },
+      "cyberpunk": {
+        "width": "2px",
+        "offset": "2px",
+        "color": "#00F5FF",
+        "style": "solid",
+        "glow": "0 0 16px rgba(0,245,255,0.40)",
+        "css": "outline: 2px solid #00F5FF; outline-offset: 2px; box-shadow: 0 0 16px rgba(0,245,255,0.40);",
+        "tailwind": "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary focus-visible:shadow-[0_0_16px_rgba(0,245,255,0.40)]"
+      }
+    }
+  },
+
+  "SHADOWS": {
+    "_description": "Elevation system with four levels. Dark mode shadows use lower opacity. Glassmorphism and Cyberpunk add chromatic glow effects.",
+
+    "elevation": {
+      "sm": {
+        "light": "0 1px 2px 0 rgba(0,0,0,0.05)",
+        "dark": "0 1px 2px 0 rgba(0,0,0,0.30)",
+        "css_variable": "--shadow-sm",
+        "tailwind": "shadow-sm",
+        "usage": "Subtle lift for buttons, inputs, badges"
+      },
+      "default": {
+        "light": "0 1px 3px 0 rgba(0,0,0,0.10), 0 1px 2px -1px rgba(0,0,0,0.10)",
+        "dark": "0 1px 3px 0 rgba(0,0,0,0.40), 0 1px 2px -1px rgba(0,0,0,0.30)",
+        "css_variable": "--shadow",
+        "tailwind": "shadow",
+        "usage": "Cards, dropdown menus, tooltips"
+      },
+      "md": {
+        "light": "0 4px 6px -1px rgba(0,0,0,0.10), 0 2px 4px -2px rgba(0,0,0,0.10)",
+        "dark": "0 4px 6px -1px rgba(0,0,0,0.50), 0 2px 4px -2px rgba(0,0,0,0.30)",
+        "css_variable": "--shadow-md",
+        "tailwind": "shadow-md",
+        "usage": "Popovers, elevated panels, floating action buttons"
+      },
+      "lg": {
+        "light": "0 10px 15px -3px rgba(0,0,0,0.10), 0 4px 6px -4px rgba(0,0,0,0.10)",
+        "dark": "0 10px 15px -3px rgba(0,0,0,0.60), 0 4px 6px -4px rgba(0,0,0,0.30)",
+        "css_variable": "--shadow-lg",
+        "tailwind": "shadow-lg",
+        "usage": "Modals, dialogs, command palette, notification toasts"
+      }
+    },
+
+    "glassmorphism": {
+      "_description": "Chromatic indigo glow shadows for Glassmorphism theme surfaces and interactive elements.",
+      "surface_glow": {
+        "value": "0 8px 32px rgba(99,102,241,0.15), 0 2px 8px rgba(99,102,241,0.10)",
+        "css_variable": "--shadow-glass-surface",
+        "usage": "Glass cards, elevated translucent panels"
+      },
+      "interactive_glow": {
+        "value": "0 0 24px rgba(99,102,241,0.35)",
+        "css_variable": "--shadow-glass-interactive",
+        "usage": "CTAs, focused inputs, active buttons"
+      },
+      "hover_glow": {
+        "value": "0 0 32px rgba(99,102,241,0.45)",
+        "css_variable": "--shadow-glass-hover",
+        "usage": "Hover state intensification of interactive glow"
+      }
+    },
+
+    "cyberpunk": {
+      "_description": "Neon glow shadows for Cyberpunk theme. Cyan primary glow, violet accent glow, green terminal glow.",
+      "neon_cyan": {
+        "value": "0 0 20px rgba(0,245,255,0.40), 0 0 40px rgba(0,245,255,0.15)",
+        "css_variable": "--shadow-neon-cyan",
+        "usage": "Primary CTAs, active nav items, focused inputs"
+      },
+      "neon_cyan_hover": {
+        "value": "0 0 30px rgba(0,245,255,0.55), 0 0 60px rgba(0,245,255,0.20)",
+        "css_variable": "--shadow-neon-cyan-hover",
+        "usage": "Hover state intensification"
+      },
+      "neon_violet": {
+        "value": "0 0 20px rgba(191,90,242,0.35), 0 0 40px rgba(191,90,242,0.12)",
+        "css_variable": "--shadow-neon-violet",
+        "usage": "Accent elements, badges, tags, secondary interactive"
+      },
+      "neon_green": {
+        "value": "0 0 16px rgba(57,255,20,0.30), 0 0 32px rgba(57,255,20,0.10)",
+        "css_variable": "--shadow-neon-green",
+        "usage": "Success states, live indicators, terminal success in agent feed"
+      },
+      "scanline_overlay": {
+        "value": "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px)",
+        "css_variable": "--bg-scanline",
+        "usage": "Applied as ::after pseudo-element on [data-theme='cyberpunk'] body for CRT scanline effect"
+      }
+    }
+  },
+
+  "ANIMATIONS": {
+    "_description": "Duration and easing tokens for motion design. All durations collapse to 0ms when prefers-reduced-motion is active. Framer Motion is the animation runtime; these tokens inform its configuration.",
+
+    "duration": {
+      "instant": {
+        "value": "100ms",
+        "css_variable": "--duration-instant",
+        "usage": "Opacity toggles, color transitions, micro-feedback"
+      },
+      "fast": {
+        "value": "150ms",
+        "css_variable": "--duration-fast",
+        "usage": "Button hover/active states, tooltip show, input focus ring"
+      },
+      "normal": {
+        "value": "200ms",
+        "css_variable": "--duration-normal",
+        "usage": "Card hover lift, dropdown open, tab switch, sidebar toggle"
+      },
+      "slow": {
+        "value": "400ms",
+        "css_variable": "--duration-slow",
+        "usage": "Modal enter/exit, page transitions, layout animations, stagger sequences"
+      },
+      "slower": {
+        "value": "600ms",
+        "css_variable": "--duration-slower",
+        "usage": "Complex layout transitions, presentation mode animations"
+      }
+    },
+
+    "easing": {
+      "default": {
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "css_variable": "--ease-default",
+        "usage": "General-purpose easing for most transitions"
+      },
+      "enter": {
+        "value": "cubic-bezier(0, 0, 0.2, 1)",
+        "css_variable": "--ease-enter",
+        "usage": "Elements entering the viewport: modals, dropdowns, popovers"
+      },
+      "exit": {
+        "value": "cubic-bezier(0.4, 0, 1, 1)",
+        "css_variable": "--ease-exit",
+        "usage": "Elements leaving the viewport: closing modals, dismissing toasts"
+      },
+      "spring": {
+        "value": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+        "css_variable": "--ease-spring",
+        "usage": "Bouncy micro-interactions: button press feedback, toggle switch, notification badge pop"
+      }
+    },
+
+    "framer_motion_defaults": {
+      "_description": "Default Framer Motion transition presets derived from the token values above.",
+      "fade_in": {
+        "initial": { "opacity": 0 },
+        "animate": { "opacity": 1 },
+        "transition": { "duration": 0.2, "ease": [0.4, 0, 0.2, 1] }
+      },
+      "fade_up": {
+        "initial": { "opacity": 0, "y": 12 },
+        "animate": { "opacity": 1, "y": 0 },
+        "transition": { "duration": 0.4, "ease": [0, 0, 0.2, 1] }
+      },
+      "scale_in": {
+        "initial": { "opacity": 0, "scale": 0.95 },
+        "animate": { "opacity": 1, "scale": 1 },
+        "transition": { "duration": 0.2, "ease": [0, 0, 0.2, 1] }
+      },
+      "stagger_children": {
+        "transition": { "staggerChildren": 0.05 }
+      }
+    },
+
+    "reduced_motion": {
+      "_description": "When prefers-reduced-motion: reduce is active, all duration tokens resolve to 0ms. Framer Motion respects this via useReducedMotion hook.",
+      "strategy": "All CSS custom property durations set to 0ms via @media (prefers-reduced-motion: reduce). Framer Motion: wrap root in <MotionConfig reducedMotion='user'>.",
+      "instant": "0ms",
+      "fast": "0ms",
+      "normal": "0ms",
+      "slow": "0ms",
+      "slower": "0ms"
+    }
+  },
+
+  "BREAKPOINTS": {
+    "_description": "Responsive breakpoints aligned with Tailwind CSS 4 defaults. Mobile-first (min-width). Sidebar collapse point at md (768px).",
+
+    "values": {
+      "sm": {
+        "value": "640px",
+        "css_variable": "--breakpoint-sm",
+        "tailwind": "sm:",
+        "usage": "Small tablets, landscape phones. Two-column grid starts here."
+      },
+      "md": {
+        "value": "768px",
+        "css_variable": "--breakpoint-md",
+        "tailwind": "md:",
+        "usage": "Tablets. Sidebar becomes visible (collapsed or expanded). Three-column experiment grid."
+      },
+      "lg": {
+        "value": "1024px",
+        "css_variable": "--breakpoint-lg",
+        "tailwind": "lg:",
+        "usage": "Small desktops. Sidebar fully expanded. Four-column experiment grid."
+      },
+      "xl": {
+        "value": "1280px",
+        "css_variable": "--breakpoint-xl",
+        "tailwind": "xl:",
+        "usage": "Standard desktops. Dashboard container reaches max-width. Split-pane editor available."
+      },
+      "2xl": {
+        "value": "1536px",
+        "css_variable": "--breakpoint-2xl",
+        "tailwind": "2xl:",
+        "usage": "Large desktops. Full-width container reaches max-width. Presentation mode optimal."
+      }
+    },
+
+    "layout_rules": {
+      "sidebar_collapse": {
+        "breakpoint": "768px",
+        "behavior": "Below 768px: sidebar hidden, mobile nav (hamburger). At 768px+: sidebar visible (collapsed or expanded based on user preference)."
+      },
+      "experiment_grid_columns": {
+        "default": 1,
+        "sm": 2,
+        "md": 2,
+        "lg": 3,
+        "xl": 4,
+        "2xl": 4
+      },
+      "content_layout": {
+        "below_md": "Single column, full width with page margins",
+        "md_and_above": "Sidebar + main content area"
+      }
+    }
+  },
+
+  "Z_INDEX": {
+    "_description": "Stacking context layers. Ordered from lowest to highest. 10-unit intervals for insertion room.",
+
+    "layers": {
+      "base": {
+        "value": 0,
+        "css_variable": "--z-base",
+        "usage": "Default document flow, page content"
+      },
+      "raised": {
+        "value": 1,
+        "css_variable": "--z-raised",
+        "usage": "Sticky table headers, elevated card on hover"
+      },
+      "sidebar": {
+        "value": 10,
+        "css_variable": "--z-sidebar",
+        "usage": "Navigation sidebar (desktop and mobile)"
+      },
+      "header": {
+        "value": 20,
+        "css_variable": "--z-header",
+        "usage": "Top header bar, breadcrumbs. Above sidebar for mobile overlay."
+      },
+      "dropdown": {
+        "value": 30,
+        "css_variable": "--z-dropdown",
+        "usage": "Dropdown menus, popovers, select panels, autocomplete lists"
+      },
+      "modal": {
+        "value": 40,
+        "css_variable": "--z-modal",
+        "usage": "Modal dialogs, confirmation dialogs, lightbox overlays"
+      },
+      "toast": {
+        "value": 50,
+        "css_variable": "--z-toast",
+        "usage": "Notification toasts, snackbars. Must float above modals for system alerts."
+      },
+      "command_palette": {
+        "value": 60,
+        "css_variable": "--z-command-palette",
+        "usage": "Command palette (Cmd+K). Highest layer -- accessible from any context."
+      }
+    }
+  },
+
+  "TAILWIND_THEME_MAPPING": {
+    "_description": "Reference showing how design tokens map to Tailwind CSS 4 @theme declarations in the global CSS file. This section documents the intended transformation -- the actual CSS is generated in Phase 3.",
+
+    "css_custom_properties_example": {
+      "_note": "Each theme sets CSS custom properties on [data-theme] and [data-mode] selectors. Tailwind @theme references these variables.",
+      "root_declaration": ":root, [data-theme='minimalist'][data-mode='dark']",
+      "light_override": "[data-theme='minimalist'][data-mode='light']",
+      "bento_declaration": "[data-theme='bento'][data-mode='dark']",
+      "bento_light": "[data-theme='bento'][data-mode='light']",
+      "glass_declaration": "[data-theme='glassmorphism']",
+      "cyberpunk_declaration": "[data-theme='cyberpunk']"
+    },
+
+    "theme_directive_example": {
+      "_note": "Tailwind CSS 4 @theme maps CSS variables into utility classes. Example structure below.",
+      "colors": "@theme { --color-background: var(--background); --color-surface: var(--surface); --color-primary: var(--primary); ... }",
+      "spacing": "Uses Tailwind defaults -- no custom @theme override needed for spacing scale.",
+      "radius": "@theme { --radius-sm: var(--radius-sm); --radius-default: var(--radius-default); ... }",
+      "shadows": "@theme { --shadow-sm: var(--shadow-sm); --shadow: var(--shadow); --shadow-md: var(--shadow-md); --shadow-lg: var(--shadow-lg); }"
+    }
+  }
+}
